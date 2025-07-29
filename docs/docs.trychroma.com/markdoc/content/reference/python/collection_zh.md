@@ -14,11 +14,11 @@ class Collection(BaseModel)
 def count() -> int
 ```
 
-添加到数据库中的嵌入向量总数。
+添加到数据库中的嵌入向量总数
 
 **返回值**:
 
-- `int` - 添加到数据库中的嵌入向量总数。
+- `int` - 添加到数据库中的嵌入向量总数
 
 ## add
 
@@ -29,25 +29,25 @@ def add(ids: OneOrMany[ID],
         documents: Optional[OneOrMany[Document]] = None) -> None
 ```
 
-向数据存储中添加嵌入向量。
+将嵌入向量添加到数据存储中。
 
 **参数**:
 
-- `ids` - 要添加的嵌入向量的 ID。
-- `embeddings` - 要添加的嵌入向量。如果为 None，则将根据 documents 使用 Collection 中设置的 embedding_function 来计算嵌入向量。可选参数。
-- `metadatas` - 要与嵌入向量关联的元数据。在查询时，可以基于此元数据进行过滤。可选参数。
-- `documents` - 要与嵌入向量关联的文档。可选参数。
+- `ids` - 要添加的嵌入向量的 ID
+- `embeddings` - 要添加的嵌入向量。如果为 None，则会基于 documents 使用 Collection 中设置的 embedding_function 计算嵌入向量。可选参数。
+- `metadatas` - 与嵌入向量关联的元数据。在查询时，可以基于这些元数据进行过滤。可选参数。
+- `documents` - 与嵌入向量关联的文档。可选参数。
 
 **返回值**:
 
-  无
+  None
 
 **异常**:
 
-- `ValueError` - 如果你未提供 embeddings 或 documents 中的任意一个
+- `ValueError` - 如果既没有提供 embeddings 也没有提供 documents
 - `ValueError` - 如果 ids、embeddings、metadatas 或 documents 的长度不一致
-- `ValueError` - 如果你未提供嵌入函数且未提供 embeddings
-- `DuplicateIDError` - 如果你提供的 ID 已经存在
+- `ValueError` - 如果没有提供 embedding function 且没有提供 embeddings
+- `DuplicateIDError` - 如果提供的 ID 已经存在
 
 ## get
 
@@ -60,38 +60,38 @@ def get(ids: Optional[OneOrMany[ID]] = None,
         include: Include = ["metadatas", "documents"]) -> GetResult
 ```
 
-从数据存储中获取嵌入向量及其相关数据。如果没有提供 ids 或 where 过滤条件，则从 offset 开始返回最多 limit 个嵌入向量。
+从数据存储中获取嵌入向量及其相关数据。如果没有提供 ids 或 where 过滤条件，则返回从 offset 开始的最多 limit 个嵌入向量。
 
 **参数**:
 
-- `ids` - 要获取的嵌入向量的 ids。可选。
-- `where` - 一个 Where 类型的字典，用于按元数据过滤结果。例如 `{$and: [{"color" : "red"}, {"price": 4.20}]}`。可选。
-- `limit` - 返回的文档数量。可选。
-- `offset` - 开始返回结果的偏移量。用于与 limit 一起进行分页。可选。
-- `where_document` - 一个 WhereDocument 类型的字典，用于按文档内容过滤。例如 `{"$contains" : "hello"}`。可选。
-- `include` - 指定结果中包含的内容列表，可以包含 `"embeddings"`、`"metadatas"`、`"documents"`。ids 始终包含在内。默认值为 `["metadatas", "documents"]`。可选。
+- `ids` - 要获取的嵌入向量的 ID。可选参数。
+- `where` - 用于按元数据过滤结果的字典类型 Where。例如 `{$and: [{"color" : "red"}, {"price": 4.20}]}`。可选参数。
+- `limit` - 要返回的文档数量。可选参数。
+- `offset` - 开始返回结果的偏移量。与 limit 结合用于分页结果。可选参数。
+- `where_document` - 用于按文档内容过滤的字典类型 WhereDocument。例如 `{"$contains" : "hello"}`。可选参数。
+- `include` - 指定结果中包含的内容。可以包含 `"embeddings"`、`"metadatas"`、`"documents"`。ID 始终包含在内。默认值为 `["metadatas", "documents"]`。可选参数。
 
-**返回**:
+**返回值**:
 
 - `GetResult` - 包含结果的 GetResult 对象。
 
-## 预览（peek）
+## peek
 
 ```python
 def peek(limit: int = 10) -> GetResult
 ```
 
-获取数据库中的前几条结果，最多返回 limit 条。
+获取数据库中的前几条结果，最多到 limit。
 
 **参数**:
 
 - `limit` - 要返回的结果数量。
 
-**返回**:
+**返回值**:
 
 - `GetResult` - 包含结果的 GetResult 对象。
 
-## 查询（query）
+## query
 
 ```python
 def query(
@@ -111,22 +111,22 @@ def query(
 
 - `query_embeddings` - 要查找最近邻的嵌入向量。可选参数。
 - `query_texts` - 要查找最近邻的文档文本。可选参数。
-- `ids` - 用于限制搜索范围的 ID 列表。可选参数。
+- `ids` - 限制搜索空间的 ID 列表。可选参数。
 - `n_results` - 每个 query_embedding 或 query_texts 返回的邻居数量。可选参数。
-- `where` - 用于过滤结果的 Where 类型字典。例如：`{$and: [{"color" : "red"}, {"price": 4.20}]}`。可选参数。
-- `where_document` - 用于根据文档内容进行过滤的 WhereDocument 类型字典。例如：`{"$contains" : "hello"}`。可选参数。
-- `include` - 结果中包含内容的列表，可以包含 `"embeddings"`、`"metadatas"`、`"documents"`、`"distances"`。ID 始终包含在内。默认值为 `["metadatas", "documents", "distances"]`。可选参数。
+- `where` - 用于按元数据过滤结果的字典类型 Where。例如 `{$and: [{"color" : "red"}, {"price": 4.20}]}`。可选参数。
+- `where_document` - 用于按文档内容过滤的字典类型 WhereDocument。例如 `{"$contains" : "hello"}`。可选参数。
+- `include` - 指定结果中包含的内容。可以包含 `"embeddings"`、`"metadatas"`、`"documents"`、`"distances"`。ID 始终包含在内。默认值为 `["metadatas", "documents", "distances"]`。可选参数。
 
-**返回**:
+**返回值**:
 
-- `QueryResult` - 包含查询结果的 QueryResult 对象。
+- `QueryResult` - 包含结果的 QueryResult 对象。
 
-**抛出异常**:
+**异常**:
 
-- `ValueError` - 如果未提供 query_embeddings 或 query_texts 中的任意一个
+- `ValueError` - 如果既没有提供 query_embeddings 也没有提供 query_texts
 - `ValueError` - 如果同时提供了 query_embeddings 和 query_texts
 
-## 修改
+## modify
 
 ```python
 def modify(name: Optional[str] = None,
@@ -142,9 +142,9 @@ def modify(name: Optional[str] = None,
 
 **返回值**:
 
-  无
+  None
 
-## 更新
+## update
 
 ```python
 def update(ids: OneOrMany[ID],
@@ -153,18 +153,18 @@ def update(ids: OneOrMany[ID],
            documents: Optional[OneOrMany[Document]] = None) -> None
 ```
 
-根据提供的 ID 更新嵌入向量、元数据或文档。
+更新指定 ID 的嵌入向量、元数据或文档。
 
 **参数**:
 
-- `ids` - 要更新的嵌入向量的 ID。
-- `embeddings` - 要添加的嵌入向量。如果为 None，则会根据文档使用集合中设置的 embedding_function 来计算嵌入向量。可选参数。
-- `metadatas` - 与嵌入向量相关联的元数据。在进行查询时，可以基于此元数据进行过滤。可选参数。
-- `documents` - 与嵌入向量相关联的文档。可选参数。
+- `ids` - 要更新的嵌入向量的 ID
+- `embeddings` - 要添加的嵌入向量。如果为 None，则会基于 documents 使用 Collection 中设置的 embedding_function 计算嵌入向量。可选参数。
+- `metadatas` - 与嵌入向量关联的元数据。在查询时，可以基于这些元数据进行过滤。可选参数。
+- `documents` - 与嵌入向量关联的文档。可选参数。
 
 **返回值**:
 
-  无
+  None
 
 ## upsert
 
@@ -175,13 +175,13 @@ def upsert(ids: OneOrMany[ID],
            documents: Optional[OneOrMany[Document]] = None) -> None
 ```
 
-更新提供的 ID 的 embeddings、metadatas 或 documents，如果它们不存在则创建。
+更新提供的 ID 的 embeddings、metadatas 或 documents，如果不存在则创建它们。
 
 **参数**:
 
-- `ids` - 要更新的 embeddings 的 ID
-- `embeddings` - 要添加的 embeddings。如果为 None，则会根据 documents 使用 Collection 中设置的 embedding_function 来计算 embeddings。可选。
-- `metadatas` - 要与 embeddings 关联的元数据。在查询时，可以通过此元数据进行过滤。可选。
+- `ids` - 要更新的 embedding 的 ID
+- `embeddings` - 要添加的 embeddings。如果为 None，则会根据 documents 使用集合中设置的 embedding_function 来计算 embeddings。可选。
+- `metadatas` - 要与 embeddings 关联的元数据。在查询时，可以基于此元数据进行过滤。可选。
 - `documents` - 要与 embeddings 关联的文档。可选。
 
 **返回值**:
@@ -201,8 +201,8 @@ def delete(ids: Optional[IDs] = None,
 **参数**:
 
 - `ids` - 要删除的 embeddings 的 ID
-- `where` - 用于过滤删除操作的 Where 类型字典。例如 `{$and: [{"color" : "red"}, {"price": 4.20}]}`。可选。
-- `where_document` - 用于通过文档内容过滤删除操作的 WhereDocument 类型字典。例如 `{"$contains" : "hello"}`。可选。
+- `where` - 用于过滤删除操作的 Where 类型字典。例如：`{$and: [{"color" : "red"}, {"price": 4.20}]}`。可选。
+- `where_document` - 用于根据文档内容过滤删除操作的 WhereDocument 类型字典。例如：`{"$contains" : "hello"}`。可选。
 
 **返回值**:
 

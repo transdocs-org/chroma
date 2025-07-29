@@ -6,9 +6,9 @@
 
 `get` 和 `query` 中的 `where_document` 参数用于根据文档内容过滤记录。
 
-我们支持使用 `$contains` 和 `$not_contains` 操作符进行全文搜索，同时也支持使用 `$regex` 和 `$not_regex` 操作符进行[正则表达式](https://regex101.com)模式匹配。
+我们支持使用 `$contains` 和 `$not_contains` 运算符进行全文搜索。我们也支持使用 `$regex` 和 `$not_regex` 运算符进行[正则表达式](https://regex101.com)模式匹配。
 
-例如，下面的代码获取所有文档中包含特定搜索字符串的记录：
+例如，这里我们获取文档中包含特定搜索字符串的所有记录：
 
 ```python
 collection.get(
@@ -18,7 +18,7 @@ collection.get(
 
 *注意*：全文搜索是区分大小写的。
 
-以下示例中，我们获取所有文档内容匹配电子邮件地址正则表达式模式的记录：
+这里我们获取文档中匹配电子邮件地址正则表达式的模式的所有记录：
 
 ```python
 collection.get(
@@ -28,11 +28,11 @@ collection.get(
 )
 ```
 
-## 使用逻辑操作符
+## 使用逻辑运算符
 
-你还可以使用逻辑操作符 `$and` 和 `$or` 来组合多个过滤条件。
+你也可以使用逻辑运算符 `$and` 和 `$or` 来组合多个过滤条件。
 
-`$and` 操作符将返回匹配列表中所有过滤条件的结果：
+`$and` 运算符将返回符合列表中所有过滤条件的结果：
 
 ```python
 collection.query(
@@ -46,7 +46,7 @@ collection.query(
 )
 ```
 
-`$or` 操作符将返回匹配列表中任意一个过滤条件的结果：
+`$or` 运算符将返回符合列表中任意一个过滤条件的结果：
 
 ```python
 collection.query(
@@ -62,7 +62,7 @@ collection.query(
 
 ## 与元数据过滤结合使用
 
-`.get` 和 `.query` 方法可以处理 `where_document` 搜索，并结合[元数据过滤](./metadata-filtering)：
+`.get` 和 `.query` 可以处理 `where_document` 搜索与[元数据过滤](./metadata-filtering)的结合：
 
 ```python
 collection.query(
@@ -77,11 +77,11 @@ collection.query(
 
 {% Tab label="typescript" %}
 
-在 `get` 和 `query` 方法中，`whereDocument` 参数用于根据文档内容过滤记录。
+`get` 和 `query` 中的 `whereDocument` 参数用于根据文档内容过滤记录。
 
-我们支持使用 `$contains` 和 `$not_contains` 运算符进行全文搜索。此外，还支持使用 `$regex` 和 `$not_regex` 运算符进行[正则表达式](https://regex101.com)模式匹配。
+我们支持使用 `$contains` 和 `$not_contains` 运算符进行全文搜索。我们也支持使用 `$regex` 和 `$not_regex` 运算符进行[正则表达式](https://regex101.com)模式匹配。
 
-例如，以下代码将获取文档中包含某个搜索字符串的所有记录：
+例如，这里我们获取文档中包含特定搜索字符串的所有记录：
 
 ```typescript
 await collection.get({
@@ -89,7 +89,7 @@ await collection.get({
 })
 ```
 
-以下代码将获取文档中匹配电子邮件地址正则表达式的全部记录：
+这里我们获取文档中匹配电子邮件地址正则表达式模式的所有记录：
 
 ```typescript
 await collection.get({
@@ -101,9 +101,9 @@ await collection.get({
 
 ## 使用逻辑运算符
 
-你还可以使用逻辑运算符 `$and` 和 `$or` 来组合多个过滤器。
+你也可以使用逻辑运算符 `$and` 和 `$or` 来组合多个过滤条件。
 
-`$and` 运算符将返回匹配列表中**所有**过滤器的结果：
+`$and` 运算符将返回符合列表中所有过滤条件的结果：
 
 ```typescript
 await collection.query({
@@ -117,7 +117,7 @@ await collection.query({
 })
 ```
 
-`$or` 运算符将返回匹配列表中**任意一个**过滤器的结果：
+`$or` 运算符将返回符合列表中任意一个过滤条件的结果：
 
 ```typescript
 await collection.query({
@@ -133,7 +133,7 @@ await collection.query({
 
 ## 与元数据过滤结合使用
 
-`.get` 和 `.query` 还可以处理 `whereDocument` 搜索结合[元数据过滤](./metadata-filtering) 的查询：
+`.get` 和 `.query` 可以处理 `whereDocument` 搜索与[元数据过滤](./metadata-filtering)的结合：
 
 ```typescript
 await collection.query({

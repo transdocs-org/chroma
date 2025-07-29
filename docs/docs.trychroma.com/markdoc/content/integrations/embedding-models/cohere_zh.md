@@ -5,12 +5,12 @@ name: 'Cohere'
 
 # Cohere
 
-Chroma 还为 Cohere 的嵌入（embedding）API 提供了一个便捷的封装。该嵌入函数在 Cohere 的服务器上远程运行，需要提供一个 API 密钥。您可以通过访问 [Cohere](https://dashboard.cohere.ai/welcome/register) 注册账户来获取 API 密钥。
+Chroma 还提供了对 Cohere 嵌入 API 的便捷封装。这个嵌入函数在 Cohere 的服务器上远程运行，需要 API 密钥。您可以通过在 [Cohere](https://dashboard.cohere.ai/welcome/register) 注册账户来获取 API 密钥。
 
 {% Tabs %}
 {% Tab label="python" %}
 
-该嵌入函数依赖于 `cohere` Python 包，您可以通过 `pip install cohere` 命令安装。
+这个嵌入函数依赖于 `cohere` Python 包，您可以使用 `pip install cohere` 来安装它。
 
 ```python
 import chromadb.utils.embedding_functions as embedding_functions
@@ -32,7 +32,7 @@ const embedder = new CohereEmbeddingFunction({ apiKey: "apiKey" })
 // 直接使用
 const embeddings = embedder.generate(["document1","document2"])
 
-// 传递文档以用于 .add 和 .query
+// 传递文档以进行 .add 和 .query
 const collection = await client.createCollection({name: "name", embeddingFunction: embedder})
 const collectionGet = await client.getCollection({name:"name", embeddingFunction: embedder})
 ```
@@ -41,7 +41,7 @@ const collectionGet = await client.getCollection({name:"name", embeddingFunction
 
 {% /Tabs %}
 
-您可以选择性地传入 `model_name` 参数，以便选择要使用的 Cohere 嵌入模型。默认情况下，Chroma 使用的是 `large` 模型。您可以在 [此处](https://docs.cohere.ai/reference/embed) 的 `Get embeddings` 部分查看可用的模型。
+您可以选择性地传入 `model_name` 参数，以选择要使用的 Cohere 嵌入模型。默认情况下，Chroma 使用的是 `large` 模型。您可以在 [这里](https://docs.cohere.ai/reference/embed) 的 `Get embeddings` 部分查看可用的模型。
 
 ### 多语言模型示例
 
@@ -87,7 +87,7 @@ const embeddings = embedder.generate(multilingual_texts)
 
 {% /TabbedCodeBlock %}
 
-如需了解更多关于多语言模型的信息，请点击[此处](https://docs.cohere.ai/docs/multilingual-language-models)查看。
+关于多语言模型的更多信息，您可以参考 [这里](https://docs.cohere.ai/docs/multilingual-language-models)。
 
 ### 多模态模型示例
 
@@ -105,7 +105,7 @@ dataset = load_dataset(path="detection-datasets/coco", split="train", streaming=
 IMAGE_FOLDER = "images"
 N_IMAGES = 5
 
-# 将图像写入文件夹
+# Write the images to a folder
 dataset_iter = iter(dataset)
 os.makedirs(IMAGE_FOLDER, exist_ok=True)
 for i in range(N_IMAGES):
@@ -127,7 +127,7 @@ multimodal_collection = client.create_collection(
 image_uris = sorted([os.path.join(IMAGE_FOLDER, image_name) for image_name in os.listdir(IMAGE_FOLDER)])
 ids = [str(i) for i in range(len(image_uris))]
 for i in range(len(image_uris)):
-    # 每次添加最多1张图片，请参阅Cohere文档 https://docs.cohere.com/v2/reference/embed#request.body.images
+    # max images per add is 1, see cohere docs https://docs.cohere.com/v2/reference/embed#request.body.images
     multimodal_collection.add(ids=[str(i)], uris=[image_uris[i]])
 
 retrieved = multimodal_collection.query(query_texts=["animals"], include=['data'], n_results=3)

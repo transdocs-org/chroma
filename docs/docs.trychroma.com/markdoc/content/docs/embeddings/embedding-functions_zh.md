@@ -1,8 +1,8 @@
-# 嵌入函数
+# 嵌入函数（Embedding Functions）
 
-嵌入（Embeddings）是一种表示各种类型数据的方式，使其非常适合与各种人工智能工具和算法一起使用。它们可以表示文本、图像，未来还将支持音频和视频。Chroma 集合（collections）通过索引嵌入来实现对其所表示数据的高效相似性搜索。创建嵌入的方式有很多，既可以使用本地安装的库，也可以通过调用 API。
+嵌入（Embeddings）是一种表示任何类型数据的方式，因此它们非常适合与各种 AI 工具和算法一起使用。它们可以表示文本、图像，以及即将支持的音频和视频。Chroma 的集合（collections）通过索引嵌入来实现对数据的高效相似性搜索。创建嵌入的方式有很多，既可以通过本地安装的库生成，也可以通过调用 API。
 
-Chroma 为流行的嵌入提供程序提供了轻量级封装，使它们在你的应用程序中更易于使用。你可以在[创建](../collections/manage-collections) Chroma 集合时设置嵌入函数，以便在添加和查询数据时自动使用；当然，你也可以直接手动调用它们。
+Chroma 为流行的嵌入服务提供者提供了轻量级封装，使你可以在应用中轻松使用它们。你可以在[创建](../collections/manage-collections) Chroma 集合时设置一个嵌入函数，它将在添加和查询数据时自动使用，或者你也可以直接调用它们。
 
 |                                                                                          | Python | Typescript |
 |------------------------------------------------------------------------------------------|--------|------------|
@@ -14,19 +14,18 @@ Chroma 为流行的嵌入提供程序提供了轻量级封装，使它们在你�
 | [Hugging Face Embedding Server](../../integrations/embedding-models/hugging-face-server) | ✓      | ✓          |
 | [Jina AI](../../integrations/embedding-models/jina-ai)                                   | ✓      | ✓          |
 | [Cloudflare Workers AI](../../integrations/embedding-models/cloudflare-workers-ai)    | ✓      | ✓          |
-
 | [Together AI](../../integrations/embedding-models/together-ai)                        | ✓      | ✓          |
 | [Mistral](../../integrations/embedding-models/mistral)                                | ✓      | ✓          |
 
-我们欢迎提交 Pull Request 来为社区添加新的嵌入（Embedding）函数。
+我们欢迎社区贡献新的嵌入函数。
 
 ***
 
 ## 默认：all-MiniLM-L6-v2
 
-Chroma 的默认嵌入函数使用 [Sentence Transformers](https://www.sbert.net/) 的 `all-MiniLM-L6-v2` 模型来生成嵌入向量。该嵌入模型可以创建可用于各种任务的句子和文档嵌入向量。该嵌入函数在你的本地机器上运行，并且可能需要你下载模型文件（这会自动完成）。
+Chroma 的默认嵌入函数使用 [Sentence Transformers](https://www.sbert.net/) 提供的 `all-MiniLM-L6-v2` 模型来生成嵌入向量。该嵌入模型可以创建用于多种任务的句子和文档嵌入。该嵌入函数在你的本地机器上运行，可能需要你下载模型文件（下载会自动进行）。
 
-如果你在创建集合（collection）时没有指定嵌入函数，Chroma 会将其设置为 `DefaultEmbeddingFunction`：
+如果你在创建集合时没有指定嵌入函数，Chroma 会将其设置为 `DefaultEmbeddingFunction`：
 
 {% Tabs %}
 
@@ -67,7 +66,7 @@ bun add @chroma-core/default-embed
 
 {% /TabbedUseCaseCodeBlock %}
 
-创建集合时不提供嵌入函数。它将自动使用 `DefaultEmbeddingFunction`：
+创建集合时不提供嵌入函数，它将自动使用 `DefaultEmbeddingFunction`：
 
 ```typescript
 const collection = await client.createCollection({ name: "my-collection" });
@@ -79,7 +78,7 @@ const collection = await client.createCollection({ name: "my-collection" });
 
 ## 使用嵌入函数
 
-你可以将嵌入函数链接到一个集合上，并在调用 `add`、`update`、`upsert` 或 `query` 时使用它。
+嵌入函数可以链接到集合，并在调用 `add`、`update`、`upsert` 或 `query` 时自动使用。
 
 {% Tabs %}
 
@@ -95,7 +94,7 @@ collection = client.create_collection(
     )
 )
 
-# Chroma 将使用 OpenAIEmbeddingFunction 来嵌入你的文档
+# Chroma 会使用 OpenAIEmbeddingFunction 来嵌入你的文档
 collection.add(
     ids=["id1", "id2"],
     documents=["doc1", "doc2"]
@@ -134,7 +133,7 @@ bun add @chroma-core/openai
 
 {% /TabbedUseCaseCodeBlock %}
 
-使用 `OpenAIEmbeddingFunction` 创建一个集合：
+创建一个使用 `OpenAIEmbeddingFunction` 的集合：
 
 ```typescript
 // 设置你的 OPENAI_API_KEY 环境变量
@@ -147,7 +146,7 @@ collection = await client.createCollection({
     })
 });
 
-// Chroma 将使用 OpenAIEmbeddingFunction 来嵌入你的文档
+// Chroma 会使用 OpenAIEmbeddingFunction 来嵌入你的文档
 await collection.add({
     ids: ["id1", "id2"],
     documents: ["doc1", "doc2"]
@@ -157,7 +156,7 @@ await collection.add({
 
 {% /Tabs %}
 
-你也可以直接使用嵌入函数，这对于调试非常方便。
+你也可以直接使用嵌入函数，这在调试时非常方便。
 
 {% TabbedCodeBlock %}
 
@@ -165,14 +164,11 @@ await collection.add({
 ```python
 from chromadb.utils.embedding_functions import DefaultEmbeddingFunction
 
-```python
 default_ef = DefaultEmbeddingFunction()
 embeddings = default_ef(["foo"])
 print(embeddings) # [[0.05035809800028801, 0.0626462921500206, -0.061827320605516434...]]
 
 collection.query(query_embeddings=embeddings)
-```
-
 ```
 {% /Tab %}
 
@@ -192,7 +188,7 @@ await collection.query({ queryEmbeddings: embeddings })
 
 ## 自定义嵌入函数
 
-您可以创建自己的嵌入函数与 Chroma 一起使用；只需要实现 `EmbeddingFunction` 接口即可。
+你可以创建自己的嵌入函数以在 Chroma 中使用，只需实现 `EmbeddingFunction` 接口即可。
 
 {% TabbedCodeBlock %}
 
@@ -219,7 +215,7 @@ class MyEmbeddingFunction implements EmbeddingFunction {
     }
 
     public async generate(texts: string[]): Promise<number[][]> {
-        // 使用 api_key 以某种方式将文本转换为嵌入向量
+        // 用 api_key 之类的方式将文本转换为嵌入向量
         return embeddings;
     }
 }
@@ -228,4 +224,4 @@ class MyEmbeddingFunction implements EmbeddingFunction {
 
 {% /TabbedCodeBlock %}
 
-我们非常欢迎贡献！如果您创建了一个对其他人可能有用的嵌入函数，请考虑[提交 Pull Request](https://github.com/chroma-core/chroma)。
+我们欢迎任何贡献！如果你创建了一个对其他人可能有用的嵌入函数，请考虑[提交 Pull Request](https://github.com/chroma-core/chroma)。

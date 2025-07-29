@@ -1,6 +1,6 @@
 # 从 Chroma 集合中删除数据
 
-Chroma 支持通过 `.delete` 方法根据 `id` 删除集合中的条目。与每个条目关联的嵌入向量、文档和元数据都将被删除。
+Chroma 支持通过 `.delete` 方法根据 `id` 从集合中删除条目。与每个条目关联的嵌入向量、文档和元数据也将被一并删除。
 
 {% Banner type="warn" %}
 请注意，这是一项具有破坏性的操作，且**无法撤销**。
@@ -26,7 +26,7 @@ await collection.delete({
 
 {% /TabbedCodeBlock %}
 
-`.delete` 方法还支持 `where` 过滤器。如果没有提供 `ids`，则会删除集合中所有符合 `where` 过滤条件的条目。
+`.delete` 方法还支持使用 `where` 过滤器。如果没有提供 `ids`，则会删除集合中所有符合 `where` 过滤条件的条目。
 
 {% TabbedCodeBlock %}
 

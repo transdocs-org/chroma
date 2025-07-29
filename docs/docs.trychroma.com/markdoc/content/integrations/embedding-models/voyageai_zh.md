@@ -5,12 +5,12 @@ name: 'VoyageAI'
 
 # VoyageAI
 
-Chroma 同样为 VoyageAI 的嵌入接口提供了便捷的封装。该嵌入函数在 VoyageAI 的服务器上远程运行，因此需要 API 密钥。你可以通过访问 [VoyageAI](https://dash.voyageai.com/) 注册账户来获取 API 密钥。
+Chroma 也提供了对 VoyageAI 嵌入 API 的便捷封装。此嵌入函数在 VoyageAI 的服务器上远程运行，需要一个 API 密钥。您可以通过访问 [VoyageAI](https://dash.voyageai.com/) 网站注册账户来获取 API 密钥。
 
 {% Tabs %}
 {% Tab label="python" %}
 
-此嵌入函数依赖于 `voyageai` Python 包，你可以使用 `pip install voyageai` 进行安装。
+此嵌入函数依赖于 `voyageai` Python 包，您可以通过 `pip install voyageai` 来安装它。
 
 ```python
 import chromadb.utils.embedding_functions as embedding_functions
@@ -35,7 +35,7 @@ const embedder = new VoyageAIEmbeddingFunction({
 // 直接使用
 const embeddings = embedder.generate(["document1","document2"])
 
-// 传递文档用于 .add 和 .query
+// 传递文档到 .add 和 .query 方法中
 const collection = await client.createCollection({name: "name", embeddingFunction: embedder})
 const collectionGet = await client.getCollection({name: "name", embeddingFunction: embedder})
 ```
@@ -88,4 +88,4 @@ const embeddings = embedder.generate(multilingual_texts)
 
 {% /TabbedCodeBlock %}
 
-如需了解 VoyageAI 模型的更多细节，请查看 [文档](https://docs.voyageai.com/docs/introduction) 和 [博客](https://blog.voyageai.com/)。
+如需了解更多关于 VoyageAI 模型的信息，请查阅其[文档](https://docs.voyageai.com/docs/introduction)和[博客](https://blog.voyageai.com/)。

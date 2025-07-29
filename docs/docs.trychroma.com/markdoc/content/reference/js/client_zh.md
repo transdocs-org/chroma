@@ -12,7 +12,7 @@
 
 | 名称 | 类型 | 描述 |
 | :------ | :------ | :------ |
-| `params` | `ChromaClientParams` | 创建新客户端所需的参数 |
+| `params` | `ChromaClientParams` | 创建新客户端的参数 |
 
 **示例**
 
@@ -34,7 +34,7 @@ const client = new ChromaClient({
 
 `Promise<number>`
 
-一个解析为集合数量的 Promise。
+一个 Promise，解析为集合的数量。
 
 **抛出异常**
 
@@ -56,18 +56,18 @@ const collections = await client.countCollections();
 
 | 名称 | 类型 | 描述 |
 | :------ | :------ | :------ |
-| `params` | `CreateCollectionParams` | 创建新集合所需的参数 |
+| `params` | `CreateCollectionParams` | 创建新集合的参数 |
 
 #### 返回值
 
 `Promise<Collection>`
 
-一个 Promise，当创建集合成功时解析为对应的集合对象。
+一个 Promise，解析为创建的集合。
 
 **抛出异常**
 
 * 如果客户端无法连接到服务器。
-* 如果创建集合时发生错误。
+* 如果在创建集合时出现问题。
 
 **示例**
 
@@ -75,7 +75,7 @@ const collections = await client.countCollections();
 const collection = await client.createCollection({
   name: "my_collection",
   metadata: {
-    "description": "My first collection"
+    "description": "我的第一个集合"
   }
 });
 ```
@@ -88,9 +88,9 @@ const collection = await client.createCollection({
 
 #### 参数
 
-| 名称 | 类型 | 说明 |
+| 名称 | 类型 | 描述 |
 | :------ | :------ | :------ |
-| `params` | `DeleteCollectionParams` | 删除集合所需的参数。 |
+| `params` | `DeleteCollectionParams` | 删除集合的参数 |
 
 #### 返回值
 
@@ -100,7 +100,7 @@ const collection = await client.createCollection({
 
 **抛出异常**
 
-如果删除集合时发生错误。
+如果在删除集合时出现问题。
 
 **示例**
 
@@ -118,19 +118,19 @@ await client.deleteCollection({
 
 #### 参数
 
-| 名称 | 类型 | 说明 |
+| 名称 | 类型 | 描述 |
 | :------ | :------ | :------ |
-| `params` | `GetCollectionParams` | 获取集合所需的参数。 |
+| `params` | `GetCollectionParams` | 获取集合的参数 |
 
 #### 返回值
 
 `Promise<Collection>`
 
-一个以集合为解析值的 Promise。
+一个 Promise，解析为获取的集合。
 
 **抛出异常**
 
-如果获取集合时发生问题。
+如果在获取集合时出现问题。
 
 **示例**
 
@@ -148,19 +148,19 @@ const collection = await client.getCollection({
 
 #### 参数
 
-| 名称 | 类型 | 说明 |
+| 名称 | 类型 | 描述 |
 | :------ | :------ | :------ |
-| `params` | `CreateCollectionParams` | 创建新集合所需的参数。 |
+| `params` | `CreateCollectionParams` | 创建新集合的参数 |
 
 #### 返回值
 
 `Promise<Collection>`
 
-一个以获取到或创建的集合为解析值的 Promise。
+一个 Promise，解析为获取或创建的集合。
 
 **抛出异常**
 
-如果在获取或创建集合时发生问题。
+如果在获取或创建集合时出现问题。
 
 **示例**
 
@@ -168,7 +168,7 @@ const collection = await client.getCollection({
 const collection = await client.getOrCreateCollection({
   name: "my_collection",
   metadata: {
-    "description": "My first collection"
+    "description": "我的第一个集合"
   }
 });
 ```
@@ -177,13 +177,13 @@ const collection = await client.getOrCreateCollection({
 
 * `heartbeat(): Promise<number>`
 
-返回来自 Chroma API 的心跳响应。
+从 Chroma API 获取一个心跳信号。
 
 #### 返回值
 
 `Promise<number>`
 
-一个以心跳响应值为解析值的 Promise。
+一个 Promise，解析为来自 Chroma API 的心跳信号。
 
 **抛出异常**
 
@@ -215,7 +215,7 @@ const heartbeat = await client.heartbeat();
 
 **抛出异常**
 
-如果在列出集合时发生问题。
+如果在列出集合时出现问题。
 
 **示例**
 
@@ -230,7 +230,7 @@ const collections = await client.listCollections({
 
 * `reset(): Promise<boolean>`
 
-通过调用重置端点的 API 接口来重置对象的状态。
+通过调用重置端点的 API 调用来重置对象的状态。
 
 #### 返回值
 

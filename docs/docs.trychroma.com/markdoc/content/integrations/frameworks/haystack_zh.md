@@ -5,13 +5,13 @@ name: Haystack
 
 # Haystack
 
-[Haystack](https://github.com/deepset-ai/haystack) 是一个使用 Python 编写的开源大语言模型（LLM）框架。它通过多个 LLM 提供商提供了 [嵌入器（embedders）](https://docs.haystack.deepset.ai/v2.0/docs/embedders)、[生成器（generators）](https://docs.haystack.deepset.ai/v2.0/docs/generators) 和 [排序器（rankers）](https://docs.haystack.deepset.ai/v2.0/docs/rankers)，以及用于 [预处理](https://docs.haystack.deepset.ai/v2.0/docs/preprocessors) 和数据准备的工具，并支持连接到多个向量数据库，包括 Chroma 等。Haystack 允许你使用框架中现成的组件以及 [自定义组件](https://docs.haystack.deepset.ai/v2.0/docs/custom-components) 来构建定制化的 LLM 应用。使用 Haystack 可以构建的一些常见应用包括检索增强生成管道（RAG）、问答系统和语义搜索系统。
+[Haystack](https://github.com/deepset-ai/haystack) 是一个开源的 Python LLM 框架。它通过多个 LLM 提供商提供 [嵌入器（embedders）](https://docs.haystack.deepset.ai/v2.0/docs/embedders)、[生成器（generators）](https://docs.haystack.deepset.ai/v2.0/docs/generators) 和 [排序器（rankers）](https://docs.haystack.deepset.ai/v2.0/docs/rankers)，以及用于 [预处理](https://docs.haystack.deepset.ai/v2.0/docs/preprocessors) 和数据准备的工具，并提供了连接多个向量数据库（包括 Chroma 等）的连接器。Haystack 允许您使用 Haystack 中现成的组件以及 [自定义组件](https://docs.haystack.deepset.ai/v2.0/docs/custom-components) 来构建自定义的 LLM 应用程序。使用 Haystack 可以构建的一些最常见的应用程序包括检索增强生成管道（RAG）、问答系统和语义搜索。
 
 ![](https://img.shields.io/github/stars/deepset-ai/haystack.svg?style=social&label=Star&maxAge=2400)
 
 |[文档](https://docs.haystack.deepset.ai/v2.0/docs) | [Github](https://github.com/deepset-ai/haystack) | [Haystack 集成](https://haystack.deepset.ai/integrations) | [教程](https://haystack.deepset.ai/tutorials) |
 
-你可以通过安装集成插件并使用 `ChromaDocumentStore` 来将 Chroma 与 Haystack 一起使用
+您可以通过安装集成包并使用 `ChromaDocumentStore` 将 Chroma 与 Haystack 一起使用。
 
 ### 安装
 
@@ -56,7 +56,7 @@ from haystack.components.builders import PromptBuilder
 
 prompt = """
 根据提供的上下文回答问题。
-如果上下文中不包含答案，请回答“未找到答案”。
+如果上下文中不包含答案，请说“未找到答案”。
 上下文：
 {% for doc in documents %}
   {{ doc.content }}
@@ -81,5 +81,3 @@ querying.connect("prompt_builder", "llm")
 results = querying.run({"retriever": {"queries": [query], "top_k": 3},
                         "prompt_builder": {"query": query}})
 ```
-
-当然可以！请提供您需要翻译的 Markdown 格式文本内容，我会将其从 auto（自动检测语言，通常为英文）翻译成 zh（中文），并保持原有的 Markdown 格式不变，包括标题、列表、代码块等。

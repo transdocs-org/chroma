@@ -16,12 +16,12 @@ def EphemeralClient(settings: Optional[Settings] = None,
                     database: str = DEFAULT_DATABASE) -> ClientAPI
 ```
 
-创建一个内存中的 Chroma 实例。这适用于测试和开发，但**不建议用于生产环境**。
+创建一个内存中的 Chroma 实例。这适用于测试和开发，但不建议用于生产环境。
 
 **参数**:
 
-- `tenant` - 为此客户端使用的租户。默认使用默认租户。
-- `database` - 为此客户端使用的数据库。默认使用默认数据库。
+- `tenant` - 为此客户端使用的租户。默认为默认租户。
+- `database` - 为此客户端使用的数据库。默认为默认数据库。
 
 ## PersistentClient
 
@@ -32,13 +32,13 @@ def PersistentClient(path: str = "./chroma",
                      database: str = DEFAULT_DATABASE) -> ClientAPI
 ```
 
-创建一个持久化的 Chroma 实例，数据将保存到磁盘。这适用于测试和开发，但**不建议用于生产环境**。
+创建一个持久化的 Chroma 实例，该实例会将数据保存到磁盘。这适用于测试和开发，但不建议用于生产环境。
 
 **参数**:
 
-- `path` - 用于保存 Chroma 数据的目录。默认为 "./chroma"。
-- `tenant` - 为此客户端使用的租户。默认使用默认租户。
-- `database` - 为此客户端使用的数据库。默认使用默认数据库。
+- `path` - 保存 Chroma 数据的目录。默认为 "./chroma"。
+- `tenant` - 为此客户端使用的租户。默认为默认租户。
+- `database` - 为此客户端使用的数据库。默认为默认数据库。
 
 ## HttpClient
 
@@ -52,17 +52,17 @@ def HttpClient(host: str = "localhost",
                database: str = DEFAULT_DATABASE) -> ClientAPI
 ```
 
-创建一个连接到远程 Chroma 服务器的客户端。这支持多个客户端连接到同一台服务器，是推荐在生产环境中使用 Chroma 的方式。
+创建一个连接到远程 Chroma 服务器的客户端。这支持多个客户端连接到同一台服务器，是生产环境中推荐使用的 Chroma 使用方式。
 
 **参数**:
 
 - `host` - Chroma 服务器的主机名。默认为 "localhost"。
-- `port` - Chroma 服务器的端口号。默认为 8000。
+- `port` - Chroma 服务器的端口。默认为 8000。
 - `ssl` - 是否使用 SSL 连接到 Chroma 服务器。默认为 False。
-- `headers` - 要发送到 Chroma 服务器的请求头字典。默认为空字典 {}。
-- `settings` - 用于与 Chroma 服务器通信的设置字典。
-- `tenant` - 此客户端使用的租户。默认为默认租户。
-- `database` - 此客户端使用的数据库。默认为默认数据库。
+- `headers` - 发送到 Chroma 服务器的请求头字典。默认为空字典 {}。
+- `settings` - 与 Chroma 服务器通信的设置字典。
+- `tenant` - 为此客户端使用的租户。默认为默认租户。
+- `database` - 为此客户端使用的数据库。默认为默认数据库。
 
 ## AsyncHttpClient
 
@@ -76,17 +76,17 @@ async def AsyncHttpClient(host: str = "localhost",
                           database: str = DEFAULT_DATABASE) -> AsyncClientAPI
 ```
 
-创建一个连接到远程 Chroma 服务器的异步客户端。这支持多个客户端连接到同一台服务器，并且是推荐在生产环境中使用 Chroma 的方式。
+创建一个异步客户端，连接到远程 Chroma 服务器。这支持多个客户端连接到同一台服务器，是生产环境中推荐使用的 Chroma 使用方式。
 
-**参数**：
+**参数**:
 
 - `host` - Chroma 服务器的主机名。默认为 "localhost"。
-- `port` - Chroma 服务器的端口号。默认为 8000。
+- `port` - Chroma 服务器的端口。默认为 8000。
 - `ssl` - 是否使用 SSL 连接到 Chroma 服务器。默认为 False。
-- `headers` - 要发送到 Chroma 服务器的请求头字典。默认为空字典 {}。
+- `headers` - 发送到 Chroma 服务器的请求头字典。默认为空字典 {}。
 - `settings` - 与 Chroma 服务器通信的设置字典。
-- `tenant` - 此客户端使用的租户。默认为默认租户。
-- `database` - 此客户端使用的数据库。默认为默认数据库。
+- `tenant` - 为此客户端使用的租户。默认为默认租户。
+- `database` - 为此客户端使用的数据库。默认为默认数据库。
 
 ## CloudClient
 
@@ -101,15 +101,15 @@ def CloudClient(tenant: str,
                 enable_ssl: bool = True) -> ClientAPI
 ```
 
-创建一个客户端，用于连接 Chroma 云端的租户和数据库。
+创建一个客户端以连接到 Chroma 云端的租户和数据库。
 
 **参数**:
 
-- `tenant` - 该客户端使用的租户。
-- `database` - 该客户端使用的数据库。
-- `api_key` - 该客户端使用的 API 密钥。
+- `tenant` - 为此客户端使用的租户。
+- `database` - 为此客户端使用的数据库。
+- `api_key` - 为此客户端使用的 API 密钥。
 
-## 客户端
+## Client
 
 ```python
 def Client(settings: Settings = __settings,
@@ -121,16 +121,18 @@ def Client(settings: Settings = __settings,
 
 **参数**:
 
-* `tenant`: 该客户端使用的租户。默认使用 `default` 租户。
-* `database`: 该客户端使用的数据库。默认使用 `default` 数据库。
+- `tenant` - 为此客户端使用的租户。默认为 `default` 租户。
+- `database` - 为此客户端使用的数据库。默认为 `default` 数据库。
 
-## 管理员客户端
+## AdminClient
 
 ```python
 def AdminClient(settings: Settings = Settings()) -> AdminAPI
 ```
 
 创建一个管理员客户端，可用于创建租户和数据库。
+
+***
 
 # BaseClient 方法
 
@@ -144,14 +146,14 @@ class BaseAPI(ABC)
 def heartbeat() -> int
 ```
 
-获取自纪元以来以纳秒为单位的当前时间。
-用于检查服务器是否存活。
+获取自纪元以来当前时间的纳秒数。
+用于检查服务器是否处于运行状态。
 
 **返回**:
 
-- `int` - 自纪元以来以纳秒为单位的当前时间
+- `int` - 自纪元以来当前时间的纳秒数
 
-## count\_collections
+## count_collections
 
 ```python
 def count_collections() -> int
@@ -171,13 +173,13 @@ client.count_collections()
 # 1
 ```
 
-## delete\_collection
+## delete_collection
 
 ```python
 def delete_collection(name: str) -> None
 ```
 
-删除指定名称的集合。
+删除具有指定名称的集合。
 
 **参数**:
 
@@ -205,21 +207,21 @@ def reset() -> bool
 
 **返回**:
 
-- `bool` - 如果数据库重置成功则返回 True。
+- `bool` - 如果数据库重置成功则返回 `True`。
 
-## get\_version
+## get_version
 
 ```python
 def get_version() -> str
 ```
 
-获取 Chroma 的版本号。
+获取 Chroma 的版本。
 
 **返回**:
 
-- `str` - Chroma 的版本号。
+- `str` - Chroma 的版本。
 
-## get\_settings
+## get_settings
 
 ```python
 def get_settings() -> Settings
@@ -231,7 +233,7 @@ def get_settings() -> Settings
 
 - `Settings` - 用于初始化的设置。
 
-## get\_max\_batch\_size
+## get_max_batch_size
 
 ```python
 def get_max_batch_size() -> int
@@ -247,7 +249,7 @@ def get_max_batch_size() -> int
 class ClientAPI(BaseAPI, ABC)
 ```
 
-## list\_collections
+## list_collections
 
 ```python
 def list_collections(limit: Optional[int] = None,
@@ -259,11 +261,13 @@ def list_collections(limit: Optional[int] = None,
 **参数**:
 
 - `limit` - 要返回的最大条目数。默认为 None。
-- `offset` - 在返回结果之前跳过的条目数。默认为 None。
+- `offset` - 在返回条目之前要跳过的条目数。默认为 None。
+
 
 **返回**:
 
 - `Sequence[Collection]` - 集合对象的列表。
+
 
 **示例**:
 
@@ -272,7 +276,7 @@ client.list_collections()
 # ['my_collection']
 ```
 
-## 创建集合
+## create_collection
 
 ```python
 def create_collection(name: str,
@@ -284,25 +288,25 @@ def create_collection(name: str,
                       get_or_create: bool = False) -> Collection
 ```
 
-使用给定的名称和元数据创建一个新的集合。
+使用指定的名称和元数据创建一个新集合。
 
 **参数**:
 
 - `name` - 要创建的集合的名称。
-- `metadata` - 可选的与集合关联的元数据。
+- `metadata` - 可选的元数据，用于与集合关联。
 - `embedding_function` - 可选的用于嵌入文档的函数。如果未提供，则使用默认的嵌入函数。
-- `get_or_create` - 如果为 True，则在集合已存在时返回现有的集合。
+- `get_or_create` - 如果为 True，则在集合已存在时返回现有集合。
 - `data_loader` - 可选的用于加载记录（文档、图片等）的函数。
 
 
-**返回值**:
+**返回**:
 
 - `Collection` - 新创建的集合。
 
 
-**异常**:
+**抛出异常**:
 
-- `ValueError` - 如果集合已存在且 get_or_create 为 False。
+- `ValueError` - 如果集合已存在且 `get_or_create` 为 False。
 - `ValueError` - 如果集合名称无效。
 
 
@@ -327,32 +331,32 @@ def get_collection(
         data_loader: Optional[DataLoader[Loadable]] = None) -> Collection
 ```
 
-获取具有指定名称的集合（collection）。
+获取具有指定名称的集合。
 
 **参数**:
 
-- `id` - 要获取的集合的 UUID。如果提供了该参数，则会同时使用 ID 和名称进行查找。
-- `name` - 要获取的集合的名称
+- `id` - 要获取的集合的 UUID。如果提供了 `id` 和 `name`，则同时使用它们进行查找。
+- `name` - 要获取的集合的名称。
 - `embedding_function` - 可选的用于嵌入文档的函数。如果未提供，则使用默认的嵌入函数。
 - `data_loader` - 可选的用于加载记录（文档、图片等）的函数。
 
 
-**返回值**:
+**返回**:
 
-- `Collection` - 所请求的集合
+- `Collection` - 所获取的集合。
 
 
-**可能抛出的异常**:
+**抛出异常**:
 
-- `chromadb.errors.NotFoundError` - 如果该集合不存在
+- `chromadb.errors.NotFoundError` - 如果集合不存在。
 
 
 **示例**:
 
-  ```python
-  client.get_collection("my_collection")
-  # collection(name="my_collection", metadata={})
-  ```
+```python
+client.get_collection("my_collection")
+# collection(name="my_collection", metadata={})
+```
 
 ## get_or_create_collection
 
@@ -366,24 +370,22 @@ def get_or_create_collection(
         data_loader: Optional[DataLoader[Loadable]] = None) -> Collection
 ```
 
-获取或创建一个具有指定名称和元数据的集合。
+获取或创建具有指定名称和元数据的集合。
 
 **参数**:
 
-- `name` - 要获取或创建的集合的名称
-- `metadata` - 要与集合关联的可选元数据。如果集合已经存在，该元数据将被忽略。如果集合不存在，则会使用提供的元数据创建新的集合。
-- `embedding_function` - 可选的用于嵌入文档的函数
-- `data_loader` - 可选的用于加载记录（文档、图片等）的函数
+- `name` - 要获取或创建的集合的名称。
+- `metadata` - 可选的元数据，用于与集合关联。如果集合已存在，该元数据将被忽略。如果集合不存在，则使用提供的元数据创建新集合。
+- `embedding_function` - 可选的用于嵌入文档的函数。
+- `data_loader` - 可选的用于加载记录（文档、图片等）的函数。
 
 
-**返回值**:
+**返回**:
 
-- 集合对象（`Collection`）
+- `Collection` - 获取或创建的集合。
 
 
 **示例**:
-
-  ```python
 
 ```python
 client.get_or_create_collection("my_collection")
@@ -396,7 +398,7 @@ client.get_or_create_collection("my_collection")
 def set_tenant(tenant: str, database: str = DEFAULT_DATABASE) -> None
 ```
 
-为客户端设置租户和数据库。如果租户或数据库不存在，则会抛出错误。
+为客户端设置租户和数据库。如果租户或数据库不存在，则会引发错误。
 
 **参数**:
 
@@ -409,7 +411,7 @@ def set_tenant(tenant: str, database: str = DEFAULT_DATABASE) -> None
 def set_database(database: str) -> None
 ```
 
-为客户端设置数据库。如果数据库不存在，则会抛出错误。
+为客户端设置数据库。如果数据库不存在，则会引发错误。
 
 **参数**:
 
@@ -422,7 +424,7 @@ def set_database(database: str) -> None
 def clear_system_cache() -> None
 ```
 
-清除系统缓存，以便可以为现有路径创建新的系统。这仅应用于测试目的。
+清除系统缓存，以便可以为现有路径创建新系统。这仅应用于测试目的。
 
 ***
 
@@ -438,7 +440,7 @@ class AdminAPI(ABC)
 def create_database(name: str, tenant: str = DEFAULT_TENANT) -> None
 ```
 
-创建一个新的数据库。如果数据库已存在，则会抛出错误。
+创建一个新数据库。如果数据库已存在，则会引发错误。
 
 **参数**:
 
@@ -450,11 +452,11 @@ def create_database(name: str, tenant: str = DEFAULT_TENANT) -> None
 def get_database(name: str, tenant: str = DEFAULT_TENANT) -> Database
 ```
 
-获取一个数据库。如果数据库不存在则抛出错误。
+获取一个数据库。如果数据库不存在，则会引发错误。
 
 **参数**:
 
-- `database` - 要获取的数据库名称。
+- `name` - 要获取的数据库的名称。
 - `tenant` - 要获取的数据库的租户。
 
 ## delete_database
@@ -463,11 +465,11 @@ def get_database(name: str, tenant: str = DEFAULT_TENANT) -> Database
 def delete_database(name: str, tenant: str = DEFAULT_TENANT) -> None
 ```
 
-删除一个数据库及所有相关联的集合。如果数据库不存在则抛出错误。
+删除数据库及其所有关联的集合。如果数据库不存在，则会引发错误。
 
 **参数**:
 
-- `database` - 要删除的数据库名称。
+- `name` - 要删除的数据库的名称。
 - `tenant` - 要删除的数据库的租户。
 
 ## list_databases
@@ -476,37 +478,37 @@ def delete_database(name: str, tenant: str = DEFAULT_TENANT) -> None
 def list_databases(limit: Optional[int] = None, offset: Optional[int] = None, tenant: str = DEFAULT_TENANT) -> Sequence[Database]
 ```
 
-列出指定租户的所有数据库。
+列出某个租户的数据库。
 
 **参数**:
 
-- `limit` - 返回的最大条目数。默认为 None。
-- `offset` - 在返回结果前跳过的条目数。默认为 None。
+- `limit` - 要返回的最大条目数。默认为 None。
+- `offset` - 在返回条目之前要跳过的条目数。默认为 None。
 - `tenant` - 要列出数据库的租户。
 
-## 创建租户
+## create_tenant
 
 ```python
 def create_tenant(name: str) -> None
 ```
 
-创建一个新的租户。如果该租户已存在，则会引发错误。
+创建一个新租户。如果租户已存在，则会引发错误。
 
 **参数**:
 
-- `tenant` - 要创建的租户的名称。
+- `name` - 要创建的租户的名称。
 
-## 获取租户
+## get_tenant
 
 ```python
 def get_tenant(name: str) -> Tenant
 ```
 
-获取一个租户。如果该租户不存在，则会引发错误。
+获取一个租户。如果租户不存在，则会引发错误。
 
 **参数**:
 
-- `tenant` - 要获取的租户的名称。
+- `name` - 要获取的租户的名称。
 
 ***
 
@@ -516,4 +518,4 @@ def get_tenant(name: str) -> Tenant
 class ServerAPI(BaseAPI, AdminAPI, Component)
 ```
 
-一个API实例，通过传入租户和数据库来扩展相关的基础API方法。这是Chroma系统的根组件。
+一个 API 实例，通过传入租户和数据库来扩展相关的基础 API 方法。这是 Chroma 系统的根组件。
