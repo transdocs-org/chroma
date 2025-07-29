@@ -1,0 +1,66 @@
+name: Sync And Translate
+
+on:
+  schedule:
+    - cron: '0 * * * *'
+  workflow_dispatch: # on button click
+
+jobs:
+  sync-and-translate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Sync Fork
+        uses: tgymnich/fork-sync@v2.0
+        with:
+          token: ${{ secrets.FORK_SYNC_TOKEN }}
+          base: main
+          head: main
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.FORK_SYNC_TOKEN }}
+          fetch-depth: 0
+          ref: main
+
+      - name: Configure Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+
+      - name: Clone translation tool (if needed)
+        run: |
+          cd ~
+          git clone ${{ vars.AITDOCS_REPO }}
+
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v6
+
+      - name: Setup environment variables
+        run: |
+          cd ~/aitdocs
+          echo "ALI_BASE_URL=${{ vars.ALI_LLM_BASE_URL }}" > .env
+          echo "ALI_MODEL_NAME=${{ vars.ALI_LLM_MODEL_NAME }}" >> .env
+          echo "ALI_API_KEY=${{ secrets.ALI_LLM_API_KEY }}" >> .env
+          chmod 600 .env  # 增强安全性，仅允许所有者读写
+
+      - name: Install dependencies
+        run: |
+          cd ~/aitdocs
+          uv sync --frozen
+
+      - name: Run translation
+        run: |
+          DIR_PATH=$(realpath $GITHUB_WORKSPACE/${{ vars.DOCS_DIR }})
+          echo "pwd: $(pwd)"
+          echo "DIR_PATH: ${DIR_PATH}"
+          cd ~/aitdocs
+          uv run main.py -d $DIR_PATH --incremental --auto-commit --auto-push
+
+      - name: Handle errors
+        if: failure()
+        run: |
+          echo "Workflow failed. Please check the logs for more information."
