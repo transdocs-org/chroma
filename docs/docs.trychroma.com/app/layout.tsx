@@ -9,8 +9,8 @@ import CloudSignUp from "@/components/header/cloud-signup";
 import HeaderNav from "@/components/header/header-nav";
 
 export const metadata: Metadata = {
-  title: 'Chroma Docs',
-  description: 'Documentation for ChromaDB',
+  title: 'Chroma 中文文档',
+  description: 'ChromaDB 中文文档，每 6 小时自动同步官方文档。',
   openGraph: {
     title: 'Chroma Docs',
     description: 'Documentation for ChromaDB',
