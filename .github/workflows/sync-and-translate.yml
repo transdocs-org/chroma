@@ -67,7 +67,7 @@ jobs:
           git checkout -b aitdocs-deploy
           git status
           git add .
-          git commit -m
+          git commit -m "Translate and Deploy"
           git push origin aitdocs-deploy --force
 
       - name: Handle errors
