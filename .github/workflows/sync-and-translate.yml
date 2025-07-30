@@ -2,7 +2,7 @@ name: Sync And Translate
 
 on:
   schedule:
-    - cron: '0 * * * *'
+    - cron: '0 0,6,12,18 * * *'
   workflow_dispatch: # on button click
 
 jobs:
@@ -74,3 +74,17 @@ jobs:
         if: failure()
         run: |
           echo "Workflow failed. Please check the logs for more information."
+
+  deploy-to-vercel:
+    needs: sync-and-translate
+    runs-on: ubuntu-latest
+    if: success()
+    steps:
+      - name: Deploy to Vercel
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ vars.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ vars.VERCEL_PROJECT_ID }}
+          vercel-args: '--prod'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
