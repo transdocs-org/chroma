@@ -74,17 +74,3 @@ jobs:
         if: failure()
         run: |
           echo "Workflow failed. Please check the logs for more information."
-
-  deploy-to-vercel:
-    needs: sync-and-translate
-    runs-on: ubuntu-latest
-    if: success()
-    steps:
-      - name: Deploy to Vercel
-        uses: amondnet/vercel-action@v25
-        with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          vercel-args: '--prod'
-          github-token: ${{ secrets.GITHUB_TOKEN }}
