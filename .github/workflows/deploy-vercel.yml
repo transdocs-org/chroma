@@ -6,6 +6,9 @@ on:
       - aitdocs-deploy
   workflow_dispatch: # on button click
 
+permissions:
+  contents: write
+
 jobs:
   deploy-to-vercel:
     runs-on: ubuntu-latest
