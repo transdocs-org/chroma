@@ -59,6 +59,16 @@ jobs:
           echo "DIR_PATH: ${DIR_PATH}"
           cd ~/aitdocs
           uv run main.py -d $DIR_PATH --incremental --auto-commit --auto-push
+          uv run python -m ai_document_translator.build_cli -d $DIR_PATH prepare
+
+      - name: Checkout code to aitdocs-deploy branch
+        run: |
+          git branch -D aitdocs-deploy 2>/dev/null || true
+          git checkout -b aitdocs-deploy
+          git status
+          git add .
+          git commit -m
+          git push origin aitdocs-deploy --force
 
       - name: Handle errors
         if: failure()
