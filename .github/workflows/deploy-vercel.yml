@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - aitdocs-deploy
+  workflow_dispatch: # on button click
 
 jobs:
   deploy-to-vercel:
