@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     creatorId: '1507488634458439685',
     images: ['https://docs.trychroma.com/og.png'], // must be an absolute url
   },
-}
+  }
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -50,8 +50,23 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  function baiduTongji() {
+    return {
+      __html: `
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?8ef5361f32cd3b980206b5818e7062cf";
+          var s = document.getElementsByTagName("script")[0];
+          s.parentNode.insertBefore(hm, s);
+        })();
+      `
+    };
+  }
+
   return (
     <html lang="en" suppressHydrationWarning>
+      <head><script dangerouslySetInnerHTML={baiduTongji()} /></head>
       <body data-invert-bg="true" className={`${inter.className} antialiased bg-white dark:bg-black bg-[url(/composite_noise.jpg)] bg-repeat relative text-[#27201C] dark:text-white dark:backdrop-invert`}>
         <ThemeProvider
           attribute="class"
@@ -68,8 +83,8 @@ export default function RootLayout({
                 <Header />
                 <HeaderNav/>
               </div>
-              {/* have this container take up the remaining space and hide any overflow 
-                  the side bar and main page content will be rendered here and will 
+              {/* have this container take up the remaining space and hide any overflow
+                  the side bar and main page content will be rendered here and will
                   fill the available space and do their own scrolling */}
               <div className="flex-1 overflow-y-hidden h-full">
                 {children}
@@ -83,3 +98,4 @@ export default function RootLayout({
     </html>
   );
 }
+
