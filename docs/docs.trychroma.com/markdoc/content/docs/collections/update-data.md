@@ -1,6 +1,6 @@
-# Updating Data in Chroma Collections
+# 更新 Chroma 集合中的数据
 
-Any property of records in a collection can be updated with `.update`:
+可以使用 `.update` 方法更新集合中记录的任何属性：
 
 {% TabbedCodeBlock %}
 
@@ -28,11 +28,11 @@ await collection.update({
 
 {% /TabbedCodeBlock %}
 
-If an `id` is not found in the collection, an error will be logged and the update will be ignored. If `documents` are supplied without corresponding `embeddings`, the embeddings will be recomputed with the collection's embedding function.
+如果集合中找不到某个 `id`，则会记录一个错误，并忽略该更新。如果提供了 `documents` 而没有对应的 `embeddings`，则会使用集合的嵌入函数重新计算嵌入。
 
-If the supplied `embeddings` are not the same dimension as the collection, an exception will be raised.
+如果提供的 `embeddings` 的维度与集合的维度不一致，则会抛出异常。
 
-Chroma also supports an `upsert` operation, which updates existing items, or adds them if they don't yet exist.
+Chroma 还支持 `upsert` 操作，该操作会更新已存在的条目，如果条目不存在则会添加它们。
 
 {% TabbedCodeBlock %}
 
@@ -68,4 +68,4 @@ await collection.upsert({
 
 {% /TabbedCodeBlock %}
 
-If an `id` is not present in the collection, the corresponding items will be created as per `add`. Items with existing `id`s will be updated as per `update`.
+如果某个 `id` 在集合中不存在，则会按照 `add` 操作创建对应的条目。具有已有 `id` 的条目则会按照 `update` 操作进行更新。

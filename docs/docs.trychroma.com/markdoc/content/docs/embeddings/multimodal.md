@@ -1,38 +1,38 @@
-# Multimodal
+# 多模态
 
 {% Banner type="note" %}
-Multimodal support is currently available only in Python. Javascript/Typescript support coming soon! 
+多模态支持目前仅在 Python 中可用。Javascript/Typescript 支持即将推出！
 {% /Banner %}
 
-You can create multimodal Chroma collections; these are collections which can store, and can be queried by, multiple modalities of data.
+你可以创建多模态的 Chroma 集合；这些集合可以存储多种模态的数据，并且可以通过多种模态进行查询。
 
-[Try it out in Colab](https://githubtocolab.com/chroma-core/chroma/blob/main/examples/multimodal/multimodal_retrieval.ipynb)
+[在 Colab 中尝试](https://githubtocolab.com/chroma-core/chroma/blob/main/examples/multimodal/multimodal_retrieval.ipynb)
 
-## Multi-modal Embedding Functions
+## 多模态嵌入函数
 
-Chroma supports multi-modal embedding functions, which can be used to embed data from multiple modalities into a single embedding space.
+Chroma 支持多模态嵌入函数，可以将来自多种模态的数据嵌入到一个统一的嵌入空间中。
 
-Chroma ships with the OpenCLIP embedding function built in, which supports both text and images.
+Chroma 内置了 OpenCLIP 嵌入函数，支持文本和图像。
 
 ```python
 from chromadb.utils.embedding_functions import OpenCLIPEmbeddingFunction
 embedding_function = OpenCLIPEmbeddingFunction()
 ```
 
-## Adding Multimodal Data and Data Loaders
+## 添加多模态数据和数据加载器
 
-You can add embedded data of modalities different from text directly to Chroma. For now images are supported:
+你可以直接将不同于文本的其他模态的嵌入数据添加到 Chroma 中。目前支持图像：
 
 ```python
 collection.add(
     ids=['id1', 'id2', 'id3'],
-    images=[[1.0, 1.1, 2.1, ...], ...] # A list of numpy arrays representing images
+    images=[[1.0, 1.1, 2.1, ...], ...] # 表示图像的 numpy 数组列表
 )
 ```
 
-Unlike with text documents, which are stored in Chroma, we will not store your original images, or data of other modalities. Instead, for each of your multimodal records you can specify a URI where the original format is stored, and a **data loader**. For each URI you add, Chroma will use the data loader to retrieve the original data, embed it, and store the embedding.
+与存储在 Chroma 中的文本文档不同，我们不会存储你的原始图像或其他模态的原始数据。相反，对于每个多模态记录，你可以指定一个原始数据存储位置的 URI 和一个**数据加载器**。当你添加每个 URI 时，Chroma 会使用数据加载器检索原始数据，将其嵌入并存储嵌入向量。
 
-For example, Chroma ships with a data loader, `ImageLoader`, for loading images from a local filesystem. We can create a collection set up with the `ImageLoader`:
+例如，Chroma 提供了一个用于从本地文件系统加载图像的数据加载器 `ImageLoader`。我们可以创建一个使用 `ImageLoader` 的集合：
 
 ```python
 import chromadb
@@ -51,7 +51,7 @@ collection = client.create_collection(
 )
 ```
 
-Now, we can use the `.add` method to add records to this collection. The collection's data loader will grab the images using the URIs, embed them using the `OpenCLIPEmbeddingFunction`, and store the embeddings in Chroma.
+现在，我们可以使用 `.add` 方法向这个集合中添加记录。集合的数据加载器将通过 URI 获取图像，使用 `OpenCLIPEmbeddingFunction` 进行嵌入，并将嵌入结果存储在 Chroma 中。
 
 ```python
 collection.add(
@@ -60,7 +60,7 @@ collection.add(
 )
 ```
 
-If the embedding function you use is multi-modal (like `OpenCLIPEmbeddingFunction`), you can also add text to the same collection:
+如果你使用的嵌入函数是多模态的（如 `OpenCLIPEmbeddingFunction`），你也可以将文本添加到同一个集合中：
 
 ```python
 collection.add(
@@ -69,17 +69,17 @@ collection.add(
 )
 ```
 
-## Querying
+## 查询
 
-You can query a multi-modal collection with any of the modalities that it supports. For example, you can query with images:
+你可以使用该集合支持的任意模态进行查询。例如，使用图像进行查询：
 
 ```python
 results = collection.query(
-    query_images=[...] # A list of numpy arrays representing images
+    query_images=[...] # 表示图像的 numpy 数组列表
 )
 ```
 
-Or with text:
+或者使用文本进行查询：
 
 ```python
 results = collection.query(
@@ -87,35 +87,34 @@ results = collection.query(
 )
 ```
 
-If a data loader is set for the collection, you can also query with URIs which reference data stored elsewhere of the supported modalities:
+如果集合设置了数据加载器，你也可以使用引用其他位置存储的受支持模态数据的 URI 进行查询：
 
 ```python
 results = collection.query(
-    query_uris=[...] # A list of strings representing URIs to data
+    query_uris=[...] # 表示数据 URI 的字符串列表
 )
 ```
 
-Additionally, if a data loader is set for the collection, and URIs are available, you can include the data in the results:
+此外，如果集合设置了数据加载器并且存在 URI，你可以在查询结果中包含这些原始数据：
 
 ```python
 results = collection.query(
-    query_images=[...], # # list of numpy arrays representing images
+    query_images=[...], # 表示图像的 numpy 数组列表
     include=['data']
 )
 ```
 
-This will automatically call the data loader for any available URIs, and include the data in the results. `uris` are also available as an `include` field.
+这将自动调用数据加载器获取任何可用的 URI，并将原始数据包含在结果中。`uris` 也可以作为 `include` 的一个字段。
 
-## Updating
+## 更新
 
-You can update a multi-modal collection by specifying the data modality, in the same way as `add`. For now, images are supported:
+你可以通过指定数据模态的方式更新多模态集合，这与 `add` 方法类似。目前支持图像：
 
 ```python
 collection.update(
     ids=['id1', 'id2', 'id3'],
-    images=[...] # A list of numpy arrays representing images
+    images=[...] # 表示图像的 numpy 数组列表
 )
 ```
 
-Note that a given entry with a specific ID can only have one associated modality at a time. Updates will over-write the existing modality, so for example, an entry which originally has corresponding text and updated with an image, will no longer have that text after an update with images.
-
+请注意，具有特定 ID 的条目一次只能关联一种模态。更新操作会覆盖现有的模态数据。例如，一个原本包含文本的条目如果使用图像进行更新，则更新后将不再保留原来的文本数据。

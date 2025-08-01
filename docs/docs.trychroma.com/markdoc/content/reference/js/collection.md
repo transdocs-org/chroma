@@ -1,32 +1,32 @@
-# Class: Collection
+# 类：Collection
 
-## Properties
+## 属性
 
 * `id: string`
 * `metadata: CollectionMetadata`
 * `name: string`
 
-## Methods
+## 方法
 
 ### add
 
 * `add(params): Promise<void>`
 
-Add items to the collection
+向集合中添加条目。
 
-#### Parameters
+#### 参数
 
-| Name | Type | Description |
+| 名称 | 类型 | 描述 |
 | :------ | :------ | :------ |
-| `params` | `AddRecordsParams` | The parameters for the query. |
+| `params` | `AddRecordsParams` | 查询的参数。 |
 
-#### Returns
+#### 返回值
 
 `Promise<void>`
 
-- The response from the API.
+- 来自API的响应。
 
-**Example**
+**示例**
 
 ```typescript
 const response = await collection.add({
@@ -41,15 +41,15 @@ const response = await collection.add({
 
 * `count(): Promise<number>`
 
-Count the number of items in the collection
+统计集合中的条目数量。
 
-#### Returns
+#### 返回值
 
 `Promise<number>`
 
-- The number of items in the collection.
+- 集合中的条目数量。
 
-**Example**
+**示例**
 
 ```typescript
 const count = await collection.count();
@@ -59,25 +59,25 @@ const count = await collection.count();
 
 * `delete(params?): Promise<string[]>`
 
-Deletes items from the collection.
+从集合中删除条目。
 
-#### Parameters
+#### 参数
 
-| Name | Type | Description |
+| 名称 | 类型 | 描述 |
 | :------ | :------ | :------ |
-| `params` | `DeleteParams` | The parameters for deleting items from the collection. |
+| `params` | `DeleteParams` | 从集合中删除条目的参数。 |
 
-#### Returns
+#### 返回值
 
 `Promise<string[]>`
 
-A promise that resolves to the IDs of the deleted items.
+一个解析为被删除条目ID的Promise。
 
-**Throws**
+**抛出**
 
-If there is an issue deleting items from the collection.
+如果从集合中删除条目时出现问题。
 
-**Example**
+**示例**
 
 ```typescript
 const results = await collection.delete({
@@ -91,21 +91,21 @@ const results = await collection.delete({
 
 * `get(params?): Promise<MultiGetResponse>`
 
-Get items from the collection
+从集合中获取条目。
 
-#### Parameters
+#### 参数
 
-| Name | Type | Description |
+| 名称 | 类型 | 描述 |
 | :------ | :------ | :------ |
-| `params` | `BaseGetParams` | The parameters for the query. |
+| `params` | `BaseGetParams` | 查询的参数。 |
 
-#### Returns
+#### 返回值
 
 `Promise<MultiGetResponse>`
 
-The response from the server.
+服务器的响应。
 
-**Example**
+**示例**
 
 ```typescript
 const response = await collection.get({
@@ -122,23 +122,23 @@ const response = await collection.get({
 
 * `modify(params): Promise<CollectionParams>`
 
-Modify the collection name or metadata
+修改集合的名称或元数据。
 
-#### Parameters
+#### 参数
 
-| Name | Type | Description |
+| 名称 | 类型 | 描述 |
 | :------ | :------ | :------ |
-| `params` | `Object` | The parameters for the query. |
-| `params.metadata?` | `CollectionMetadata` | Optional new metadata for the collection. |
-| `params.name?` | `string` | Optional new name for the collection. |
+| `params` | `Object` | 查询的参数。 |
+| `params.metadata?` | `CollectionMetadata` | 可选的新集合元数据。 |
+| `params.name?` | `string` | 可选的新集合名称。 |
 
-#### Returns
+#### 返回值
 
 `Promise<CollectionParams>`
 
-The response from the API.
+来自API的响应。
 
-**Example**
+**示例**
 
 ```typescript
 const response = await client.updateCollection({
@@ -151,25 +151,25 @@ const response = await client.updateCollection({
 
 * `peek(params?): Promise<MultiGetResponse>`
 
-Peek inside the collection
+窥探集合内部。
 
-#### Parameters
+#### 参数
 
-| Name | Type | Description |
+| 名称 | 类型 | 描述 |
 | :------ | :------ | :------ |
-| `params` | `PeekParams` | The parameters for the query. |
+| `params` | `PeekParams` | 查询的参数。 |
 
-#### Returns
+#### 返回值
 
 `Promise<MultiGetResponse>`
 
-A promise that resolves to the query results.
+一个解析为查询结果的Promise。
 
-**Throws**
+**抛出**
 
-If there is an issue executing the query.
+如果执行查询时出现问题。
 
-**Example**
+**示例**
 
 ```typescript
 const results = await collection.peek({
@@ -181,28 +181,28 @@ const results = await collection.peek({
 
 * `query(params): Promise<MultiQueryResponse>`
 
-Performs a query on the collection using the specified parameters.
+使用指定参数对集合执行查询。
 
-#### Parameters
+#### 参数
 
-| Name | Type | Description |
+| 名称 | 类型 | 描述 |
 | :------ | :------ | :------ |
-| `params` | `QueryRecordsParams` | The parameters for the query. |
+| `params` | `QueryRecordsParams` | 查询的参数。 |
 
-#### Returns
+#### 返回值
 
 `Promise<MultiQueryResponse>`
 
-A promise that resolves to the query results.
+一个解析为查询结果的Promise。
 
-**Throws**
+**抛出**
 
-If there is an issue executing the query.
+如果执行查询时出现问题。
 
-**Example**
+**示例**
 
 ```typescript
-// Query the collection using embeddings
+// 使用嵌入向量查询集合
 const embeddingsResults = await collection.query({
   queryEmbeddings: [[0.1, 0.2, ...], ...],
   ids: ["id1", "id2", ...],
@@ -211,7 +211,7 @@ const embeddingsResults = await collection.query({
   include: ["metadata", "document"]
 });
 
-// Query the collection using query text
+// 使用查询文本查询集合
 const textResults = await collection.query({
     queryTexts: "some text",
     ids: ["id1", "id2", ...],
@@ -225,19 +225,19 @@ const textResults = await collection.query({
 
 * `update(params): Promise<void>`
 
-Update items in the collection
+更新集合中的条目。
 
-#### Parameters
+#### 参数
 
-| Name | Type | Description |
+| 名称 | 类型 | 描述 |
 | :------ | :------ | :------ |
-| `params` | `UpdateRecordsParams` | The parameters for the query. |
+| `params` | `UpdateRecordsParams` | 查询的参数。 |
 
-#### Returns
+#### 返回值
 
 `Promise<void>`
 
-**Example**
+**示例**
 
 ```typescript
 const response = await collection.update({
@@ -252,19 +252,19 @@ const response = await collection.update({
 
 * `upsert(params): Promise<void>`
 
-Upsert items to the collection
+将条目插入或更新到集合中。
 
-#### Parameters
+#### 参数
 
-| Name | Type | Description |
+| 名称 | 类型 | 描述 |
 | :------ | :------ | :------ |
-| `params` | `AddRecordsParams` | The parameters for the query. |
+| `params` | `AddRecordsParams` | 查询的参数。 |
 
-#### Returns
+#### 返回值
 
 `Promise<void>`
 
-**Example**
+**示例**
 
 ```typescript
 const response = await collection.upsert({

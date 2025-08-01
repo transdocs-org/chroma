@@ -5,13 +5,13 @@ name: Roboflow
 
 # Roboflow
 
-You can use [Roboflow Inference](https://inference.roboflow.com) with Chroma to calculate multi-modal text and image embeddings with CLIP. through the `RoboflowEmbeddingFunction` class. Inference can be used through the Roboflow cloud, or run on your hardware.
+你可以通过 `RoboflowEmbeddingFunction` 类将 [Roboflow Inference](https://inference.roboflow.com) 与 Chroma 结合使用，以通过 CLIP 计算多模态的文本和图像嵌入。推理可以通过 Roboflow 云端运行，也可以在你自己的硬件上运行。
 
-## Roboflow Cloud Inference
+## Roboflow 云端推理
 
-To run Inference through the Roboflow cloud, you will need an API key. [Learn how to retrieve a Roboflow API key](https://docs.roboflow.com/api-reference/authentication#retrieve-an-api-key).
+要通过 Roboflow 云端运行推理，你需要一个 API 密钥。[了解如何获取 Roboflow API 密钥](https://docs.roboflow.com/api-reference/authentication#retrieve-an-api-key)。
 
-You can pass it directly on creation of the `RoboflowEmbeddingFunction`:
+你可以在创建 `RoboflowEmbeddingFunction` 时直接传入该密钥：
 
 ```python
 from chromadb.utils.embedding_functions import RoboflowEmbeddingFunction
@@ -19,13 +19,13 @@ from chromadb.utils.embedding_functions import RoboflowEmbeddingFunction
 roboflow_ef = RoboflowEmbeddingFunction(api_key=API_KEY)
 ```
 
-Alternatively, you can set your API key as an environment variable:
+或者，你可以将 API 密钥设置为环境变量：
 
 ```terminal
 export ROBOFLOW_API_KEY=YOUR_API_KEY
 ```
 
-Then, you can create the `RoboflowEmbeddingFunction` without passing an API key directly:
+然后，你可以在创建 `RoboflowEmbeddingFunction` 时不直接传入 API 密钥：
 
 ```python
 from chromadb.utils.embedding_functions import RoboflowEmbeddingFunction
@@ -33,29 +33,29 @@ from chromadb.utils.embedding_functions import RoboflowEmbeddingFunction
 roboflow_ef = RoboflowEmbeddingFunction()
 ```
 
-## Local Inference
+## 本地推理
 
-You can run Inference on your own hardware.
+你可以在自己的硬件上运行推理服务。
 
-To install Inference, you will need Docker installed. Follow the [official Docker installation instructions](https://docs.docker.com/engine/install/) for guidance on how to install Docker on the device on which you are working.
+要安装推理服务，你需要先安装 Docker。请参考 [官方 Docker 安装指南](https://docs.docker.com/engine/install/) 来了解如何在你的设备上安装 Docker。
 
-Then, you can install Inference with pip:
+然后，你可以使用 pip 安装推理服务：
 
 ```terminal
 pip install inference inference-cli
 ```
 
-With Inference installed, you can start an Inference server. This server will run in the background. The server will accept HTTP requests from the `RoboflowEmbeddingFunction` to calculate CLIP text and image embeddings for use in your application:
+安装完成后，你可以启动一个推理服务器。该服务器将在后台运行，并接受来自 `RoboflowEmbeddingFunction` 的 HTTP 请求，用于在你的应用中计算 CLIP 的文本和图像嵌入。
 
-To start an Inference server, run:
+要启动推理服务器，请运行：
 
 ```terminal
 inference server start
 ```
 
-Your Inference server will run at `http://localhost:9001`.
+你的推理服务器将在 `http://localhost:9001` 上运行。
 
-Then, you can create the `RoboflowEmbeddingFunction`:
+然后，你可以创建 `RoboflowEmbeddingFunction` 实例：
 
 ```python
 from chromadb.utils.embedding_functions import RoboflowEmbeddingFunction
@@ -63,6 +63,6 @@ from chromadb.utils.embedding_functions import RoboflowEmbeddingFunction
 roboflow_ef = RoboflowEmbeddingFunction(api_key=API_KEY, server_url="http://localhost:9001")
 ```
 
-This function will calculate embeddings using your local Inference server instead of the Roboflow cloud.
+此函数将使用你的本地推理服务器而不是 Roboflow 云端来计算嵌入。
 
-For a full tutorial on using Roboflow Inference with Chroma, refer to the [Roboflow Chroma integration tutorial](https://github.com/chroma-core/chroma/blob/main/examples/use_with/roboflow/embeddings.ipynb).
+关于如何将 Roboflow Inference 与 Chroma 结合使用的完整教程，请参考 [Roboflow 与 Chroma 集成教程](https://github.com/chroma-core/chroma/blob/main/examples/use_with/roboflow/embeddings.ipynb)。

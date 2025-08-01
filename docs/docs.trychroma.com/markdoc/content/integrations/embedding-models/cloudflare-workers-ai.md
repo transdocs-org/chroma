@@ -5,9 +5,9 @@ name: Cloudflare Workers AI
 
 # Cloudflare Workers AI
 
-Chroma provides a wrapper around Cloudflare Workers AI embedding models. This embedding function runs remotely against the Cloudflare Workers AI servers, and will require an API key and a Cloudflare account. You can find more information in the [Cloudflare Workers AI Docs](https://developers.cloudflare.com/workers-ai/).
+Chroma 为 Cloudflare Workers AI 的嵌入模型提供了一个封装。该嵌入函数会在远程的 Cloudflare Workers AI 服务器上运行，因此需要一个 API 密钥和 Cloudflare 账户。你可以在 [Cloudflare Workers AI 文档](https://developers.cloudflare.com/workers-ai/) 中找到更多信息。
 
-You can also optionally use the Cloudflare AI Gateway for a more customized solution by setting a `gateway_id` argument. See the [Cloudflare AI Gateway Docs](https://developers.cloudflare.com/ai-gateway/providers/workersai/) for more info.
+你还可以通过设置 `gateway_id` 参数，选择性地使用 Cloudflare AI 网关来获得更定制化的解决方案。详见 [Cloudflare AI 网关文档](https://developers.cloudflare.com/ai-gateway/providers/workersai/)。
 
 {% TabbedCodeBlock %}
 
@@ -49,4 +49,4 @@ embedder.generate(['This is my first text to embed', 'This is my second document
 
 {% /TabbedCodeBlock %}
 
-You must pass in an `account_id` and `model_name` to the embedding function. It is recommended to set the `CHROMA_CLOUDFLARE_API_KEY` for the api key, but the embedding function also optionally takes in an `api_key` variable.
+你必须向嵌入函数传入 `account_id` 和 `model_name` 参数。建议通过设置 `CHROMA_CLOUDFLARE_API_KEY` 来提供 API 密钥，但嵌入函数也支持通过 `api_key` 参数可选地传入 API 密钥。

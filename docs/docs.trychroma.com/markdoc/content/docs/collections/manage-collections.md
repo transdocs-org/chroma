@@ -1,15 +1,15 @@
-# Managing Chroma Collections
+# 管理 Chroma 集合
 
-Chroma lets you manage collections of embeddings, using the **collection** primitive. Collections are the fundamental unit of storage and querying in Chroma.
+Chroma 允许你使用 **collection（集合）** 原语来管理嵌入向量集合。集合是 Chroma 中存储和查询的基本单位。
 
-## Creating Collections
+## 创建集合
 
-Chroma collections are created with a name. Collection names are used in the url, so there are a few restrictions on them:
+Chroma 集合通过名称创建。集合名称会用于 URL，因此有一些限制：
 
-- The length of the name must be between 3 and 512 characters.
-- The name must start and end with a lowercase letter or a digit, and it can contain dots, dashes, and underscores in between.
-- The name must not contain two consecutive dots.
-- The name must not be a valid IP address.
+- 名称长度必须在 3 到 512 个字符之间。
+- 名称必须以小写字母或数字开头和结尾，中间可以包含点、连字符和下划线。
+- 名称中不能包含两个连续的点。
+- 名称不能是有效的 IP 地址。
 
 {% TabbedCodeBlock %}
 
@@ -29,19 +29,19 @@ const collection = await client.createCollection({
 
 {% /TabbedCodeBlock %}
 
-Note that collection names must be **unique** inside a Chroma database. If you try to create a collection with a name of an existing one, you will see an exception.
+请注意，在一个 Chroma 数据库中，集合名称必须是 **唯一的**。如果你尝试创建一个与已有集合同名的集合，将会抛出异常。
 
-### Embedding Functions
+### 嵌入函数
 
-When you add documents to a collection, Chroma will embed them for you by using the collection's **embedding function**. Chroma will use [sentence transformer](https://www.sbert.net/index.html) embedding function as a default.
+当你向集合中添加文档时，Chroma 会使用集合的 **嵌入函数（embedding function）** 来为你生成嵌入向量。默认情况下，Chroma 会使用 [sentence transformer](https://www.sbert.net/index.html) 嵌入函数。
 
-Chroma also offers various embedding function, which you can provide upon creating a collection. For example, you can create a collection using the `OpenAIEmbeddingFunction`:
+Chroma 还提供了多种嵌入函数供你在创建集合时指定。例如，你可以使用 `OpenAIEmbeddingFunction` 创建一个集合：
 
 {% Tabs %}
 
 {% Tab label="python" %}
 
-Install the `openai` package:
+安装 `openai` 包：
 
 {% TabbedUseCaseCodeBlock language="Terminal" %}
 
@@ -65,7 +65,7 @@ uv pip install openai
 
 {% /TabbedUseCaseCodeBlock %}
 
-Create your collection with the `OpenAIEmbeddingFunction`:
+使用 `OpenAIEmbeddingFunction` 创建你的集合：
 
 ```python
 import os
@@ -80,7 +80,7 @@ collection = client.create_collection(
 )
 ```
 
-Instead of having Chroma embed documents, you can also provide embeddings directly when [adding data](./add-data) to a collection. In this case, your collection will not have an embedding function set, and you will be responsible for providing embeddings directly when adding data and querying.
+除了让 Chroma 自动生成嵌入向量，你也可以在 [添加数据](./add-data) 时直接提供嵌入向量。在这种情况下，你的集合将不会设置嵌入函数，你需要在添加数据和查询时手动提供嵌入向量。
 
 ```python
 collection = client.create_collection(
@@ -93,7 +93,7 @@ collection = client.create_collection(
 
 {% Tab label="typescript" %}
 
-Install the `@chroma-core/openai` package to get access to the `OpenAIEmbeddingFunction`:
+安装 `@chroma-core/openai` 包以使用 `OpenAIEmbeddingFunction`：
 
 {% TabbedUseCaseCodeBlock language="Terminal" %}
 
@@ -123,7 +123,7 @@ bun add @chroma-core/openai
 
 {% /TabbedUseCaseCodeBlock %}
 
-Create your collection with the `OpenAIEmbeddingFunction`:
+使用 `OpenAIEmbeddingFunction` 创建你的集合：
 
 ```typescript
 import { OpenAIEmbeddingFunction } from "@chroma-core/openai";
@@ -137,7 +137,7 @@ const collection = await client.createCollection({
 });
 ```
 
-Instead of having Chroma embed documents, you can also provide embeddings directly when [adding data](./add-data) to a collection. In this case, your collection will not have an embedding function set, and you will be responsible for providing embeddings directly when adding data and querying.
+除了让 Chroma 自动生成嵌入向量，你也可以在 [添加数据](./add-data) 时直接提供嵌入向量。在这种情况下，你的集合将不会设置嵌入函数，你需要在添加数据和查询时手动提供嵌入向量。
 
 ```typescript
 const collection = await client.createCollection({
@@ -176,9 +176,9 @@ let collection = await client.createCollection({
 
 {% /TabbedCodeBlock %}
 
-### Collection Metadata
+### 集合元数据
 
-When creating collections, you can pass the optional `metadata` argument to add a mapping of metadata key-value pairs to your collections. This can be useful for adding general about the collection like creation time, description of the data stored in the collection, and more.
+在创建集合时，你可以通过传入可选的 `metadata` 参数来为集合添加元数据键值对。这对于记录集合的相关信息非常有用，比如创建时间、集合中数据的描述等。
 
 {% TabbedCodeBlock %}
 
@@ -212,20 +212,20 @@ let collection = await client.createCollection({
 
 {% /TabbedCodeBlock %}
 
-## Getting Collections
+## 获取集合
 
 {% Tabs %}
 
 {% Tab label="python" %}
-There are several ways to get a collection after it was created.
+在创建集合后，有几种方法可以获取该集合。
 
-The `get_collection` function will get a collection from Chroma by name. It returns a `Collection` object with `name`, `metadata`, `configuration`, and `embedding_function`.
+`get_collection` 函数会通过名称从 Chroma 中获取集合。它将返回一个包含 `name`、`metadata`、`configuration` 和 `embedding_function` 属性的 `Collection` 对象。
 
 ```python
 collection = client.get_collection(name="my-collection")
 ```
 
-The `get_or_create_collection` function behaves similarly, but will create the collection if it doesn't exist. You can pass to it the same arguments `create_collection` expects, and the client will ignore them if the collection already exists.
+`get_or_create_collection` 函数的行为与此类似，但如果集合不存在，则会创建该集合。你可以传递与 `create_collection` 相同的参数，如果集合已经存在，客户端将忽略这些参数。
 
 ```python
 collection = client.get_or_create_collection(
@@ -234,21 +234,21 @@ collection = client.get_or_create_collection(
 )
 ```
 
-The `list_collections` function returns the collections you have in your Chroma database. The collections will be ordered by creation time from oldest to newest.
+`list_collections` 函数将返回你在 Chroma 数据库中的所有集合。集合将按照创建时间从早到晚进行排序。
 
 ```python
 collections = client.list_collections()
 ```
 
-By default, `list_collections` returns up to 100 collections. If you have more than 100 collections, or need to get only a subset of your collections, you can use the `limit` and `offset` arguments:
+默认情况下，`list_collections` 最多返回 100 个集合。如果你有超过 100 个集合，或者只需要获取部分集合，可以使用 `limit` 和 `offset` 参数：
 
 ```python
-first_collections_batch = client.list_collections(limit=100) # get the first 100 collections
-second_collections_batch = client.list_collections(limit=100, offset=100) # get the next 100 collections
-collections_subset = client.list_collections(limit=20, offset=50) # get 20 collections starting from the 50th
+first_collections_batch = client.list_collections(limit=100) # 获取前 100 个集合
+second_collections_batch = client.list_collections(limit=100, offset=100) # 获取第 100 个之后的 100 个集合
+collections_subset = client.list_collections(limit=20, offset=50) # 从第 50 个开始获取 20 个集合
 ```
 
-Current versions of Chroma store the embedding function you used to create a collection on the server, so the client can resolve it for you on subsequent "get" operations. If you are running an older version of the Chroma client or server (<1.1.13), you will need to provide the same embedding function you used to create a collection when using `get_collection`:
+当前版本的 Chroma 会将你用于创建集合的嵌入函数存储在服务器上，因此客户端可以在后续的“获取”操作中自动解析它。如果你使用的是较旧版本的 Chroma 客户端或服务器（<1.1.13），则需要在使用 `get_collection` 时提供创建集合时使用的相同嵌入函数：
 
 ```python
 collection = client.get_collection(
@@ -260,15 +260,15 @@ collection = client.get_collection(
 {% /Tab %}
 
 {% Tab label="typescript" %}
-There are several ways to get a collection after it was created.
+在创建集合后，有几种方法可以获取该集合。
 
-The `getCollection` function will get a collection from Chroma by name. It returns a collection object with `name`, `metadata`, `configuration`, and `embeddingFunction`. If you did not provide an embedding function to `createCollection`, you can provide it to `getCollection`.
+`getCollection` 函数会通过名称从 Chroma 中获取集合。它将返回一个包含 `name`、`metadata`、`configuration` 和 `embeddingFunction` 属性的集合对象。如果你在调用 `createCollection` 时没有提供嵌入函数，则可以在调用 `getCollection` 时提供。
 
 ```typescript
 const collection = await client.getCollection({ name: 'my-collection '})
 ```
 
-The `getOrCreate` function behaves similarly, but will create the collection if it doesn't exist. You can pass to it the same arguments `createCollection` expects, and the client will ignore them if the collection already exists.
+`getOrCreate` 函数的行为与此类似，但如果集合不存在，则会创建该集合。你可以传递与 `createCollection` 相同的参数，如果集合已经存在，客户端将忽略这些参数。
 
 ```typescript
 const collection = await client.getOrCreateCollection({
@@ -277,27 +277,27 @@ const collection = await client.getOrCreateCollection({
 });
 ```
 
-If you need to get multiple collections at once, you can use `getCollections()`:
+如果你需要一次获取多个集合，可以使用 `getCollections()`：
 
 ```typescript
 const [col1, col2] = client.getCollections(["col1", "col2"]);
 ```
 
-The `listCollections` function returns all the collections you have in your Chroma database. The collections will be ordered by creation time from oldest to newest.
+`listCollections` 函数将返回你在 Chroma 数据库中的所有集合。集合将按照创建时间从早到晚进行排序。
 
 ```typescript
 const collections = await client.listCollections()
 ```
 
-By default, `listCollections` returns up to 100 collections. If you have more than 100 collections, or need to get only a subset of your collections, you can use the `limit` and `offset` arguments:
+默认情况下，`listCollections` 最多返回 100 个集合。如果你有超过 100 个集合，或者只需要获取部分集合，可以使用 `limit` 和 `offset` 参数：
 
 ```typescript
-const firstCollectionsBatch = await client.listCollections({ limit: 100 }) // get the first 100 collections
-const secondCollectionsBatch = await client.listCollections({ limit: 100, offset: 100 }) // get the next 100 collections
-const collectionsSubset = await client.listCollections({ limit: 20, offset: 50 }) // get 20 collections starting from the 50th
+const firstCollectionsBatch = await client.listCollections({ limit: 100 }) // 获取前 100 个集合
+const secondCollectionsBatch = await client.listCollections({ limit: 100, offset: 100 }) // 获取第 100 个之后的 100 个集合
+const collectionsSubset = await client.listCollections({ limit: 20, offset: 50 }) // 从第 50 个开始获取 20 个集合
 ```
 
-Current versions of Chroma store the embedding function you used to create a collection on the server, so the client can resolve it for you on subsequent "get" operations. If you are running an older version of the Chroma JS/TS client (<3.04) or server (<1.1.13), you will need to provide the same embedding function you used to create a collection when using `getCollection` and `getCollections`:
+当前版本的 Chroma 会将你用于创建集合的嵌入函数存储在服务器上，因此客户端可以在后续的“获取”操作中自动解析它。如果你使用的是较旧版本的 Chroma JS/TS 客户端（<3.04）或服务器（<1.1.13），则需要在使用 `getCollection` 和 `getCollections` 时提供创建集合时使用的相同嵌入函数：
 
 ```typescript
 const collection = await client.getCollection({
@@ -315,9 +315,9 @@ const [col1, col2] = client.getCollections([
 
 {% /Tabs %}
 
-## Modifying Collections
+## 修改集合
 
-After a collection is created, you can modify its name, metadata and elements of its [index configuration](./configure) with the `modify` method:
+创建集合后，可以使用 `modify` 方法修改其名称、元数据以及[索引配置](./configure)中的元素：
 
 {% TabbedCodeBlock %}
 
@@ -325,7 +325,7 @@ After a collection is created, you can modify its name, metadata and elements of
 ```python
 collection.modify(
    name="new-name",
-   metadata={"description": "new description"}
+   metadata={"description": "新的描述"}
 )
 ```
 {% /Tab %}
@@ -334,19 +334,19 @@ collection.modify(
 ```typescript
 await collection.modify({
     name: "new-name",
-    metadata: {description: "new description"}
+    metadata: {description: "新的描述"}
 })
 ```
 {% /Tab %}
 
 {% /TabbedCodeBlock %}
 
-## Deleting Collections
+## 删除集合
 
-You can delete a collection by name. This action will delete a collection, all of its embeddings, and associated documents and records' metadata.
+你可以通过名称删除集合。此操作将删除集合本身、其所有嵌入数据以及相关文档和记录的元数据。
 
 {% Banner type="warn" %}
-Deleting collections is destructive and not reversible
+删除集合是破坏性操作，且不可逆。
 {% /Banner %}
 
 {% TabbedCodeBlock %}
@@ -365,11 +365,11 @@ await client.deleteCollection({ name: "my-collection" });
 
 {% /TabbedCodeBlock %}
 
-## Convenience Methods
+## 便捷方法
 
-Collections also offer a few useful convenience methods:
-* `count` - returns the number of records in the collection.
-* `peek` - returns the first 10 records in the collection.
+集合还提供了一些实用的便捷方法：
+* `count` - 返回集合中记录的数量。
+* `peek` - 返回集合中的前10条记录。
 
 {% TabbedCodeBlock %}
 

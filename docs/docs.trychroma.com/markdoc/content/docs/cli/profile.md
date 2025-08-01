@@ -1,48 +1,48 @@
-# Profile Management
+# 配置管理
 
-A **profile** in the Chroma CLI persists the credentials (API key and tenant ID) for authenticating with Chroma Cloud.
+在 Chroma CLI 中，一个 **profile（配置）** 用于持久化存储用于认证 Chroma Cloud 的凭据（API 密钥和租户 ID）。
 
-Each time you use the [`login`](./login) command, the CLI will create a profile for the team you logged in with. All profiles are saved in the `.chroma/credentials` file in your home directory.
+每次使用 [`login`](./login) 命令时，CLI 都会为你登录的团队创建一个配置。所有配置都保存在你的主目录下的 `.chroma/credentials` 文件中。
 
-The CLI also keeps track of your "active" profile in `.chroma/config.json`. This is the profile that will be used for all CLI commands with Chroma Cloud. For example, if you [logged](./login) into your "staging" team on Chroma Cloud, and set it as your active profile. Later, when you use the `chroma db create my-db` command, you will see `my-db` created under your "staging" team.
+CLI 还会在 `.chroma/config.json` 中记录你的“活动”配置。这是所有 CLI 命令与 Chroma Cloud 交互时使用的配置。例如，如果你通过 [登录](./login) 进入了 Chroma Cloud 上的 "staging" 团队，并将其设置为活动配置。之后当你使用 `chroma db create my-db` 命令时，你会在 "staging" 团队下看到 `my-db` 被创建。
 
-The `profile` command lets you manage your profiles.
+`profile` 命令允许你管理你的配置文件。
 
-### Delete
+### 删除
 
-Deletes a profile. The CLI will ask you to confirm if you are trying to delete your active profile. If this is the case, be sure to use the `profile use` command to set a new active profile, otherwise all future Chrom Cloud CLI commands will fail.
+删除一个配置。如果你尝试删除当前活动的配置，CLI 会提示你确认。如果是这种情况，请务必使用 `profile use` 命令设置一个新的活动配置，否则所有后续的 Chroma Cloud CLI 命令将会失败。
 
 ```terminal
 chroma profile delete [profile_name]
 ```
 
-### List
+### 列出
 
-Lists all your available profiles
+列出你所有的配置
 
 ```terminal
 chroma profile list
 ```
 
-### Show
+### 显示
 
-Outputs the name of your active profile
+输出当前活动配置的名称
 
-```termnial
+```terminal
 chroma profile show
 ```
 
-### Rename
+### 重命名
 
-Rename a profile
+重命名一个配置
 
-```termnial
+```terminal
 chroma profile rename [old_name] [new_name]
 ```
 
-### Use
+### 设置活动配置
 
-Set a new profile as the active profile
+将一个新的配置设置为活动配置
 
 ```terminal
 chroma profile use [profile_name]

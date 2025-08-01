@@ -1,23 +1,23 @@
 # Chroma Cloud
 
-Our fully managed hosted service, **Chroma Cloud** is here. [Sign up for free](https://trychroma.com/signup).
+我们完全托管的云服务 **Chroma Cloud** 已经正式上线。[立即免费注册](https://trychroma.com/signup)。
 
-**Chroma Cloud** is a managed offering of [Distributed Chroma](../docs/overview/architecture), operated by the same database and search engineers who designed the system. Under the hood, it's the exact same Apache 2.0–licensed Chroma—no forks, no divergence, just the open-source engine running at scale. Chroma Cloud is serverless - you don’t have to provision servers or think about operations, and is billed [based on usage](./pricing)
+**Chroma Cloud** 是 [分布式 Chroma](../docs/overview/architecture) 的托管版本，由设计该系统的数据库和搜索引擎团队进行运维。其底层使用的是完全相同的 Apache 2.0 开源许可的 Chroma——没有分叉、没有偏离，只是将开源引擎扩展到了更大规模。Chroma Cloud 是无服务器架构（Serverless）的，您无需配置服务器或考虑运维问题，并且我们采用[按使用量计费](./pricing) 的方式。
 
-### Easy to use and operate
+### 易于使用和运维
 
-Chroma Cloud is designed to require minimal configuration while still delivering top-tier performance, scale, and reliability. You can get started in under 30 seconds, and as your workload grows, Chroma Cloud handles scaling automatically—no tuning, provisioning, or operations required. Its architecture is built around a custom Rust-based execution engine and high-performance vector and full-text indexes, enabling fast query performance even under heavy loads.
+Chroma Cloud 的设计目标是只需极少配置即可提供顶级的性能、扩展性和可靠性。您可以在 30 秒内完成初始化设置，而当您的工作负载增长时，Chroma Cloud 会自动进行扩展——无需手动调优、配置或运维操作。它的架构基于一个自定义的 Rust 执行引擎以及高性能的向量和全文索引，即使在高负载下也能实现快速的查询性能。
 
-### Reliability
+### 可靠性
 
-Reliability and accuracy are core to the design. Chroma Cloud is thoroughly tested, with production systems achieving over 90% recall and being continuously monitored for correctness. Thanks to its object storage–based persistence layer, Chroma Cloud is often an order of magnitude more cost-effective than alternatives, without compromising on performance or durability.
+可靠性和准确性是 Chroma Cloud 设计的核心。Chroma Cloud 经过了全面测试，生产系统在实际运行中实现了超过 90% 的召回率，并持续监控以确保结果的正确性。得益于其基于对象存储的持久化层，Chroma Cloud 的成本通常比其他方案低一个数量级，同时在性能和持久性方面毫不妥协。
 
-### Security and Deployment
+### 安全性与部署
 
-Chroma Cloud is SOC 2 Type I certified (Type II in progress), and offers deployment flexibility to match your needs. You can sign up for our fully-managed multi-tenant cluster currently running in AWS us-east-1 or contact us for single-tenant deployment managed by Chroma or hosted in your own VPC (BYOC). If you ever want to self-host open source Chroma, we will help you transition your data from Cloud to your self-managed deployment.
+Chroma Cloud 已获得 SOC 2 Type I 认证（Type II 正在认证中），并提供灵活的部署选项来满足您的需求。您可以注册使用我们完全托管的多租户集群（当前部署在 AWS us-east-1 区域），或联系我们的销售团队以获取由 Chroma 管理的单租户部署，或在您的 VPC 中部署（BYOC）。如果您希望自行部署开源版本的 Chroma，我们也会协助您将数据从云端迁移至自托管部署。
 
-### Dashboard
+### 控制台
 
-Our web dashboard lets your team work together to view your data, and ensure data quality in your collections with ease. It also serves as a touchpoint for you to view billing data and usage telemetry.
+我们的 Web 控制台支持团队协作，方便您查看数据并轻松确保集合中的数据质量。它同时也是您查看账单数据和使用情况指标的入口。
 
-Chroma Cloud is open-source at its core, built on the exact same Apache 2.0 codebase available to everyone. Whether you’re building a prototype or running a mission-critical production workload, Chroma Cloud is the fastest path to reliable, scalable, and accurate retrieval.
+Chroma Cloud 核心是开源的，基于对所有人开放的 Apache 2.0 相同代码库构建。无论您是在构建原型系统，还是运行关键任务的生产级工作负载，Chroma Cloud 都是实现可靠、可扩展和高精度检索的最快路径。

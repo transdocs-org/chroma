@@ -1,20 +1,20 @@
-# JS Client
+# JS 客户端
 
-## Class: ChromaClient
+## 类：ChromaClient
 
-### constructor
+### 构造函数
 
 * `new ChromaClient(params?)`
 
-Creates a new ChromaClient instance.
+创建一个新的 ChromaClient 实例。
 
-#### Parameters
+#### 参数
 
-| Name | Type | Description |
+| 名称 | 类型 | 描述 |
 | :------ | :------ | :------ |
-| `params` | `ChromaClientParams` | The parameters for creating a new client |
+| `params` | `ChromaClientParams` | 创建新客户端的参数 |
 
-**Example**
+**示例**
 
 ```typescript
 const client = new ChromaClient({
@@ -22,25 +22,25 @@ const client = new ChromaClient({
 });
 ```
 
-## Methods
+## 方法
 
 ### countCollections
 
 * `countCollections(): Promise<number>`
 
-Counts all collections.
+统计所有集合的数量。
 
-#### Returns
+#### 返回值
 
 `Promise<number>`
 
-A promise that resolves to the number of collections.
+一个 Promise，解析为集合的数量。
 
-**Throws**
+**抛出异常**
 
-If there is an issue counting the collections.
+如果在统计集合数量时出现问题。
 
-**Example**
+**示例**
 
 ```typescript
 const collections = await client.countCollections();
@@ -50,32 +50,32 @@ const collections = await client.countCollections();
 
 * `createCollection(params): Promise<Collection>`
 
-Creates a new collection with the specified properties.
+使用指定属性创建一个新集合。
 
-#### Parameters
+#### 参数
 
-| Name | Type | Description |
+| 名称 | 类型 | 描述 |
 | :------ | :------ | :------ |
-| `params` | `CreateCollectionParams` | The parameters for creating a new collection. |
+| `params` | `CreateCollectionParams` | 创建新集合的参数 |
 
-#### Returns
+#### 返回值
 
 `Promise<Collection>`
 
-A promise that resolves to the created collection.
+一个 Promise，解析为创建的集合。
 
-**Throws**
+**抛出异常**
 
-* If the client is unable to connect to the server.
-* If there is an issue creating the collection.
+* 如果客户端无法连接到服务器。
+* 如果在创建集合时出现问题。
 
-**Example**
+**示例**
 
 ```typescript
 const collection = await client.createCollection({
   name: "my_collection",
   metadata: {
-    "description": "My first collection"
+    "description": "我的第一个集合"
   }
 });
 ```
@@ -84,25 +84,25 @@ const collection = await client.createCollection({
 
 * `deleteCollection(params): Promise<void>`
 
-Deletes a collection with the specified name.
+删除指定名称的集合。
 
-#### Parameters
+#### 参数
 
-| Name | Type | Description |
+| 名称 | 类型 | 描述 |
 | :------ | :------ | :------ |
-| `params` | `DeleteCollectionParams` | The parameters for deleting a collection. |
+| `params` | `DeleteCollectionParams` | 删除集合的参数 |
 
-#### Returns
+#### 返回值
 
 `Promise<void>`
 
-A promise that resolves when the collection is deleted.
+一个 Promise，在集合被删除后解析。
 
-**Throws**
+**抛出异常**
 
-If there is an issue deleting the collection.
+如果在删除集合时出现问题。
 
-**Example**
+**示例**
 
 ```typescript
 await client.deleteCollection({
@@ -114,25 +114,25 @@ await client.deleteCollection({
 
 `getCollection(params): Promise<Collection>`
 
-Gets a collection with the specified name.
+获取指定名称的集合。
 
-#### Parameters
+#### 参数
 
-| Name | Type | Description |
+| 名称 | 类型 | 描述 |
 | :------ | :------ | :------ |
-| `params` | `GetCollectionParams` | The parameters for getting a collection. |
+| `params` | `GetCollectionParams` | 获取集合的参数 |
 
-#### Returns
+#### 返回值
 
 `Promise<Collection>`
 
-A promise that resolves to the collection.
+一个 Promise，解析为获取的集合。
 
-**Throws**
+**抛出异常**
 
-If there is an issue getting the collection.
+如果在获取集合时出现问题。
 
-**Example**
+**示例**
 
 ```typescript
 const collection = await client.getCollection({
@@ -144,31 +144,31 @@ const collection = await client.getCollection({
 
 * `getOrCreateCollection(params): Promise<Collection>`
 
-Gets or creates a collection with the specified properties.
+获取或创建具有指定属性的集合。
 
-#### Parameters
+#### 参数
 
-| Name | Type | Description |
+| 名称 | 类型 | 描述 |
 | :------ | :------ | :------ |
-| `params` | `CreateCollectionParams` | The parameters for creating a new collection. |
+| `params` | `CreateCollectionParams` | 创建新集合的参数 |
 
-#### Returns
+#### 返回值
 
 `Promise<Collection>`
 
-A promise that resolves to the got or created collection.
+一个 Promise，解析为获取或创建的集合。
 
-**Throws**
+**抛出异常**
 
-If there is an issue getting or creating the collection.
+如果在获取或创建集合时出现问题。
 
-**Example**
+**示例**
 
 ```typescript
 const collection = await client.getOrCreateCollection({
   name: "my_collection",
   metadata: {
-    "description": "My first collection"
+    "description": "我的第一个集合"
   }
 });
 ```
@@ -177,19 +177,19 @@ const collection = await client.getOrCreateCollection({
 
 * `heartbeat(): Promise<number>`
 
-Returns a heartbeat from the Chroma API.
+从 Chroma API 获取一个心跳信号。
 
-#### Returns
+#### 返回值
 
 `Promise<number>`
 
-A promise that resolves to the heartbeat from the Chroma API.
+一个 Promise，解析为来自 Chroma API 的心跳信号。
 
-**Throws**
+**抛出异常**
 
-If the client is unable to connect to the server.
+如果客户端无法连接到服务器。
 
-**Example**
+**示例**
 
 ```typescript
 const heartbeat = await client.heartbeat();
@@ -199,25 +199,25 @@ const heartbeat = await client.heartbeat();
 
 * `listCollections(params?): Promise<CollectionParams>`
 
-Lists all collections.
+列出所有集合。
 
-#### Parameters
+#### 参数
 
-| Name     | Type |
+| 名称     | 类型 |
 |:---------| :------ |
 | `params` | `ListCollectionsParams` |
 
-#### Returns
+#### 返回值
 
 `Promise<CollectionParams>`
 
-A promise that resolves to a list of collection names.
+一个 Promise，解析为集合名称的列表。
 
-**Throws**
+**抛出异常**
 
-If there is an issue listing the collections.
+如果在列出集合时出现问题。
 
-**Example**
+**示例**
 
 ```typescript
 const collections = await client.listCollections({
@@ -230,20 +230,20 @@ const collections = await client.listCollections({
 
 * `reset(): Promise<boolean>`
 
-Resets the state of the object by making an API call to the reset endpoint.
+通过调用重置端点的 API 调用来重置对象的状态。
 
-#### Returns
+#### 返回值
 
 `Promise<boolean>`
 
-A promise that resolves when the reset operation is complete.
+一个 Promise，在重置操作完成后解析。
 
-**Throws**
+**抛出异常**
 
-* If the client is unable to connect to the server.
-* If the server experienced an error while the state.
+* 如果客户端无法连接到服务器。
+* 如果服务器在重置状态时发生错误。
 
-**Example**
+**示例**
 
 ```typescript
 await client.reset();
@@ -253,19 +253,19 @@ await client.reset();
 
 * `version(): Promise<string>`
 
-Returns the version of the Chroma API.
+返回 Chroma API 的版本号。
 
-#### Returns
+#### 返回值
 
 `Promise<string>`
 
-A promise that resolves to the version of the Chroma API.
+一个 Promise，解析为 Chroma API 的版本号。
 
-**Throws**
+**抛出异常**
 
-If the client is unable to connect to the server.
+如果客户端无法连接到服务器。
 
-**Example**
+**示例**
 
 ```typescript
 const version = await client.version();

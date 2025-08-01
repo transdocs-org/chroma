@@ -1,127 +1,112 @@
-# GCP Deployment
+# GCP 部署
 
 {% Banner type="tip" %}
 
 **Chroma Cloud**
 
-Chroma Cloud, our fully managed hosted service is here. [Sign up here](https://trychroma.com/signup) for free.
+我们完全托管的托管服务 Chroma Cloud 已经上线。[点击此处](https://trychroma.com/signup)免费注册。
 
 {% /Banner %}
 
-## A Simple GCP Deployment
+## 一个简单的 GCP 部署
 
-You can deploy Chroma on a long-running server, and connect to it
-remotely.
+你可以在一个长期运行的服务器上部署 Chroma，并远程连接它。
 
-For convenience, we have
-provided a very simple Terraform configuration to experiment with
-deploying Chroma to Google Compute Engine.
+为了方便起见，我们提供了一个非常简单的 Terraform 配置，用于在 Google Compute Engine 上部署 Chroma 的实验。
 
 {% Banner type="warn" %}
 
-Chroma and its underlying database [need at least 2GB of RAM](./performance#results-summary),
-which means it won't fit on the instances provided as part of the
-GCP "always free" tier. This template uses an [`e2-small`](https://cloud.google.com/compute/docs/general-purpose-machines#e2_machine_types) instance, which
-costs about two cents an hour, or $15 for a full month, and gives you 2GiB of memory. If you follow these
-instructions, GCP will bill you accordingly.
+Chroma 及其底层数据库[至少需要 2GB 的内存](./performance#results-summary)，
+这意味着它无法在 GCP “始终免费”套餐提供的实例上运行。此模板使用的是 [`e2-small`](https://cloud.google.com/compute/docs/general-purpose-machines#e2_machine_types) 实例，
+每小时大约花费两美分，或者每月满负荷运行约 15 美元，并提供 2GiB 内存。如果你按照这些说明操作，GCP 将根据此收费。
 
 {% /Banner %}
 
 {% Banner type="warn" %}
 
-In this guide we show you how to secure your endpoint using [Chroma's
-native authentication support](./gcp#authentication-with-gcp). Alternatively, you can put it behind
-[GCP API Gateway](https://cloud.google.com/api-gateway/docs) or add your own
-authenticating proxy. This basic stack doesn't support any kind of authentication;
-anyone who knows your server IP will be able to add and query for
-embeddings.
+在本指南中，我们将展示如何使用 [Chroma 的原生身份验证支持](./gcp#authentication-with-gcp)来保护你的端点。或者，你也可以将其放在 [GCP API Gateway](https://cloud.google.com/api-gateway/docs) 后面，或添加你自己的身份验证代理。此基本堆栈不支持任何形式的身份验证；
+任何知道你服务器 IP 地址的人都可以添加并查询嵌入数据。
 
 {% /Banner %}
 
 {% Banner type="warn" %}
 
-By default, this template saves all data on a single
-volume. When you delete or replace it, the data will disappear. For
-serious production use (with high availability, backups, etc.) please
-read and understand the Terraform template and use it as a basis
-for what you need, or reach out to the Chroma team for assistance.
+默认情况下，此模板将所有数据保存在单个卷上。当你删除或替换该卷时，数据将会丢失。对于正式生产使用（包括高可用性、备份等），请阅读并理解该 Terraform 模板，并将其作为你需要的基础，或联系 Chroma 团队以获取帮助。
 
 {% /Banner %}
 
-### Step 1: Set up your GCP credentials
+### 步骤 1：设置你的 GCP 凭证
 
-In your GCP project, create a service account for deploying Chroma. It will need the following roles:
+在你的 GCP 项目中，为部署 Chroma 创建一个服务账户。它需要以下角色：
 * Service Account User
 * Compute Admin
 * Compute Network Admin
 * Storage Admin
 
-Create a JSON key file for this service account, and download it. Set the `GOOGLE_APPLICATION_CREDENTIALS` environment variable to the path of your JSON key file:
+为此服务账户创建一个 JSON 密钥文件并下载。将 `GOOGLE_APPLICATION_CREDENTIALS` 环境变量设置为你 JSON 密钥文件的路径：
 
 ```terminal
 export GOOGLE_APPLICATION_CREDENTIALS="/path/to/your/service-account-key.json"
 ```
 
-### Step 2: Install Terraform
+### 步骤 2：安装 Terraform
 
-Download [Terraform](https://developer.hashicorp.com/terraform/install?product_intent=terraform) and follow the installation instructions for your OS.
+下载 [Terraform](https://developer.hashicorp.com/terraform/install?product_intent=terraform) 并按照你操作系统对应的安装说明进行操作。
 
-### Step 3: Configure your GCP Settings
+### 步骤 3：配置你的 GCP 设置
 
-Create a `chroma.tfvars` file. Use it to define the following variables for your GCP project ID, region, and zone:
+创建一个 `chroma.tfvars` 文件。使用它来定义以下 GCP 项目 ID、区域和可用区变量：
 
 ```text
-project_id="<your project ID>"
-region="<your region>"
-zone="<your zone>"
+project_id="<你的项目ID>"
+region="<你的区域>"
+zone="<你的可用区>"
 ```
 
-### Step 4: Initialize and deploy with Terraform
+### 步骤 4：使用 Terraform 初始化并部署
 
-Download our [GCP Terraform configuration](https://github.com/chroma-core/chroma/blob/main/deployments/gcp/main.tf) to the same directory as your `chroma.tfvars` file. Then run the following commands to deploy your Chroma stack.
+将我们的 [GCP Terraform 配置](https://github.com/chroma-core/chroma/blob/main/deployments/gcp/main.tf) 下载到与你的 `chroma.tfvars` 文件相同的目录中。然后运行以下命令来部署你的 Chroma 堆栈。
 
-Initialize Terraform:
+初始化 Terraform：
 ```terminal
 terraform init
 ```
 
-Plan the deployment, and review it to ensure it matches your expectations:
+规划部署，并审查计划以确保符合你的预期：
 ```terminal
 terraform plan -var-file chroma.tfvars
 ```
-If you did not customize our configuration, you should be deploying an `e2-small` instance.
+如果你没有自定义我们的配置，你应该会部署一个 `e2-small` 实例。
 
-Finally, apply the deployment:
+最后，应用部署：
 ```terminal
 terraform apply -var-file chroma.tfvars
 ```
 
-#### Customize the Stack (optional)
+#### 自定义堆栈（可选）
 
-If  you want to use a machine type different from the default `e2-small`, in your `chroma.tfvars` add the `machine_type` variable and set it to your desired machine:
+如果你想使用不同于默认 `e2-small` 的机器类型，在你的 `chroma.tfvars` 文件中添加 `machine_type` 变量并将其设置为你想要的机器类型：
 
 ```text
 machine_type = "e2-medium"
 ```
 
-After a few minutes, you can get the IP address of your instance with
+几分钟后，你可以使用以下命令获取实例的 IP 地址：
 ```terminal
 terraform output -raw chroma_instance_ip
 ```
 
-### Step 5: Chroma Client Set-Up
+### 步骤 5：Chroma 客户端设置
 {% Tabs %}
 
 {% Tab label="python" %}
-Once your Compute Engine instance is up and running with Chroma, all
-you need to do is configure your `HttpClient` to use the server's IP address and port
-`8000`. Since you are running a Chroma server on Azure, our [thin-client package](./python-thin-client) may be enough for your application.
+一旦你的 Compute Engine 实例成功运行了 Chroma，你只需要将 `HttpClient` 配置为使用服务器的 IP 地址和端口 `8000`。由于你正在 Azure 上运行 Chroma 服务器，我们的 [轻量级客户端包](./python-thin-client) 可能满足你的应用需求。
 
 ```python
 import chromadb
 
 chroma_client = chromadb.HttpClient(
-    host="<Your Chroma instance IP>",
+    host="<你的 Chroma 实例 IP>",
     port=8000
 )
 chroma_client.heartbeat()
@@ -129,15 +114,13 @@ chroma_client.heartbeat()
 {% /Tab %}
 
 {% Tab label="typescript" %}
-Once your Compute Engine instance is up and running with Chroma, all
-you need to do is configure your `ChromaClient` to use the server's IP address and port
-`8000`.
+一旦你的 Compute Engine 实例成功运行了 Chroma，你只需要将 `ChromaClient` 配置为使用服务器的 IP 地址和端口 `8000`。
 
 ```typescript
 import { ChromaClient } from "chromadb";
 
 const chromaClient = new ChromaClient({
-    host: "<Your Chroma instance IP>",
+    host: "<你的 Chroma 实例 IP>",
     port: 8000
 })
 chromaClient.heartbeat()
@@ -146,24 +129,23 @@ chromaClient.heartbeat()
 
 {% /Tabs %}
 
-### Step 5: Clean Up (optional).
+### 步骤 6：清理（可选）
 
-To destroy the stack and remove all GCP resources, use the `terraform destroy` command.
+要销毁堆栈并删除所有 GCP 资源，请使用 `terraform destroy` 命令。
 
-{% note type="warning" title="Note" %}
-This will destroy all the data in your Chroma database,
-unless you've taken a snapshot or otherwise backed it up.
+{% note type="warning" title="注意" %}
+除非你已经创建了快照或以其他方式备份了数据，否则这将销毁你的 Chroma 数据库中的所有数据。
 {% /note %}
 
 ```terminal
 terraform destroy -var-file chroma.tfvars
 ```
 
-## Observability with GCP
+## 使用 GCP 进行可观测性
 
-Chroma is instrumented with [OpenTelemetry](https://opentelemetry.io/) hooks for observability. We currently only exports OpenTelemetry [traces](https://opentelemetry.io/docs/concepts/signals/traces/). These should allow you to understand how requests flow through the system and quickly identify bottlenecks. Check out the [observability docs](../administration/observability) for a full explanation of the available parameters.
+Chroma 使用 [OpenTelemetry](https://opentelemetry.io/) 钩子进行可观测性。我们目前只导出 OpenTelemetry [追踪](https://opentelemetry.io/docs/concepts/signals/traces/)。这些功能可以帮助你了解请求在系统中的流动方式，并快速识别瓶颈。有关可用参数的完整说明，请参阅 [可观测性文档](../administration/observability)。
 
-To enable tracing on your Chroma server, simply define the following variables in your `chroma.tfvars`:
+要在你的 Chroma 服务器上启用追踪，只需在你的 `chroma.tfvars` 中定义以下变量：
 
 ```text
 chroma_otel_collection_endpoint          = "api.honeycomb.com"

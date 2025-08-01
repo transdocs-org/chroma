@@ -4,26 +4,26 @@
 
 **Chroma Cloud**
 
-Chroma Cloud, our fully managed hosted service is here. [Sign up for free](https://trychroma.com/signup).
+我们的完全托管服务 Chroma Cloud 已经上线。[免费注册](https://trychroma.com/signup)。
 
 {% /Banner %}
 
-## Run Chroma in a Docker Container
+## 在 Docker 容器中运行 Chroma
 
 {% Tabs %}
 
 {% Tab label="python" %}
-You can run a Chroma server in a Docker container, and access it using the `HttpClient`. We provide images on both [docker.com](https://hub.docker.com/r/chromadb/chroma) and [ghcr.io](https://github.com/chroma-core/chroma/pkgs/container/chroma).
+你可以在 Docker 容器中运行 Chroma 服务器，并使用 `HttpClient` 进行访问。我们提供了托管在 [docker.com](https://hub.docker.com/r/chromadb/chroma) 和 [ghcr.io](https://github.com/chroma-core/chroma/pkgs/container/chroma) 上的镜像。
 
-To start the server, run:
+要启动服务器，请运行：
 
 ```terminal
 docker run -v ./chroma-data:/data -p 8000:8000 chromadb/chroma
 ```
 
-This starts the server with the default configuration and stores data in `./chroma-data` (in your current working directory).
+这将以默认配置启动服务器，并将数据存储在 `./chroma-data` 中（在你的当前工作目录下）。
 
-The Chroma client can then be configured to connect to the server running in the Docker container.
+然后你可以配置 Chroma 客户端以连接运行在 Docker 容器中的服务器：
 
 ```python
 import chromadb
@@ -34,24 +34,24 @@ chroma_client.heartbeat()
 
 {% Banner type="tip" %}
 
-**Client-only package**
+**仅客户端包**
 
-If you're using Python, you may want to use the [client-only package](/production/chroma-server/python-thin-client) for a smaller install size.
+如果你使用的是 Python，可以考虑使用[仅客户端包](/production/chroma-server/python-thin-client)，以获得更小的安装体积。
 {% /Banner %}
 {% /Tab %}
 
 {% Tab label="typescript" %}
-You can run a Chroma server in a Docker container, and access it using the `ChromaClient`. We provide images on both [docker.com](https://hub.docker.com/r/chromadb/chroma) and [ghcr.io](https://github.com/chroma-core/chroma/pkgs/container/chroma).
+你可以在 Docker 容器中运行 Chroma 服务器，并使用 `ChromaClient` 进行访问。我们提供了托管在 [docker.com](https://hub.docker.com/r/chromadb/chroma) 和 [ghcr.io](https://github.com/chroma-core/chroma/pkgs/container/chroma) 上的镜像。
 
-To start the server, run:
+要启动服务器，请运行：
 
 ```terminal
 docker run -v ./chroma-data:/data -p 8000:8000 chromadb/chroma
 ```
 
-This starts the server with the default configuration and stores data in `./chroma-data` (in your current working directory).
+这将以默认配置启动服务器，并将数据存储在 `./chroma-data` 中（在你的当前工作目录下）。
 
-The Chroma client can then be configured to connect to the server running in the Docker container.
+然后你可以配置 Chroma 客户端以连接运行在 Docker 容器中的服务器：
 
 ```typescript
 import { ChromaClient } from "chromadb";
@@ -66,28 +66,28 @@ chromaClient.heartbeat()
 
 {% /Tabs %}
 
-## Configuration
+## 配置
 
-Chroma is configured using a YAML file. Check out [this config file](https://github.com/chroma-core/chroma/blob/main/rust/frontend/sample_configs/single_node_full.yaml) detailing all available options.
+Chroma 使用 YAML 文件进行配置。查看[这个配置文件](https://github.com/chroma-core/chroma/blob/main/rust/frontend/sample_configs/single_node_full.yaml)，了解所有可用选项的详细信息。
 
-To use a custom config file, mount it into the container at `/config.yaml` like so:
+要使用自定义配置文件，请将其挂载到容器中的 `/config.yaml` 路径，如下所示：
 
 ```terminal
-echo "allow_reset: true" > config.yaml # the server will now allow clients to reset its state
+echo "allow_reset: true" > config.yaml # 服务器现在允许客户端重置其状态
 docker run -v ./chroma-data:/data -v ./config.yaml:/config.yaml -p 8000:8000 chromadb/chroma
 ```
 
-## Observability with Docker
+## 使用 Docker 实现可观测性
 
-Chroma is instrumented with [OpenTelemetry](https://opentelemetry.io/) hooks for observability. OpenTelemetry traces allow you to understand how requests flow through the system and quickly identify bottlenecks. Check out the [observability docs](../administration/observability) for a full explanation of the available parameters.
+Chroma 通过 [OpenTelemetry](https://opentelemetry.io/) 钩子实现了可观测性功能。OpenTelemetry 的追踪功能可以帮助你理解请求在系统中的流动路径，并快速识别瓶颈。有关可用参数的完整解释，请参阅[可观测性文档](../administration/observability)。
 
-Here's an example of how to create an observability stack with Docker Compose. The stack is composed of
+以下是一个使用 Docker Compose 构建可观测性栈的示例。该栈包括：
 
-- a Chroma server
+- 一个 Chroma 服务器
 - [OpenTelemetry Collector](https://github.com/open-telemetry/opentelemetry-collector)
 - [Zipkin](https://zipkin.io/)
 
-First, paste the following into a new file called `otel-collector-config.yaml`:
+首先，将以下内容粘贴到一个名为 `otel-collector-config.yaml` 的新文件中：
 
 ```yaml
 receivers:
@@ -110,12 +110,12 @@ service:
       exporters: [zipkin, debug]
 ```
 
-This is the configuration file for the OpenTelemetry Collector:
-* The `receivers` section specifies that the OpenTelemetry protocol (OTLP) will be used to receive data over GRPC and HTTP.
-* `exporters` defines that telemetry data is logged to the console (`debug`), and sent to a `zipkin` server (defined below in `docker-compose.yml`).
-* The `service` section ties everything together, defining a `traces` pipeline receiving data through our `otlp` receiver and exporting data to `zipkin` and via logging.
+这是 OpenTelemetry Collector 的配置文件：
+* `receivers` 部分指定了使用 OpenTelemetry 协议 (OTLP) 通过 GRPC 和 HTTP 接收数据。
+* `exporters` 部分定义了遥测数据将记录到控制台 (`debug`)，并发送到 `zipkin` 服务器（在下面的 `docker-compose.yml` 文件中定义）。
+* `service` 部分将所有内容整合在一起，定义了一个 `traces` 管道，通过我们的 `otlp` 接收器接收数据，并将数据导出到 `zipkin` 和通过日志输出。
 
-Next, paste the following into a new file called `docker-compose.yml`:
+接下来，将以下内容粘贴到一个名为 `docker-compose.yml` 的新文件中：
 
 ```yaml
 services:
@@ -155,18 +155,18 @@ volumes:
   chroma_data:
 ```
 
-To start the stack, run
+要启动栈，请运行：
 
 ```terminal
 docker compose up --build -d
 ```
 
-Once the stack is running, you can access Zipkin at [http://localhost:9411](http://localhost:9411) when running locally to see your traces.
+一旦栈启动完成，你可以在本地运行时通过 [http://localhost:9411](http://localhost:9411) 访问 Zipkin 来查看你的追踪数据。
 
-Zipkin will show an empty view initially as no traces are created during startup. You can call the heartbeat endpoint to quickly create a sample trace:
+Zipkin 在初始时会显示一个空界面，因为启动期间尚未生成任何追踪记录。你可以调用心跳端点来快速生成一个示例追踪：
 
 ```terminal
 curl http://localhost:8000/api/v2/heartbeat
 ```
 
-Then, click "Run Query" in Zipkin to see the trace.
+然后，在 Zipkin 中点击 "Run Query" 来查看追踪结果。

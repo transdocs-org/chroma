@@ -1,28 +1,28 @@
-# Building with AI
+# 使用人工智能进行构建
 
-AI is a new type of programming primitive. Large language models (LLMs) let us write software which can process **unstructured** information in a **common sense** way.
+人工智能是一种新型的编程基础。大语言模型（LLMs）让我们能够编写出以**常识**方式处理**非结构化**信息的软件。
 
-Consider the task of writing a program to extract a list of people's names from the following paragraph:
+假设我们需要编写一个程序，从以下段落中提取出人名列表：
 
-> Now the other princes of the Achaeans slept soundly the whole night through, but Agamemnon son of Atreus was troubled, so that he could get no rest. As when fair Hera's lord flashes his lightning in token of great rain or hail or snow when the snow-flakes whiten the ground, or again as a sign that he will open the wide jaws of hungry war, even so did Agamemnon heave many a heavy sigh, for his soul trembled within him. When he looked upon the plain of Troy he marveled at the many watchfires burning in front of Ilion... - The Iliad, Scroll 10
+> 现在，其他阿开亚人的王子们都整夜安然入睡，但阿特柔斯之子阿伽门农却辗转反侧，难以入眠。正如赫拉的丈夫在天空中闪耀着闪电，预示着大雨、冰雹或雪花覆盖大地，又或是表明他将开启饥饿战争的广阔颚口，阿伽门农也发出一声声沉重的叹息，他的灵魂在胸中颤动。当他望向特洛伊平原时，他惊奇地看到伊里昂城前燃起了无数的警戒之火……——《伊利亚特》第十卷
 
-Extracting names is easy for humans, but is very difficult using only traditional programming. Writing a general program to extract names from any paragraph is harder still.
+对于人类来说，提取名字轻而易举，但如果仅使用传统编程方法却异常困难。而要编写一个能从任意段落中提取名字的通用程序则更加困难。
 
-However, with an LLM the task becomes almost trivial. We can simply provide the following input to an LLM:
+然而，使用LLM，这个任务几乎变得微不足道。我们只需将以下输入提供给一个LLM：
 
-> List the names of people in the following paragraph, separated by commas: Now the other princes of the Achaeans slept soundly the whole night through, but Agamemnon son of Atreus was troubled, so that he could get no rest. As when fair Hera's lord flashes his lightning in token of great rain or hail or snow when the snow-flakes whiten the ground, or again as a sign that he will open the wide jaws of hungry war, even so did Agamemnon heave many a heavy sigh, for his soul trembled within him. When he looked upon the plain of Troy he marveled at the many watchfires burning in front of Ilion... - The Iliad, Scroll 10
+> 请列出以下段落中出现的人名，用逗号分隔：现在，其他阿开亚人的王子们都整夜安然入睡，但阿特柔斯之子阿伽门农却辗转反侧，难以入眠。正如赫拉的丈夫在天空中闪耀着闪电，预示着大雨、冰雹或雪花覆盖大地，又或是表明他将开启饥饿战争的广阔颚口，阿伽门农也发出一声声沉重的叹息，他的灵魂在胸中颤动。当他望向特洛伊平原时，他惊奇地看到伊里昂城前燃起了无数的警戒之火……——《伊利亚特》第十卷
 
-The output would correctly be:
+输出结果将会是：
 
-> Agamemnon, Atreus, Hera
+> 阿伽门农, 阿特柔斯, 赫拉
 
-Integrating LLMs into software applications is as simple as calling an API. While the specifics of the API may vary between LLMs, most have converged on some common patterns:
-* Calls to the API typically consist of parameters including a `model` identifier, and a list of `messages`.
-* Each `message` has a `role` and `content`.
-* The `system` role can be thought of as the *instructions* to the model.
-* The `user` tole can be thought of as the *data* to process.
+将LLM集成到软件应用中就像调用API一样简单。虽然不同LLM之间的API细节可能有所不同，但大多数已经形成了一些通用的模式：
+* API调用通常包括参数，如`model`标识符和`messages`列表。
+* 每条`message`都有`role`和`content`。
+* `system`角色可以理解为给模型的*指令*。
+* `user`角色可以理解为需要处理的*数据*。
 
-For example, we can use AI to write a general purpose function that extracts names from input text.
+例如，我们可以使用人工智能编写一个通用函数，从输入文本中提取名字。
 
 {% CustomTabs %}
 
@@ -39,7 +39,7 @@ import openai
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 def extract_names(text: str) -> list[str]:
-    system_prompt = "You are a name extractor. The user will give you text, and you must return a JSON array of names mentioned in the text. Do not include any explanation or formatting."
+    system_prompt = "你是一个名字提取器。用户将提供一段文本，你必须返回该文本中提到的所有名字组成的JSON数组。不要包含任何解释或格式。"
 
     response = openai.ChatCompletion.create(
         model="gpt-4o",
@@ -64,7 +64,7 @@ const openai = new OpenAI({
 
 export async function extractNames(text: string): Promise<string[]> {
     const systemPrompt =
-        'You are a name extractor. The user will give you text, and you must return a JSON array of names mentioned in the text. Do not include any explanation or formatting.';
+        '你是一个名字提取器。用户将提供一段文本，你必须返回该文本中提到的所有名字组成的JSON数组。不要包含任何解释或格式。';
 
     const chatCompletion = await openai.chat.completions.create({
         model: 'gpt-4o',
@@ -100,7 +100,7 @@ client = anthropic.Anthropic(
 )
 
 def extract_names(text: str) -> list[str]:
-    system_prompt = "You are a name extractor. The user will give you text, and you must return a JSON array of names mentioned in the text. Do not include any explanation or formatting."
+    system_prompt = "你是一个名字提取器。用户将提供一段文本，你必须返回该文本中提到的所有名字组成的JSON数组。不要包含任何解释或格式。"
 
     response = client.messages.create(
         model="claude-sonnet-4-20250514",
@@ -126,7 +126,7 @@ const anthropic = new Anthropic({
 
 export async function extractNames(text: string): Promise<string[]> {
     const systemPrompt =
-        'You are a name extractor. The user will give you text, and you must return a JSON array of names mentioned in the text. Do not include any explanation or formatting.';
+        '你是一个名字提取器。用户将提供一段文本，你必须返回该文本中提到的所有名字组成的JSON数组。不要包含任何解释或格式。';
 
     const message = await anthropic.messages.create({
         model: 'claude-sonnet-4-20250514',

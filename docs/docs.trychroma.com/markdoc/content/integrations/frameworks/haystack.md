@@ -5,26 +5,26 @@ name: Haystack
 
 # Haystack
 
-[Haystack](https://github.com/deepset-ai/haystack) is an open-source LLM framework in Python. It provides [embedders](https://docs.haystack.deepset.ai/v2.0/docs/embedders), [generators](https://docs.haystack.deepset.ai/v2.0/docs/generators) and [rankers](https://docs.haystack.deepset.ai/v2.0/docs/rankers) via a number of LLM providers, tooling for [preprocessing](https://docs.haystack.deepset.ai/v2.0/docs/preprocessors) and data preparation, connectors to a number of vector databases including Chroma and more. Haystack allows you to build custom LLM applications using both components readily available in Haystack and [custom components](https://docs.haystack.deepset.ai/v2.0/docs/custom-components). Some of the most common applications you can build with Haystack are retrieval-augmented generation pipelines (RAG), question-answering and semantic search.
+[Haystack](https://github.com/deepset-ai/haystack) 是一个开源的 Python LLM 框架。它通过多个 LLM 提供商提供 [嵌入器（embedders）](https://docs.haystack.deepset.ai/v2.0/docs/embedders)、[生成器（generators）](https://docs.haystack.deepset.ai/v2.0/docs/generators) 和 [排序器（rankers）](https://docs.haystack.deepset.ai/v2.0/docs/rankers)，以及用于 [预处理](https://docs.haystack.deepset.ai/v2.0/docs/preprocessors) 和数据准备的工具，并提供了连接多个向量数据库（包括 Chroma 等）的连接器。Haystack 允许您使用 Haystack 中现成的组件以及 [自定义组件](https://docs.haystack.deepset.ai/v2.0/docs/custom-components) 来构建自定义的 LLM 应用程序。使用 Haystack 可以构建的一些最常见的应用程序包括检索增强生成管道（RAG）、问答系统和语义搜索。
 
 ![](https://img.shields.io/github/stars/deepset-ai/haystack.svg?style=social&label=Star&maxAge=2400)
 
-|[Docs](https://docs.haystack.deepset.ai/v2.0/docs) | [Github](https://github.com/deepset-ai/haystack) | [Haystack Integrations](https://haystack.deepset.ai/integrations) | [Tutorials](https://haystack.deepset.ai/tutorials) |
+|[文档](https://docs.haystack.deepset.ai/v2.0/docs) | [Github](https://github.com/deepset-ai/haystack) | [Haystack 集成](https://haystack.deepset.ai/integrations) | [教程](https://haystack.deepset.ai/tutorials) |
 
-You can use Chroma together with Haystack by installing the integration and using the `ChromaDocumentStore`
+您可以通过安装集成包并使用 `ChromaDocumentStore` 将 Chroma 与 Haystack 一起使用。
 
-### Installation
+### 安装
 
 ```terminal
 pip install chroma-haystack
 ```
 
-### Usage
+### 使用
 
-- The [Chroma Integration page](https://haystack.deepset.ai/integrations/chroma-documentstore)
-- [Chroma + Haystack Example](https://colab.research.google.com/drive/1YpDetI8BRbObPDEVdfqUcwhEX9UUXP-m?usp=sharing)
+- [Chroma 集成页面](https://haystack.deepset.ai/integrations/chroma-documentstore)
+- [Chroma + Haystack 示例](https://colab.research.google.com/drive/1YpDetI8BRbObPDEVdfqUcwhEX9UUXP-m?usp=sharing)
 
-#### Write documents into a ChromaDocumentStore
+#### 将文档写入 ChromaDocumentStore
 
 ```python
 import os
@@ -47,7 +47,7 @@ indexing.connect("converter", "writer")
 indexing.run({"converter": {"sources": file_paths}})
 ```
 
-#### Build RAG on top of Chroma
+#### 在 Chroma 上构建 RAG
 
 ```python
 from chroma_haystack.retriever import ChromaQueryRetriever
@@ -55,14 +55,14 @@ from haystack.components.generators import HuggingFaceTGIGenerator
 from haystack.components.builders import PromptBuilder
 
 prompt = """
-Answer the query based on the provided context.
-If the context does not contain the answer, say 'Answer not found'.
-Context:
+根据提供的上下文回答问题。
+如果上下文中不包含答案，请说“未找到答案”。
+上下文：
 {% for doc in documents %}
   {{ doc.content }}
 {% endfor %}
-query: {{query}}
-Answer:
+问题: {{query}}
+答案:
 """
 prompt_builder = PromptBuilder(template=prompt)
 

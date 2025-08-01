@@ -1,17 +1,17 @@
-# Vacuuming
+# 清理（Vacuuming）
 
-Vacuuming shrinks and optimizes your database.
+清理（Vacuuming）可以缩减并优化你的数据库。
 
-Vacuuming after upgrading from a version of Chroma below v0.5.6 will greatly reduce the size of your database and enable continuous database pruning. A warning is logged during server startup if this is necessary.
+如果你是从低于 v0.5.6 的 Chroma 版本升级而来，执行清理操作将大大减小数据库的体积，并启用持续的数据库修剪功能。如果需要执行此操作，服务器启动时会记录一条警告信息。
 
-In most other cases, vacuuming is unnecessary. **It does not need to be run regularly**.
+在其他大多数情况下，清理操作并不是必需的。**无需定期执行清理操作**。
 
-Vacuuming blocks all reads and writes to your database while it's running, so we recommend shutting down your Chroma server before vacuuming (although it's not strictly required).
+清理操作运行期间会阻塞数据库的所有读写操作，因此我们建议在执行清理前关闭 Chroma 服务器（尽管这不是强制要求）。
 
-To vacuum your database, run:
+要清理你的数据库，请运行以下命令：
 
 ```bash
-chroma utils vacuum --path <your-data-directory>
+chroma utils vacuum --path <你的数据目录>
 ```
 
-For large databases, expect this to take up to a few minutes.
+对于大型数据库，清理操作可能需要几分钟时间。

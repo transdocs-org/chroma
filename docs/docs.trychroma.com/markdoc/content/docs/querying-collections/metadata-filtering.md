@@ -1,13 +1,13 @@
-# Metadata Filtering
+# 元数据过滤
 
-The `where` argument in `get` and `query` is used to filter records by their metadata. For example, in this `query` operation, Chroma will only query records that have the `page` metadata field with the value `10`:
+在 `get` 和 `query` 中使用的 `where` 参数用于根据元数据过滤记录。例如，在以下 `query` 操作中，Chroma 仅会查询具有 `page` 元数据字段且值为 `10` 的记录：
 
 {% TabbedCodeBlock %}
 
 {% Tab label="python" %}
 ```python
 collection.query(
-    query_texts=["first query", "second query"],
+    query_texts=["第一个查询", "第二个查询"],
     where={"page": 10}
 )
 ```
@@ -16,7 +16,7 @@ collection.query(
 {% Tab label="typescript" %}
 ```typescript
 await collection.query({
-    queryTexts: ["first query", "second query"],
+    queryTexts: ["第一个查询", "第二个查询"],
     where: { page: 10 }
 })
 ```
@@ -24,7 +24,7 @@ await collection.query({
 
 {% /TabbedCodeBlock %}
 
-In order to filter on metadata, you must supply a `where` filter dictionary to the query. The dictionary must have the following structure:
+为了过滤元数据，你必须向查询提供一个 `where` 过滤字典。该字典必须具有以下结构：
 
 {% TabbedCodeBlock %}
 
@@ -32,7 +32,7 @@ In order to filter on metadata, you must supply a `where` filter dictionary to t
 ```python
 {
     "metadata_field": {
-        <Operator>: <Value>
+        <操作符>: <值>
     }
 }
 ```
@@ -42,7 +42,7 @@ In order to filter on metadata, you must supply a `where` filter dictionary to t
 ```typescript
 {
     metadata_field: {
-        <Operator>: <Value>
+        <操作符>: <值>
     }
 }
 ```
@@ -50,21 +50,21 @@ In order to filter on metadata, you must supply a `where` filter dictionary to t
 
 {% /TabbedCodeBlock %}
 
-Using the `$eq` operator is equivalent to using the metadata field directly in your `where` filter.
+使用 `$eq` 操作符等价于在 `where` 过滤器中直接使用元数据字段。
 
 {% TabbedCodeBlock %}
 
 {% Tab label="python" %}
 ```python
 {
-    "metadata_field": "search_string"
+    "metadata_field": "搜索字符串"
 }
 
-# is equivalent to
+# 等价于
 
 {
     "metadata_field": {
-        "$eq": "search_string"
+        "$eq": "搜索字符串"
     }
 }
 ```
@@ -73,14 +73,14 @@ Using the `$eq` operator is equivalent to using the metadata field directly in y
 {% Tab label="typescript" %}
 ```typescript
 {
-    metadata_field: "search_string"
+    metadata_field: "搜索字符串"
 }
 
-// is equivalent to
+// 等价于
 
 {
     metadata_field: {
-        "$eq":"search_string"
+        "$eq":"搜索字符串"
     }
 }
 ```
@@ -88,14 +88,14 @@ Using the `$eq` operator is equivalent to using the metadata field directly in y
 
 {% /TabbedCodeBlock %}
 
-For example, here we query all records whose `page` metadata field is greater than 10:
+例如，这里我们查询所有 `page` 元数据字段大于 10 的记录：
 
 {% TabbedCodeBlock %}
 
 {% Tab label="python" %}
 ```python
 collection.query(
-    query_texts=["first query", "second query"],
+    query_texts=["第一个查询", "第二个查询"],
     where={"page": { "$gt": 10 }}
 )
 ```
@@ -104,7 +104,7 @@ collection.query(
 {% Tab label="typescript" %}
 ```typescript
 await collection.query({
-    queryTexts: ["first query", "second query"],
+    queryTexts: ["第一个查询", "第二个查询"],
     where: { page: { "$gt": 10 } }
 })
 ```
@@ -112,11 +112,11 @@ await collection.query({
 
 {% /TabbedCodeBlock %}
 
-## Using Logical Operators
+## 使用逻辑操作符
 
-You can also use the logical operators `$and` and `$or` to combine multiple filters.
+你还可以使用逻辑操作符 `$and` 和 `$or` 来组合多个过滤条件。
 
-An `$and` operator will return results that match all the filters in the list.
+`$and` 操作符将返回匹配列表中所有过滤条件的结果。
 
 {% TabbedCodeBlock %}
 
@@ -126,12 +126,12 @@ An `$and` operator will return results that match all the filters in the list.
     "$and": [
         {
             "metadata_field": {
-                <Operator>: <Value>
+                <操作符>: <值>
             }
         },
         {
             "metadata_field": {
-                <Operator>: <Value>
+                <操作符>: <值>
             }
         }
     ]
@@ -144,10 +144,10 @@ An `$and` operator will return results that match all the filters in the list.
 {
     "$and": [
         {
-            metadata_field: { <Operator>: <Value> }
+            metadata_field: { <操作符>: <值> }
         },
         {
-            metadata_field: { <Operator>: <Value> }
+            metadata_field: { <操作符>: <值> }
         }
     ]
 }
@@ -156,14 +156,14 @@ An `$and` operator will return results that match all the filters in the list.
 
 {% /TabbedCodeBlock %}
 
-For example, here we query all records whose `page` metadata field is between 5 and 10:
+例如，这里我们查询所有 `page` 元数据字段在 5 到 10 之间的记录：
 
 {% TabbedCodeBlock %}
 
 {% Tab label="python" %}
 ```python
 collection.query(
-    query_texts=["first query", "second query"],
+    query_texts=["第一个查询", "第二个查询"],
     where={
         "$and": [
             {"page": {"$gte": 5 }},
@@ -177,7 +177,7 @@ collection.query(
 {% Tab label="typescript" %}
 ```typescript
 await collection.query({
-    queryTexts: ["first query", "second query"],
+    queryTexts: ["第一个查询", "第二个查询"],
     where: {
         "$and": [
             { page: {"$gte": 5 } },
@@ -190,7 +190,7 @@ await collection.query({
 
 {% /TabbedCodeBlock %}
 
-An `$or` operator will return results that match any of the filters in the list.
+`$or` 操作符将返回匹配列表中任意一个过滤条件的结果。
 
 {% TabbedCodeBlock %}
 
@@ -200,12 +200,12 @@ An `$or` operator will return results that match any of the filters in the list.
     "or": [
         {
             "metadata_field": {
-                <Operator>: <Value>
+                <操作符>: <值>
             }
         },
         {
             "metadata_field": {
-                <Operator>: <Value>
+                <操作符>: <值>
             }
         }
     ]
@@ -218,10 +218,10 @@ An `$or` operator will return results that match any of the filters in the list.
 {
     "or": [
         {
-            metadata_field: { <Operator>: <Value> }
+            metadata_field: { <操作符>: <值> }
         },
         {
-            metadata_field: { <Operator>: <Value> }
+            metadata_field: { <操作符>: <值> }
         }
     ]
 }
@@ -230,7 +230,7 @@ An `$or` operator will return results that match any of the filters in the list.
 
 {% /TabbedCodeBlock %}
 
-For example, here we get all records whose `color` metadata field is `red` or `blue`:
+例如，这里我们获取所有 `color` 元数据字段是 `red` 或 `blue` 的记录：
 
 {% TabbedCodeBlock %}
 
@@ -262,14 +262,14 @@ await collection.get({
 
 {% /TabbedCodeBlock %}
 
-## Using Inclusion Operators
+## 使用包含操作符
 
-The following inclusion operators are supported:
+支持以下包含操作符：
 
-- `$in` - a value is in predefined list (string, int, float, bool)
-- `$nin` - a value is not in predefined list (string, int, float, bool)
+- `$in` - 值在预定义的列表中（字符串、整数、浮点数、布尔值）
+- `$nin` - 值不在预定义的列表中（字符串、整数、浮点数、布尔值）
 
-An `$in` operator will return results where the metadata attribute is part of a provided list:
+`$in` 操作符将返回元数据属性属于提供列表的结果：
 
 {% TabbedCodeBlock %}
 
@@ -277,7 +277,7 @@ An `$in` operator will return results where the metadata attribute is part of a 
 ```python
 {
   "metadata_field": {
-    "$in": ["value1", "value2", "value3"]
+    "$in": ["值1", "值2", "值3"]
   }
 }
 ```
@@ -287,7 +287,7 @@ An `$in` operator will return results where the metadata attribute is part of a 
 ```typescript
 {
     metadata_field: {
-        "$in": ["value1", "value2", "value3"]
+        "$in": ["值1", "值2", "值3"]
     }
 }
 ```
@@ -295,7 +295,7 @@ An `$in` operator will return results where the metadata attribute is part of a 
 
 {% /TabbedCodeBlock %}
 
-An `$nin` operator will return results where the metadata attribute is not part of a provided list (or the attribute's key is not present):
+`$nin` 操作符将返回元数据属性不属于提供列表的结果（或者属性的键不存在）：
 
 {% TabbedCodeBlock %}
 
@@ -303,7 +303,7 @@ An `$nin` operator will return results where the metadata attribute is not part 
 ```python
 {
   "metadata_field": {
-    "$nin": ["value1", "value2", "value3"]
+    "$nin": ["值1", "值2", "值3"]
   }
 }
 ```
@@ -313,7 +313,7 @@ An `$nin` operator will return results where the metadata attribute is not part 
 ```typescript
 {
     metadata_field: {
-        "$nin": ["value1", "value2", "value3"]
+        "$nin": ["值1", "值2", "值3"]
     }
 }
 ```
@@ -321,7 +321,7 @@ An `$nin` operator will return results where the metadata attribute is not part 
 
 {% /TabbedCodeBlock %}
 
-For example, here we get all records whose `author` metadata field is in a list of possible values:
+例如，这里我们获取所有 `author` 元数据字段在可能值列表中的记录：
 
 {% TabbedCodeBlock %}
 
@@ -347,9 +347,9 @@ await collection.get({
 
 {% /TabbedCodeBlock %}
 
-## Combining with Document Search
+## 与文档搜索结合使用
 
-`.get` and `.query` can handle metadata filtering combined with [document search](./full-text-search):
+`.get` 和 `.query` 支持在[全文搜索](./full-text-search)的基础上进行元数据过滤：
 
 {% TabbedCodeBlock %}
 

@@ -1,25 +1,25 @@
-# Authenticating with Chroma Cloud
+# 使用 Chroma Cloud 进行身份验证
 
-The Chroma CLI allows you to perform various operations with your Chroma Cloud account. These include [DB management](./db), [collection copying](./copy) and [browsing](./browse), and many more to come in the future.
+Chroma CLI 允许你对 Chroma Cloud 账户执行多种操作。这些操作包括 [数据库管理](./db)、[集合复制](./copy) 和 [浏览](./browse)，以及未来将推出的更多功能。
 
-Use the `login` command, to authenticate the CLI with your Chroma Cloud account, to enable these features.
+使用 `login` 命令，可以将 CLI 与你的 Chroma Cloud 账户进行身份验证，从而启用上述功能。
 
-First, in your browser [create](https://trychroma.com/signup) a Chroma Cloud account or [login](https:trychroma.com/login) into your existing account.
+首先，在浏览器中 [创建](https://trychroma.com/signup) 一个 Chroma Cloud 账户或 [登录](https://trychroma.com/login) 到你已有的账户。
 
-Then, in your terminal, run
+然后，在终端中运行以下命令：
 
 ```terminal
 chroma login
 ```
 
-The CLI will open a browser window verifying that the authentication was successful. If so, you should see the following:
+CLI 将会打开一个浏览器窗口以验证身份验证是否成功。如果成功，你将看到如下界面：
 
 {% CenteredContent %}
 ![cli-login-success](/cli/cli-login-success.png)
 {% /CenteredContent %}
 
-Back in the CLI, you will be prompted to select the team you want to authenticate with. Each team login gets its own [profile](./profile) in the CLI. Profiles persist the API key and tenant ID for the team you log-in with. You can find all your profiles in `.chroma/credentials` under your home directory. By default, the name of the profile is the same name of the team you logged-in with. However, the CLI will let you edit that name during the login, or later using the `chroma profile rename` command.
+回到 CLI 后，系统会提示你选择要进行身份验证的团队。每个团队的登录都会在 CLI 中生成一个独立的 [profile（配置文件）](./profile)。每个配置文件都会保存你登录团队所对应的 API 密钥和租户 ID。你可以在用户主目录下的 `.chroma/credentials` 文件中找到所有的配置文件。默认情况下，配置文件的名称与你登录的团队名称相同。不过，CLI 允许你在登录过程中修改该名称，或者之后使用 `chroma profile rename` 命令进行修改。
 
-Upon your first login, the first created profile will be automatically set as your "active" profile.
+首次登录时，第一个创建的配置文件会被自动设置为你的“活动”配置文件。
 
-On subsequent logins, the CLI will instruct you how to switch to a new profile you added (using the `chroma profile use` command). 
+在后续登录时，CLI 会指导你如何切换到新添加的配置文件（使用 `chroma profile use` 命令）。

@@ -1,12 +1,12 @@
-# Troubleshooting
+# 常见问题排查
 
-This page is a list of common gotchas or issues and how to fix them.
+本页面列出了常见的注意事项或问题及其解决方法。
 
-If you don't see your problem listed here, please also search the [Github Issues](https://github.com/chroma-core/chroma/issues).
+如果您没有在这里找到您的问题，请查看 [Github Issues](https://github.com/chroma-core/chroma/issues)。
 
-## Chroma JS-Client failures on NextJS projects
+## NextJS 项目中 Chroma JS-Client 出现错误
 
-Our default embedding function uses @huggingface/transformers, which depends on binaries that NextJS fails to bundle. If you are running into this issue, you can wrap your `nextConfig` (in `next.config.ts`) with the `withChroma` plugin, which will add the required settings to overcome the bundling issues.
+我们默认的嵌入函数使用了 @huggingface/transformers，它依赖的二进制文件无法被 NextJS 正确打包。如果您遇到此问题，可以在 `next.config.ts` 中使用 `withChroma` 插件包裹您的 `nextConfig`，该插件会添加必要的配置以解决打包问题。
 
 ```typescript
 import type { NextConfig } from "next";
@@ -19,17 +19,17 @@ const nextConfig: NextConfig = {
 export default withChroma(nextConfig);
 ```
 
-## Cannot return the results in a contiguous 2D array. Probably ef or M is too small
+## 无法返回连续的二维数组结果。可能是 ef 或 M 太小
 
-This error happens when the HNSW index fails to retrieve the requested number of results for a query, given its structure and your data. he way to resolve this is to either decrease the number of results you request from a query (n_result), or increase the HNSW parameters `M`, `ef_construction`, and `ef_search`. You can read more about HNSW configurations [here](/docs/collections/configure).
+当 HNSW 索引由于其结构和您的数据而无法检索到请求的查询结果数量时，就会出现此错误。解决方法是减少每次查询请求的结果数量（n_result），或增加 HNSW 参数 `M`、`ef_construction` 和 `ef_search`。您可以 [点击此处](/docs/collections/configure) 了解更多关于 HNSW 的配置信息。
 
-## Using .get or .query, embeddings say `None`
+## 使用 .get 或 .query 方法时，嵌入向量显示为 `None`
 
-This is actually not an error. Embeddings are quite large and heavy to send back. Most application don't use the underlying embeddings and so, by default, chroma does not send them back.
+这实际上并不是一个错误。由于嵌入向量通常较大且传输成本较高，默认情况下 Chroma 不会返回它们。大多数应用程序并不需要使用这些底层嵌入向量，因此默认不返回。
 
-To send them back: add `include=["embeddings", "documents", "metadatas", "distances"]` to your query to return all information.
+如需返回它们，请在查询中添加 `include=["embeddings", "documents", "metadatas", "distances"]` 以获取所有信息。
 
-For example:
+例如：
 
 ```python
 results = collection.query(
@@ -39,42 +39,38 @@ results = collection.query(
 )
 ```
 
-{% note type="tip"  %}
-We may change `None` to something else to more clearly communicate why they were not returned.
+{% note type="tip" %}
+我们可能会将 `None` 改为其他内容，以更清晰地说明为何未返回。
 {% /note %}
 
+## 运行 `pip install chromadb` 时出现构建错误
 
-## Build error when running `pip install chromadb`
-
-If you encounter an error like this during setup
+如果在安装过程中遇到类似以下错误：
 
 ```
 Failed to build hnswlib
 ERROR: Could not build wheels for hnswlib, which is required to install pyproject.toml-based projects
 ```
 
-Try these few tips from the [community](https://github.com/chroma-core/chroma/issues/221):
+请尝试社区提供的以下建议 [点击此处](https://github.com/chroma-core/chroma/issues/221)：
 
-1. If you get the error: `clang: error: the clang compiler does not support '-march=native'`, set this ENV variable, `export HNSWLIB_NO_NATIVE=1`
-2. If on Mac, install/update xcode dev tools, `xcode-select --install`
-3. If on Windows, try [these steps](https://github.com/chroma-core/chroma/issues/250#issuecomment-1540934224)
+1. 如果遇到错误：`clang: error: the clang compiler does not support '-march=native'`，请设置环境变量：`export HNSWLIB_NO_NATIVE=1`
+2. 如果使用 Mac，请安装/更新 xcode 开发工具：`xcode-select --install`
+3. 如果使用 Windows，请参考 [这些步骤](https://github.com/chroma-core/chroma/issues/250#issuecomment-1540934224)
 
 ## SQLite
 
-Chroma requires SQLite > 3.35, if you encounter issues with having too low of a SQLite version please try the following.
+Chroma 要求 SQLite 版本 > 3.35，如果您遇到 SQLite 版本过低的问题，请尝试以下方法：
 
-1. Install the latest version of Python 3.10, sometimes lower versions of python are bundled with older versions of SQLite.
-2. If you are on a Linux system, you can install pysqlite3-binary, `pip install pysqlite3-binary` and then override the default
-   sqlite3 library before running Chroma with the steps [here](https://gist.github.com/defulmere/8b9695e415a44271061cc8e272f3c300).
-   Alternatively you can compile SQLite from scratch and replace the library in your python installation with the latest version as documented [here](https://github.com/coleifer/pysqlite3#building-a-statically-linked-library).
-3. If you are on Windows, you can manually download the latest version of SQLite from https://www.sqlite.org/download.html and
-   replace the DLL in your python installation's DLLs folder with the latest version. You can find your python installation path by running `os.path.dirname(sys.executable)` in python.
-4. If you are using a Debian based Docker container, older Debian versions do not have an up to date SQLite, please use `bookworm` or higher.
+1. 安装最新版本的 Python 3.10，有时较低版本的 Python 会自带旧版 SQLite。
+2. 如果使用 Linux 系统，可以安装 pysqlite3-binary：`pip install pysqlite3-binary`，然后按照 [这里](https://gist.github.com/defulmere/8b9695e415a44271061cc8e272f3c300) 的步骤在运行 Chroma 之前覆盖默认的 sqlite3 库。或者，您也可以从源码编译 SQLite，并按照 [这里](https://github.com/coleifer/pysqlite3#building-a-statically-linked-library) 的说明将 Python 安装中的库替换为最新版本。
+3. 如果使用 Windows，可以手动从 https://www.sqlite.org/download.html 下载最新版本的 SQLite，并将其替换到 Python 安装目录下的 DLLs 文件夹中。您可以在 Python 中运行 `os.path.dirname(sys.executable)` 来查找您的 Python 安装路径。
+4. 如果使用基于 Debian 的 Docker 容器，旧版本的 Debian 没有更新的 SQLite，请使用 `bookworm` 或更高版本。
 
-##  Illegal instruction (core dumped)
+## 非法指令（核心已转储）
 
-If you encounter an error like this during setup and are using Docker - you may have built the library on a machine with a different CPU architecture than the one you are running it on. Try rebuilding the Docker image on the machine you are running it on.
+如果您在使用 Docker 时遇到类似错误，可能是您在不同的 CPU 架构机器上构建了镜像。请尝试在您运行镜像的机器上重新构建 Docker 镜像。
 
-## My data directory is too large
+## 我的数据目录太大
 
-If you were using Chroma prior to v0.5.6, you may be able to significantly shrink your database by [vacuuming it](/reference/cli#vacuuming). After vacuuming once, automatic pruning (a new feature in v0.5.6) is enabled and will keep your database size in check.
+如果您在使用 Chroma v0.5.6 之前的版本，可以通过 [vacuum 命令](/reference/cli#vacuuming) 显着减小数据库体积。执行一次 vacuum 后，自动清理（v0.5.6 中新增功能）将被启用，并持续控制数据库大小。

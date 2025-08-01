@@ -5,12 +5,12 @@ name: 'VoyageAI'
 
 # VoyageAI
 
-Chroma also provides a convenient wrapper around VoyageAI's embedding API. This embedding function runs remotely on VoyageAI’s servers, and requires an API key. You can get an API key by signing up for an account at [VoyageAI](https://dash.voyageai.com/).
+Chroma 也提供了对 VoyageAI 嵌入 API 的便捷封装。此嵌入函数在 VoyageAI 的服务器上远程运行，需要一个 API 密钥。您可以通过访问 [VoyageAI](https://dash.voyageai.com/) 网站注册账户来获取 API 密钥。
 
 {% Tabs %}
 {% Tab label="python" %}
 
-This embedding function relies on the `voyageai` python package, which you can install with `pip install voyageai`.
+此嵌入函数依赖于 `voyageai` Python 包，您可以通过 `pip install voyageai` 来安装它。
 
 ```python
 import chromadb.utils.embedding_functions as embedding_functions
@@ -32,10 +32,10 @@ const embedder = new VoyageAIEmbeddingFunction({
     modelName: "model_name"
 })
 
-// use directly
+// 直接使用
 const embeddings = embedder.generate(["document1","document2"])
 
-// pass documents to query for .add and .query
+// 传递文档到 .add 和 .query 方法中
 const collection = await client.createCollection({name: "name", embeddingFunction: embedder})
 const collectionGet = await client.getCollection({name: "name", embeddingFunction: embedder})
 ```
@@ -44,7 +44,7 @@ const collectionGet = await client.getCollection({name: "name", embeddingFunctio
 
 {% /Tabs %}
 
-### Multilingual model example
+### 多语言模型示例
 
 {% TabbedCodeBlock %}
 
@@ -88,4 +88,4 @@ const embeddings = embedder.generate(multilingual_texts)
 
 {% /TabbedCodeBlock %}
 
-For further details on VoyageAI's models check the [documentation](https://docs.voyageai.com/docs/introduction) and the [blogs](https://blog.voyageai.com/).
+如需了解更多关于 VoyageAI 模型的信息，请查阅其[文档](https://docs.voyageai.com/docs/introduction)和[博客](https://blog.voyageai.com/)。

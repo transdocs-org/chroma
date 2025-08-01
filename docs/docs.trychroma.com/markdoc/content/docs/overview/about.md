@@ -1,46 +1,46 @@
-# About
+# 关于我们
 
-{% Banner type="tip" title="We are hiring" %}
-We are hiring software engineers and applied research scientists. [View open roles](https://careers.trychroma.com/)
+{% Banner type="tip" title="我们在招聘" %}
+我们正在招聘软件工程师和应用研究科学家。[查看开放职位](https://careers.trychroma.com/)
 {% /Banner %}
 
-## Who we are
+## 我们是谁
 
-Chroma as a project is coordinated by a small team of full-time employees who work at a company also called Chroma.
+Chroma 这个项目是由一个小型的全职员工团队在一家同样叫做 Chroma 的公司协调管理的。
 
-We work in the sunny Mission District in San Francisco.
+我们在旧金山阳光明媚的 Mission District 工作。
 
-Chroma was co-founded by [Jeff Huber](https://twitter.com/jeffreyhuber) (left, CEO) and [Anton Troynikov](https://twitter.com/atroyn) (right, now Advisor).
+Chroma 是由 [Jeff Huber](https://twitter.com/jeffreyhuber)（左，CEO）和 [Anton Troynikov](https://twitter.com/atroyn)（右，现任顾问）共同创立的。
 
 ![](/team.JPG)
 
-## Our commitment to open source
+## 我们对开源的承诺
 
-Chroma is a company that builds the open-source project also called Chroma.
+Chroma 是一家构建开源项目的公司，该项目的名字也叫做 Chroma。
 
-We are committed to building open source software because we believe in the flourishing of humanity that will be unlocked through the democratization of robust, safe, and aligned AI systems. These tools need to be available to a new developer just starting in ML as well as the organizations that scale ML to millions (and billions) of users. Open source is about expanding the horizon of what’s possible.
+我们致力于开发开源软件，因为我们相信通过普及强大、安全、对齐的 AI 系统，将释放人类的巨大潜力。这些工具既需要对刚开始接触机器学习的新开发者开放，也需要面向那些将机器学习扩展到数百万（甚至数十亿）用户的组织。开源意味着拓展可能性的边界。
 
-Chroma is a _commercial_ open source company. What does that mean? We believe that organizing financially sustainable teams of people to work to manage, push and integrate the project enriches the health of the project and the community.
+Chroma 是一家**商业型**开源公司。这意味着什么？我们相信，组建财务可持续的团队来管理和推动项目的整合与发展，有助于项目的健康发展和社区的繁荣。
 
-It is important that our values around this are very clear!
+我们希望清楚地表达与此相关的价值观！
 
-- We are committed to building Chroma as a ubiquitous open source standard
-- A successful Chroma-based commercial product is essential for the success of the technology, and is a win-win for everyone. Simply put, many organizations will not adopt Chroma without the option of a commercially hosted solution; and the project must be backed by a company with a viable business model. We want to build an awesome project and an awesome business.
-- We will decide what we provide exclusively in the commercial product based on clear, consistent criteria.
+- 我们致力于将 Chroma 打造成一个无处不在的开源标准
+- 基于 Chroma 的商业化产品对于技术的成功至关重要，并且对所有人来说都是双赢的结果。简单地说，许多组织不会采用 Chroma，除非有商业托管的选项；而这个项目必须由一家具有可行商业模式的公司来支持。我们想要打造一个出色的项目和出色的业务。
 
-What code will be open source? As a general rule, any feature which an individual developer would find useful will be 100% open source forever. This approach, popularized by Gitlab, is called [buyer-based open source](https://about.gitlab.com/company/stewardship/). We believe that this is essential to accomplishing our mission.
+- 我们将根据清晰、一致的标准来决定哪些功能只在商业产品中提供。
 
-Currently we don’t have any specific plans to monetize Chroma, we are working on a hosted service that will be launched as a free technical preview to make it easier for developers to get going. We are 100% focused on building valuable open source software with the community and for the community.
+哪些代码会是开源的？一般来说，任何对独立开发者有用的特性，我们都会永远 100% 开源。这种方法被 Gitlab 推广，被称为 [基于用户类型的开源](https://about.gitlab.com/company/stewardship/)。我们认为这是实现我们使命的关键。
 
+目前我们还没有具体的 Chroma 商业化计划，我们正在开发一个托管服务，该服务将以免费技术预览版的形式发布，以便开发者更容易上手。我们 100% 致力于与社区一起、为了社区而打造有价值的开源软件。
 
-## Our investors
+## 我们的投资者
 
-Chroma raised an $18M seed round led by Astasia Myers from Quiet Capital. Joining the round are angels including Naval Ravikant, Max and Jack Altman, Jordan Tigani (Motherduck), Guillermo Rauch (Vercel), Akshay Kothari (Notion), Amjad Masad (Replit), Spencer Kimball (CockroachDB), and other founders and leaders from ScienceIO, Gumroad, MongoDB, Scale, Hugging Face, Jasper and more.
+Chroma 完成了由 Quiet Capital 的 Astasia Myers 领投的 1800 万美元种子轮融资。参与本轮投资的天使投资人包括 Naval Ravikant、Max 和 Jack Altman、Jordan Tigani（Motherduck）、Guillermo Rauch（Vercel）、Akshay Kothari（Notion）、Amjad Masad（Replit）、Spencer Kimball（CockroachDB），以及来自 ScienceIO、Gumroad、MongoDB、Scale、Hugging Face、Jasper 等公司的其他创始人和领导者。
 
 {% CenteredContent %}
 ![chroma-investors](/investors.png)
 {% /CenteredContent %}
 
-Chroma raised a pre-seed in May 2022, led by Anthony Goldbloom (Kaggle) from AIX Ventures, James Cham from Bloomberg Beta, and Nat Friedman and Daniel Gross (AI Grant).
+Chroma 还在 2022 年 5 月完成了一轮 Pre-Seed 融资，由 AIX Ventures 的 Anthony Goldbloom（Kaggle 创始人）、Bloomberg Beta 的 James Cham，以及 Nat Friedman 和 Daniel Gross（AI Grant）领投。
 
-We're excited to work with a deep set of investors and enterpreneurs who have invested in and built some of the most successful open-source projects in the world.
+我们非常激动能够与一群经验丰富的投资者和创业者合作，他们曾投资并创建了世界上最成功的开源项目。

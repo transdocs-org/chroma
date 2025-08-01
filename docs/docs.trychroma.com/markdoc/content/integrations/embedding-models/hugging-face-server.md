@@ -5,27 +5,27 @@ name: 'Hugging Face Server'
 
 # Hugging Face Server
 
-Chroma provides a convenient wrapper for HuggingFace Text Embedding Server, a standalone server that provides text embeddings via a REST API. You can read more about it [**here**](https://github.com/huggingface/text-embeddings-inference).
+Chroma 为 HuggingFace 文本嵌入服务器提供了一个便捷的封装，这是一个通过 REST API 提供文本嵌入的独立服务器。你可以 [**这里**](https://github.com/huggingface/text-embeddings-inference) 阅读更多相关内容。
 
-## Setting Up The Server
+## 服务器设置
 
-To run the embedding server locally you can run the following command from the root of the Chroma repository. The docker compose command will run Chroma and the embedding server together.
+要在本地运行嵌入服务器，可以从 Chroma 仓库根目录运行以下命令。docker compose 命令将同时运行 Chroma 和嵌入服务器。
 
 ```terminal
 docker compose -f examples/server_side_embeddings/huggingface/docker-compose.yml up -d
 ```
 
-or
+或者
 
 ```terminal
 docker run -p 8001:80 -d -rm --name huggingface-embedding-server ghcr.io/huggingface/text-embeddings-inference:cpu-0.3.0 --model-id BAAI/bge-small-en-v1.5 --revision -main
 ```
 
 {% Banner type="note" %}
-The above docker command will run the server with the `BAAI/bge-small-en-v1.5` model. You can find more information about running the server in docker [**here**](https://github.com/huggingface/text-embeddings-inference#docker).
+上面的 docker 命令将使用 `BAAI/bge-small-en-v1.5` 模型运行服务器。你可以在 [**这里**](https://github.com/huggingface/text-embeddings-inference#docker) 找到有关在 docker 中运行服务器的更多信息。
 {% /Banner %}
 
-## Usage
+## 使用方法
 
 {% TabbedCodeBlock %}
 
@@ -40,7 +40,6 @@ huggingface_ef = HuggingFaceEmbeddingServer(url="http://localhost:8001/embed")
 
 {% Tab label="typescript" %}
 
-
 ```typescript
 // npm install @chroma-core/huggingface-server
 
@@ -48,10 +47,10 @@ import { HuggingFaceEmbeddingServerFunction } from '@chroma-core/huggingface-ser
 
 const embedder = new HuggingFaceEmbeddingServerFunction({ url: "http://localhost:8001/embed" })
 
-// use directly
+// 直接使用
 const embeddings = embedder.generate(["document1","document2"])
 
-// pass documents to query for .add and .query
+// 传递文档以进行 .add 和 .query
 let collection = await client.createCollection({name: "name", embeddingFunction: embedder})
 collection = await client.getCollection({name: "name", embeddingFunction: embedder})
 ```
@@ -59,12 +58,12 @@ collection = await client.getCollection({name: "name", embeddingFunction: embedd
 {% /Tab %}
 {% /TabbedCodeBlock %}
 
-The embedding model is configured on the server side. Check the docker-compose file in `examples/server_side_embeddings/huggingface/docker-compose.yml` for an example of how to configure the server.
+嵌入模型在服务器端配置。查看 `examples/server_side_embeddings/huggingface/docker-compose.yml` 中的 docker-compose 文件，了解如何配置服务器的示例。
 
-## Authentication
+## 身份验证
 
-The embedding server can be configured to only allow usage with API keys. 
-You can use authentication in the chroma clients:
+嵌入服务器可以配置为仅允许使用 API 密钥进行访问。
+你可以在 chroma 客户端中使用身份验证：
 
 {% TabbedCodeBlock %}
 
@@ -78,7 +77,6 @@ huggingface_ef = HuggingFaceEmbeddingServer(url="http://localhost:8001/embed", a
 {% /Tab %}
 
 {% Tab label="typescript" %}
-
 
 ```typescript
 import  {HuggingFaceEmbeddingServerFunction} from 'chromadb';

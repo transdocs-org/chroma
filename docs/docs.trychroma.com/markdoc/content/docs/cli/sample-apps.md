@@ -1,22 +1,22 @@
-# Sample Apps
+# 示例应用
 
 {% Banner type="tip" %}
-This CLI command is available on Chroma 1.0.4 and later. 
+此 CLI 命令适用于 Chroma 1.0.4 及更高版本。
 {% /Banner %}
 
-The Chroma team regularly releases sample AI applications powered by Chroma, which you can use to learn about retrieval, building with AI, and as a jumping-off board for your own projects.
+Chroma 团队定期发布由 Chroma 提供支持的示例 AI 应用程序，你可以通过这些示例学习检索技术、AI 构建方法，并作为你自己项目的起点。
 
-The CLI makes it easy to install and set up the Chroma sample apps on your local machine with the `chroma install` command.
+使用 `chroma install` 命令，CLI 工具可以轻松地在你的本地机器上安装和配置 Chroma 示例应用。
 
-To install a sample app simply run
+要安装某个示例应用，只需运行：
 
 ```terminal
-chroma install [app_name]
+chroma install [应用名称]
 ```
 
-The CLI will walk you through any particular customization you can make, and setting up your environment.
+CLI 会引导你进行任何可选的自定义设置，并帮助你配置环境。
 
-To see a full list of available sample app, use the `list` argument:
+要查看所有可用示例应用的完整列表，请使用 `list` 参数：
 
 ```terminal
 chroma install --list

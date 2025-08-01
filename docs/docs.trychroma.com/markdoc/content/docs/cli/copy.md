@@ -1,47 +1,47 @@
-# Copy Chroma Collections
+# 复制 Chroma 集合
 
-Using the Chroma CLI, you can copy collections from a local Chroma server to Chroma Cloud and vice versa.
+使用 Chroma CLI，你可以将集合从本地 Chroma 服务器复制到 Chroma Cloud，反之亦然。
 
 ```terminal
 chroma copy --from-local collections [collection names] 
 ```
 
-### Arguments
+### 参数
 
-* `collections` - Space separated list of the names of the collections you want to copy. Conflicts with `all`.
-* `all` - Instructs the CLI to copy all collections from the source DB.
-* `from-local` - Sets the copy source to a local Chroma server. By default, the CLI will try to find it at `localhost:8000`. If you have a different setup, use `path` or `host`.
-* `from-cloud` - Sets the copy source to a DB on Chroma Cloud.
-* `to-local` - Sets the copy target to a local Chroma server. By default, the CLI will try to find it at `localhost:8000`. If you have a different setup, use `path` or `host`.
-* `to-cloud` - Sets the copy target to a DB on Chroma Cloud.
-* `db` - The name of the Chroma Cloud DB with the collections you want to copy. If not provided, the CLI will prompt you to select a DB from those available on your active [profile](./profile).
-* `host` - The host of your local Chroma server. This argument conflicts with `path`.
-* `path` - The path of your local Chroma data. If provided, the CLI will use the data path to start a local Chroma server at an available port for browsing. This argument conflicts wth `host`.
+* `collections` - 要复制的集合名称的空格分隔列表。与 `all` 冲突。
+* `all` - 指示 CLI 从源数据库复制所有集合。
+* `from-local` - 将复制源设置为本地 Chroma 服务器。默认情况下，CLI 会在 `localhost:8000` 处查找它。如果你有不同的设置，请使用 `path` 或 `host`。
+* `from-cloud` - 将复制源设置为 Chroma Cloud 上的数据库。
+* `to-local` - 将复制目标设置为本地 Chroma 服务器。默认情况下，CLI 会在 `localhost:8000` 处查找它。如果你有不同的设置，请使用 `path` 或 `host`。
+* `to-cloud` - 将复制目标设置为 Chroma Cloud 上的数据库。
+* `db` - 包含你要复制的集合的 Chroma Cloud 数据库的名称。如果未提供，CLI 将提示你从活动 [profile](./profile) 中可用的数据库中选择一个。
+* `host` - 你的本地 Chroma 服务器的主机地址。此参数与 `path` 冲突。
+* `path` - 你的本地 Chroma 数据的路径。如果提供，CLI 将使用该数据路径在可用端口上启动一个本地 Chroma 服务器以供浏览。此参数与 `host` 冲突。
 
-### Copy from Local to Chroma Cloud
+### 从本地复制到 Chroma Cloud
 
 {% TabbedUseCaseCodeBlock language="Terminal" %}
 
-{% Tab label="simple" %}
+{% Tab label="简单" %}
 ```terminal
 chroma copy --from-local collections col-1 col-2 
 ```
 {% /Tab %}
 
-{% Tab label="with DB" %}
+{% Tab label="带数据库" %}
 ```terminal
 chroma copy --from-local --all --db my-db
 ```
 
 {% /Tab %}
 
-{% Tab label="host" %}
+{% Tab label="主机" %}
 ```terminal
 chroma copy --from-local --all --host http://localhost:8050 
 ```
 {% /Tab %}
 
-{% Tab label="path" %}
+{% Tab label="路径" %}
 ```terminal
 chroma copy --from-local --all --path ~/Developer/my-app/chroma 
 ```
@@ -49,30 +49,30 @@ chroma copy --from-local --all --path ~/Developer/my-app/chroma
 
 {% /TabbedUseCaseCodeBlock %}
 
-### Copy from Chroma Cloud to Local
+### 从 Chroma Cloud 复制到本地
 
 {% TabbedUseCaseCodeBlock language="Terminal" %}
 
-{% Tab label="simple" %}
+{% Tab label="简单" %}
 ```terminal
 chroma copy --from-cloud collections col-1 col-2 
 ```
 {% /Tab %}
 
-{% Tab label="with DB" %}
+{% Tab label="带数据库" %}
 ```terminal
 chroma copy --from-cloud --all --db my-db
 ```
 
 {% /Tab %}
 
-{% Tab label="host" %}
+{% Tab label="主机" %}
 ```terminal
 chroma copy --from-cloud --all --host http://localhost:8050 
 ```
 {% /Tab %}
 
-{% Tab label="path" %}
+{% Tab label="路径" %}
 ```terminal
 chroma copy --from-cloud --all --path ~/Developer/my-app/chroma 
 ```
@@ -80,6 +80,6 @@ chroma copy --from-cloud --all --path ~/Developer/my-app/chroma
 
 {% /TabbedUseCaseCodeBlock %}
 
-### Quotas
+### 配额
 
-You may run into quota limitations when copying local collections to Chroma Cloud, for example if the size of your metadata values on records is too large. If the CLI notifies you that a quota has been exceeded, you can request an increase on the Chroma Cloud dashboard. Click "Settings" on your active profile's team, and then choose the "Quotas" tab.
+将本地集合复制到 Chroma Cloud 时，可能会遇到配额限制，例如如果记录上的元数据值大小过大。如果 CLI 通知你已超过配额，你可以在 Chroma Cloud 仪表板上申请增加配额。点击你活动配置文件所在团队的 "Settings"，然后选择 "Quotas" 标签页。

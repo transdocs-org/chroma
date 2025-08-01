@@ -5,12 +5,12 @@ name: 'Cohere'
 
 # Cohere
 
-Chroma also provides a convenient wrapper around Cohere's embedding API. This embedding function runs remotely on Cohere’s servers, and requires an API key. You can get an API key by signing up for an account at [Cohere](https://dashboard.cohere.ai/welcome/register).
+Chroma 还提供了对 Cohere 嵌入 API 的便捷封装。这个嵌入函数在 Cohere 的服务器上远程运行，需要 API 密钥。您可以通过在 [Cohere](https://dashboard.cohere.ai/welcome/register) 注册账户来获取 API 密钥。
 
 {% Tabs %}
 {% Tab label="python" %}
 
-This embedding function relies on the `cohere` python package, which you can install with `pip install cohere`.
+这个嵌入函数依赖于 `cohere` Python 包，您可以使用 `pip install cohere` 来安装它。
 
 ```python
 import chromadb.utils.embedding_functions as embedding_functions
@@ -29,10 +29,10 @@ import { CohereEmbeddingFunction } from '@chroma-core/cohere';
 
 const embedder = new CohereEmbeddingFunction({ apiKey: "apiKey" })
 
-// use directly
+// 直接使用
 const embeddings = embedder.generate(["document1","document2"])
 
-// pass documents to query for .add and .query
+// 传递文档以进行 .add 和 .query
 const collection = await client.createCollection({name: "name", embeddingFunction: embedder})
 const collectionGet = await client.getCollection({name:"name", embeddingFunction: embedder})
 ```
@@ -41,9 +41,9 @@ const collectionGet = await client.getCollection({name:"name", embeddingFunction
 
 {% /Tabs %}
 
-You can pass in an optional `model_name` argument, which lets you choose which Cohere embeddings model to use. By default, Chroma uses `large` model. You can see the available models under `Get embeddings` section [here](https://docs.cohere.ai/reference/embed).
+您可以选择性地传入 `model_name` 参数，以选择要使用的 Cohere 嵌入模型。默认情况下，Chroma 使用的是 `large` 模型。您可以在 [这里](https://docs.cohere.ai/reference/embed) 的 `Get embeddings` 部分查看可用的模型。
 
-### Multilingual model example
+### 多语言模型示例
 
 {% TabbedCodeBlock %}
 
@@ -87,10 +87,9 @@ const embeddings = embedder.generate(multilingual_texts)
 
 {% /TabbedCodeBlock %}
 
-For more information on multilingual model you can read [here](https://docs.cohere.ai/docs/multilingual-language-models).
+关于多语言模型的更多信息，您可以参考 [这里](https://docs.cohere.ai/docs/multilingual-language-models)。
 
-
-### Multimodal model example
+### 多模态模型示例
 
 {% tabs group="code-lang" hideTabs=true %}
 {% Tab label="python" %}

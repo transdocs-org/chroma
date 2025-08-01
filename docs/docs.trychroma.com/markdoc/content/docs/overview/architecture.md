@@ -1,98 +1,97 @@
-# Architecture
+# 架构
 
-Chroma is designed with a modular architecture that prioritizes performance and ease of use. It scales seamlessly from local development to large-scale production, while exposing a consistent API across all deployment modes.
+Chroma 的设计采用了模块化的架构，优先考虑性能和易用性。它能够无缝扩展，从本地开发到大规模生产环境都适用，同时在所有部署模式下提供一致的 API。
 
-Chroma delegates, as much as possible, problems of data durability to trusted sub-systems such as SQLite and Cloud Object Storage, focusing the system design on core problems of data management and information retrieval.
+Chroma 尽可能将数据持久化的问题交给可信的子系统（如 SQLite 和云对象存储）来处理，使系统设计专注于数据管理和信息检索的核心问题。
 
-## Deployment Modes
+## 部署模式
 
-Chroma runs wherever you need it to, supporting you in everything from local experimentation, to large scale production workloads.
+Chroma 可以在你需要的任何地方运行，支持从本地实验到大规模生产工作负载的所有场景。
 
-- **Local**: as an embedded library - great for prototyping and experimentation.
-- **Single Node**: as a single-node server - great for small to medium scale workloads of < 10M records in a handful of collections.
-- **Distributed**: as a scalable distributed system - great for large scale production workloads, supporting millions of collections.
+- **本地模式**：作为嵌入式库使用——非常适合原型设计和实验。
+- **单节点模式**：作为单节点服务器运行——适合小型到中型工作负载，数据量在千万条记录以内，集合数量较少。
+- **分布式模式**：作为可扩展的分布式系统运行——适合大规模生产工作负载，支持数百万个集合。
 
-You can use [Chroma Cloud](https://www.trychroma.com/signup), which is a managed offering of distributed Chroma.
+你可以使用 [Chroma Cloud](https://www.trychroma.com/signup)，它是分布式 Chroma 的托管版本。
 
-## Core Components
+## 核心组件
 
-Regardless of deployment mode, Chroma is composed of five core components. Each plays a distinct role in the system and operates over the shared [Chroma data model](../overview/data-model).
+无论采用哪种部署模式，Chroma 都由五个核心组件组成。每个组件在系统中扮演着不同的角色，并基于共享的 [Chroma 数据模型](../overview/data-model) 运行。
 
-{% MarkdocImage lightSrc="/system-diagram-light.png" darkSrc="/system-diagram-dark.png" alt="Chroma System architecture" /%}
+{% MarkdocImage lightSrc="/system-diagram-light.png" darkSrc="/system-diagram-dark.png" alt="Chroma 系统架构" /%}
 
-### The Gateway
+### 网关（Gateway）
 
-The entrypoint for all client traffic.
+所有客户端流量的入口。
 
-- Exposes a consistent API across all modes.
-- Handles authentication, rate-limiting, quota management, and request validation.
-- Routes requests to downstream services.
+- 在所有模式下提供一致的 API。
+- 处理身份验证、限速、配额管理和请求验证。
+- 将请求路由到下游服务。
 
-### The Log
+### 日志（Log）
 
-Chroma’s write-ahead log.
+Chroma 的预写日志（Write-Ahead Log）。
 
-- All writes are recorded here before acknowledgment to clients.
-- Ensures atomicity across multi-record writes.
-- Provides durability and replay in distributed deployments.
+- 所有写入操作在确认给客户端之前都会记录在此。
+- 保证多条记录写入的原子性。
+- 在分布式部署中提供持久性和日志回放能力。
 
+### 查询执行器（Query Executor）
 
-### The Query Executor
+负责**所有的读操作**。
 
-Responsible for **all read operations.**
+- 支持向量相似度、全文和元数据搜索。
+- 维护内存和磁盘索引的组合，并与日志协调以提供一致的结果。
 
-- Vector similarity, full-text and metadata search.
-- Maintains a combination of in-memory and on-disk indexes, and coordinates with the Log to serve consistent results.
+### 压缩器（Compactor）
 
-### The Compactor
+定期构建和维护索引的服务。
 
-A service that periodically builds and maintains indexes.
+- 从日志中读取数据，构建更新的向量、全文和元数据索引。
+- 将物化索引数据写入共享存储。
+- 在系统数据库中更新关于新索引版本的元数据。
 
-- Reads from the Log and builds updated vector / full-text / metadata indexes.
-- Writes materialized index data to shared storage.
-- Updates the System Database with metadata about new index versions.
+### 系统数据库（System Database）
 
-### The System Database
+Chroma 的内部目录系统。
 
-Chroma’s internal catalog.
+- 跟踪租户、集合及其元数据。
+- 在分布式模式下，还管理集群状态（例如查询/压缩节点成员）。
+- 由 SQL 数据库支撑。
 
-- Tracks tenants, collections, and their metadata.
-- In distributed mode, also manages cluster state (e.g., query/compactor node membership).
-- Backed by a SQL database.
+## 存储与运行时
 
-## Storage & Runtime
+这些组件在不同部署模式下运行方式不同，尤其是在存储使用和运行时环境方面。
 
-These components operate differently depending on the deployment mode, particularly in how they use storage and the runtime they operate in.
+- 在本地和单节点模式下，所有组件共享一个进程，并使用本地文件系统来保证持久性。
+- 在 **分布式模式** 下，各组件作为独立服务部署：
+    - 日志和构建的索引存储在云对象存储中。
+    - 系统目录由 SQL 数据库支撑。
+    - 所有服务使用本地 SSD 作为缓存，以减少对象存储的延迟和成本。
 
-- In Local and Single Node mode, all components share a process and use the local filesystem for durability.
-- In **Distributed** mode, components are deployed as independent services.
-    - The log and built indexes are stored in cloud object storage.
-    - The system catalog is backed by a SQL database.
-    - All services use local SSDs as caches to reduce object storage latency and cost.
+## 请求流程
 
-## Request Sequences
+### 读路径
 
-### Read Path
+{% MarkdocImage lightSrc="/read-path-light.png" darkSrc="/read-path-dark.png" alt="Chroma 系统读路径" /%}
 
-{% MarkdocImage lightSrc="/read-path-light.png" darkSrc="/read-path-dark.png" alt="Chroma System Read Path" /%}
+1. 请求到达网关，进行身份验证、配额检查、限速处理，并被转换为逻辑执行计划。
+2. 该逻辑计划被路由到相关的查询执行器。在分布式 Chroma 中，使用基于集合 ID 的环形哈希（rendezvous hash）将查询路由到正确的节点，以保证缓存一致性。
+3. 查询执行器将逻辑计划转换为物理执行计划，在其存储层中读取数据并执行查询。查询执行器会从日志中拉取数据以确保一致性读取。
+4. 请求结果返回网关，最终返回给客户端。
 
-1. Request arrives at the gateway, where it is authenticated, checked against quota limits, rate limited and transformed into a logical plan.
-2. This logical plan is routed to the relevant query executor. In distributed Chroma, a rendezvous hash on the collection id is used to route the query to the correct nodes and provide cache coherence.
-3. The query executor transforms the logical plan into a physical plan for execution, reads from its storage layer, and performs the query. The query executor pulls data from the log to ensure a consistent read.
-4. The request is returned to the gateway and subsequently to the client.
+### 写路径
 
-### Write Path
+{% MarkdocImage lightSrc="/write-path-light.png" darkSrc="/write-path-dark.png" alt="Chroma 系统写路径" /%}
 
-{% MarkdocImage lightSrc="/write-path-light.png" darkSrc="/write-path-dark.png" alt="Chroma System Write Path" /%}
+1. 请求到达网关，进行身份验证、配额检查、限速处理，并被转换为操作日志。
+2. 操作日志被转发到预写日志（Write-Ahead Log）以确保持久性。
+3. 预写日志完成持久化后，网关向客户端确认写入成功。
+4. 压缩器定期从预写日志中拉取数据，并基于累积的写入操作构建新的索引版本。这些索引优化了读取性能，包括向量、全文和元数据索引。
+5. 新索引版本构建完成后，会被写入存储并在系统数据库中注册。
 
-1. Request arrives at the gateway, where it is authenticated, checked against quota limits, rate limited and then transformed into a log of operations.
-2. The log of operations is forwarded to the write-ahead-log for persistence.
-3. After being persisted by the write-ahead-log, the gateway acknowledges the write.
-4. The compactor periodically pulls from the write-ahead-log and builds new index versions from the accumulated writes. These indexes are optimized for read performance and include vector, full-text, and metadata indexes.
-5. Once new index versions are built, they are written to storage and registered in the system database.
+## 权衡
 
-## Tradeoffs
+分布式 Chroma 基于对象存储构建，以确保数据的持久性和低成本。对象存储具有极高的吞吐量，足以轻松饱和单个节点的网络带宽，但其延迟基线较高（约 10-20ms）。
 
-Distributed Chroma is built on object storage in order to ensure the durability of your data and to deliver low costs. Object storage has extremely high throughput, easily capable of saturating a single nodes network bandwidth, but this comes at the cost of a relatively high latency floor of ~10-20ms.
-
-In order to reduce the overhead of this latency floor, Distributed Chroma aggressively leverage SSD caching. When you first query a collection, a subset of the data needed to answer the query will be read selectively from object storage, incurring a cold-start latency penalty. In the background, the SSD cache will be loaded with the data for the collection. After the collection is fully warm, queries will be served entirely from SSD.
+为了降低这种延迟基线带来的开销，分布式 Chroma 积极利用 SSD 缓存。当你首次查询某个集合时，部分所需数据会从对象存储中选择性读取，此时会受到冷启动延迟的影响。在后台，SSD 缓存将加载该集合的数据。当集合完全预热后，查询将完全从 SSD 提供服务。

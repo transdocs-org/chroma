@@ -1,6 +1,6 @@
-# Ephemeral Client
+# 临时客户端
 
-In Python, you can run a Chroma server in-memory and connect to it with the ephemeral client:
+在 Python 中，你可以运行一个内存中的 Chroma 服务器，并通过临时客户端连接到它：
 
 ```python
 import chromadb
@@ -8,6 +8,6 @@ import chromadb
 client = chromadb.EphemeralClient()
 ```
 
-The `EphemeralClient()` method starts a Chroma server in-memory and also returns a client with which you can connect to it.
+`EphemeralClient()` 方法会在内存中启动一个 Chroma 服务器，并返回一个可用于连接该服务器的客户端。
 
-This is a great tool for experimenting with different embedding functions and retrieval techniques in a Python notebook, for example. If you don't need data persistence, the ephemeral client is a good choice for getting up and running with Chroma.
+例如，这是一个在 Python 笔记本中尝试不同嵌入函数和检索技术的绝佳工具。如果你不需要数据持久化，临时客户端是一个快速上手 Chroma 的理想选择。

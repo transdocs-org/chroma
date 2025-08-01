@@ -5,32 +5,32 @@ name: "Google Gemini"
 
 # Google Gemini
 
-Chroma provides a convenient wrapper around Google's Generative AI embedding API. This embedding function runs remotely on Google's servers, and requires an API key.
+Chroma 为 Google 的生成式 AI 嵌入 API 提供了一个便捷的封装。该嵌入函数在 Google 的服务器上远程运行，需要 API 密钥。
 
-You can get an API key by signing up for an account at [Google MakerSuite](https://makersuite.google.com/).
+您可以通过访问 [Google MakerSuite](https://makersuite.google.com/) 注册账户来获取 API 密钥。
 
 {% Tabs %}
 
 {% Tab label="python" %}
 
-This embedding function relies on the `google-generativeai` python package, which you can install with `pip install google-generativeai`.
+该嵌入函数依赖于 `google-generativeai` Python 包，您可以通过 `pip install google-generativeai` 安装它。
 
 ```python
-# import
+# 导入
 import chromadb.utils.embedding_functions as embedding_functions
 
-# use directly
+# 直接使用
 google_ef  = embedding_functions.GoogleGenerativeAiEmbeddingFunction(api_key="YOUR_API_KEY")
 google_ef(["document1","document2"])
 
-# pass documents to query for .add and .query
+# 传递文档以进行 .add 和 .query 操作
 collection = client.create_collection(name="name", embedding_function=google_ef)
 collection = client.get_collection(name="name", embedding_function=google_ef)
 ```
 
-You can view a more [complete example](https://github.com/chroma-core/chroma/tree/main/examples/gemini) chatting over documents with Gemini embedding and langauge models.
+您可以查看一个更[完整的示例](https://github.com/chroma-core/chroma/tree/main/examples/gemini)，展示如何使用 Gemini 嵌入和语言模型进行文档对话。
 
-For more info - please visit the [official Google python docs](https://ai.google.dev/tutorials/python_quickstart).
+更多信息请访问 [Google 官方 Python 文档](https://ai.google.dev/tutorials/python_quickstart)。
 
 {% /Tab %}
 
@@ -46,10 +46,10 @@ const embedder = new GoogleGenerativeAiEmbeddingFunction({
   apiKey: "<YOUR API KEY>",
 });
 
-// use directly
+// 直接使用
 const embeddings = await embedder.generate(["document1", "document2"]);
 
-// pass documents to query for .add and .query
+// 传递文档以进行 .add 和 .query 操作
 const collection = await client.createCollection({
   name: "name",
   embeddingFunction: embedder,
@@ -60,9 +60,9 @@ const collectionGet = await client.getCollection({
 });
 ```
 
-You can view a more [complete example using Node](https://github.com/chroma-core/chroma/blob/main/clients/js/examples/node/app.js).
+您可以查看一个更[完整的 Node 示例](https://github.com/chroma-core/chroma/blob/main/clients/js/examples/node/app.js)。
 
-For more info - please visit the [official Google JS docs](https://ai.google.dev/tutorials/node_quickstart).
+更多信息请访问 [Google 官方 JS 文档](https://ai.google.dev/tutorials/node_quickstart)。
 
 {% /Tab %}
 

@@ -1,8 +1,8 @@
 ---
-title: Collection
+title: 集合
 ---
 
-# Python Collection
+# Python 集合
 
 ```python
 class Collection(BaseModel)
@@ -14,11 +14,11 @@ class Collection(BaseModel)
 def count() -> int
 ```
 
-The total number of embeddings added to the database
+添加到数据库中的嵌入向量总数
 
-**Returns**:
+**返回值**:
 
-- `int` - The total number of embeddings added to the database
+- `int` - 添加到数据库中的嵌入向量总数
 
 ## add
 
@@ -29,27 +29,25 @@ def add(ids: OneOrMany[ID],
         documents: Optional[OneOrMany[Document]] = None) -> None
 ```
 
-Add embeddings to the data store.
+将嵌入向量添加到数据存储中。
 
-**Arguments**:
+**参数**:
 
-- `ids` - The ids of the embeddings you wish to add
-- `embeddings` - The embeddings to add. If None, embeddings will be computed based on the documents using the embedding_function set for the Collection. Optional.
-- `metadatas` - The metadata to associate with the embeddings. When querying, you can filter on this metadata. Optional.
-- `documents` - The documents to associate with the embeddings. Optional.
+- `ids` - 要添加的嵌入向量的 ID
+- `embeddings` - 要添加的嵌入向量。如果为 None，则会基于 documents 使用 Collection 中设置的 embedding_function 计算嵌入向量。可选参数。
+- `metadatas` - 与嵌入向量关联的元数据。在查询时，可以基于这些元数据进行过滤。可选参数。
+- `documents` - 与嵌入向量关联的文档。可选参数。
 
-
-**Returns**:
+**返回值**:
 
   None
 
+**异常**:
 
-**Raises**:
-
-- `ValueError` - If you don't provide either embeddings or documents
-- `ValueError` - If the length of ids, embeddings, metadatas, or documents don't match
-- `ValueError` - If you don't provide an embedding function and don't provide embeddings
-- `DuplicateIDError` - If you provide an id that already exists
+- `ValueError` - 如果既没有提供 embeddings 也没有提供 documents
+- `ValueError` - 如果 ids、embeddings、metadatas 或 documents 的长度不一致
+- `ValueError` - 如果没有提供 embedding function 且没有提供 embeddings
+- `DuplicateIDError` - 如果提供的 ID 已经存在
 
 ## get
 
@@ -62,22 +60,20 @@ def get(ids: Optional[OneOrMany[ID]] = None,
         include: Include = ["metadatas", "documents"]) -> GetResult
 ```
 
-Get embeddings and their associate data from the data store. If no ids or where filter is provided returns
-all embeddings up to limit starting at offset.
+从数据存储中获取嵌入向量及其相关数据。如果没有提供 ids 或 where 过滤条件，则返回从 offset 开始的最多 limit 个嵌入向量。
 
-**Arguments**:
+**参数**:
 
-- `ids` - The ids of the embeddings to get. Optional.
-- `where` - A Where type dict used to filter results by. E.g. `{$and: [{"color" : "red"}, {"price": 4.20}]}`. Optional.
-- `limit` - The number of documents to return. Optional.
-- `offset` - The offset to start returning results from. Useful for paging results with limit. Optional.
-- `where_document` - A WhereDocument type dict used to filter by the documents. E.g. `{"$contains" : "hello"}`. Optional.
-- `include` - A list of what to include in the results. Can contain `"embeddings"`, `"metadatas"`, `"documents"`. Ids are always included. Defaults to `["metadatas", "documents"]`. Optional.
+- `ids` - 要获取的嵌入向量的 ID。可选参数。
+- `where` - 用于按元数据过滤结果的字典类型 Where。例如 `{$and: [{"color" : "red"}, {"price": 4.20}]}`。可选参数。
+- `limit` - 要返回的文档数量。可选参数。
+- `offset` - 开始返回结果的偏移量。与 limit 结合用于分页结果。可选参数。
+- `where_document` - 用于按文档内容过滤的字典类型 WhereDocument。例如 `{"$contains" : "hello"}`。可选参数。
+- `include` - 指定结果中包含的内容。可以包含 `"embeddings"`、`"metadatas"`、`"documents"`。ID 始终包含在内。默认值为 `["metadatas", "documents"]`。可选参数。
 
+**返回值**:
 
-**Returns**:
-
-- `GetResult` - A GetResult object containing the results.
+- `GetResult` - 包含结果的 GetResult 对象。
 
 ## peek
 
@@ -85,16 +81,15 @@ all embeddings up to limit starting at offset.
 def peek(limit: int = 10) -> GetResult
 ```
 
-Get the first few results in the database up to limit
+获取数据库中的前几条结果，最多到 limit。
 
-**Arguments**:
+**参数**:
 
-- `limit` - The number of results to return.
+- `limit` - 要返回的结果数量。
 
+**返回值**:
 
-**Returns**:
-
-- `GetResult` - A GetResult object containing the results.
+- `GetResult` - 包含结果的 GetResult 对象。
 
 ## query
 
@@ -110,28 +105,26 @@ def query(
                             "distances"]) -> QueryResult
 ```
 
-Get the n_results nearest neighbor embeddings for provided query_embeddings or query_texts.
+为提供的 query_embeddings 或 query_texts 获取 n_results 个最近邻的嵌入向量。
 
-**Arguments**:
+**参数**:
 
-- `query_embeddings` - The embeddings to get the closest neighbors of. Optional.
-- `query_texts` - The document texts to get the closest neighbors of. Optional.
-- `ids` - The list of ids to limit search space to. Optional.
-- `n_results` - The number of neighbors to return for each query_embedding or query_texts. Optional.
-- `where` - A Where type dict used to filter results by. E.g. `{$and: [{"color" : "red"}, {"price": 4.20}]}`. Optional.
-- `where_document` - A WhereDocument type dict used to filter by the documents. E.g. `{"$contains" : "hello"}`. Optional.
-- `include` - A list of what to include in the results. Can contain `"embeddings"`, `"metadatas"`, `"documents"`, `"distances"`. Ids are always included. Defaults to `["metadatas", "documents", "distances"]`. Optional.
+- `query_embeddings` - 要查找最近邻的嵌入向量。可选参数。
+- `query_texts` - 要查找最近邻的文档文本。可选参数。
+- `ids` - 限制搜索空间的 ID 列表。可选参数。
+- `n_results` - 每个 query_embedding 或 query_texts 返回的邻居数量。可选参数。
+- `where` - 用于按元数据过滤结果的字典类型 Where。例如 `{$and: [{"color" : "red"}, {"price": 4.20}]}`。可选参数。
+- `where_document` - 用于按文档内容过滤的字典类型 WhereDocument。例如 `{"$contains" : "hello"}`。可选参数。
+- `include` - 指定结果中包含的内容。可以包含 `"embeddings"`、`"metadatas"`、`"documents"`、`"distances"`。ID 始终包含在内。默认值为 `["metadatas", "documents", "distances"]`。可选参数。
 
+**返回值**:
 
-**Returns**:
+- `QueryResult` - 包含结果的 QueryResult 对象。
 
-- `QueryResult` - A QueryResult object containing the results.
+**异常**:
 
-
-**Raises**:
-
-- `ValueError` - If you don't provide either query_embeddings or query_texts
-- `ValueError` - If you provide both query_embeddings and query_texts
+- `ValueError` - 如果既没有提供 query_embeddings 也没有提供 query_texts
+- `ValueError` - 如果同时提供了 query_embeddings 和 query_texts
 
 ## modify
 
@@ -140,15 +133,14 @@ def modify(name: Optional[str] = None,
            metadata: Optional[CollectionMetadata] = None) -> None
 ```
 
-Modify the collection name or metadata
+修改集合的名称或元数据。
 
-**Arguments**:
+**参数**:
 
-- `name` - The updated name for the collection. Optional.
-- `metadata` - The updated metadata for the collection. Optional.
+- `name` - 集合的更新名称。可选参数。
+- `metadata` - 集合的更新元数据。可选参数。
 
-
-**Returns**:
+**返回值**:
 
   None
 
@@ -161,17 +153,16 @@ def update(ids: OneOrMany[ID],
            documents: Optional[OneOrMany[Document]] = None) -> None
 ```
 
-Update the embeddings, metadatas or documents for provided ids.
+更新指定 ID 的嵌入向量、元数据或文档。
 
-**Arguments**:
+**参数**:
 
-- `ids` - The ids of the embeddings to update
-- `embeddings` - The embeddings to add. If None, embeddings will be computed based on the documents using the embedding_function set for the Collection. Optional.
-- `metadatas` - The metadata to associate with the embeddings. When querying, you can filter on this metadata. Optional.
-- `documents` - The documents to associate with the embeddings. Optional.
+- `ids` - 要更新的嵌入向量的 ID
+- `embeddings` - 要添加的嵌入向量。如果为 None，则会基于 documents 使用 Collection 中设置的 embedding_function 计算嵌入向量。可选参数。
+- `metadatas` - 与嵌入向量关联的元数据。在查询时，可以基于这些元数据进行过滤。可选参数。
+- `documents` - 与嵌入向量关联的文档。可选参数。
 
-
-**Returns**:
+**返回值**:
 
   None
 
@@ -184,19 +175,18 @@ def upsert(ids: OneOrMany[ID],
            documents: Optional[OneOrMany[Document]] = None) -> None
 ```
 
-Update the embeddings, metadatas or documents for provided ids, or create them if they don't exist.
+更新提供的 ID 的 embeddings、metadatas 或 documents，如果不存在则创建它们。
 
-**Arguments**:
+**参数**:
 
-- `ids` - The ids of the embeddings to update
-- `embeddings` - The embeddings to add. If None, embeddings will be computed based on the documents using the embedding_function set for the Collection. Optional.
-- `metadatas` - The metadata to associate with the embeddings. When querying, you can filter on this metadata. Optional.
-- `documents` - The documents to associate with the embeddings. Optional.
+- `ids` - 要更新的 embedding 的 ID
+- `embeddings` - 要添加的 embeddings。如果为 None，则会根据 documents 使用集合中设置的 embedding_function 来计算 embeddings。可选。
+- `metadatas` - 要与 embeddings 关联的元数据。在查询时，可以基于此元数据进行过滤。可选。
+- `documents` - 要与 embeddings 关联的文档。可选。
 
+**返回值**:
 
-**Returns**:
-
-  None
+  无
 
 ## delete
 
@@ -206,15 +196,14 @@ def delete(ids: Optional[IDs] = None,
            where_document: Optional[WhereDocument] = None) -> None
 ```
 
-Delete the embeddings based on ids and/or a where filter
+根据 ID 和/或过滤条件删除 embeddings
 
-**Arguments**:
+**参数**:
 
-- `ids` - The ids of the embeddings to delete
-- `where` - A Where type dict used to filter the delection by. E.g. `{$and: [{"color" : "red"}, {"price": 4.20}]}`. Optional.
-- `where_document` - A WhereDocument type dict used to filter the deletion by the document content. E.g. `{"$contains" : "hello"}`. Optional.
+- `ids` - 要删除的 embeddings 的 ID
+- `where` - 用于过滤删除操作的 Where 类型字典。例如：`{$and: [{"color" : "red"}, {"price": 4.20}]}`。可选。
+- `where_document` - 用于根据文档内容过滤删除操作的 WhereDocument 类型字典。例如：`{"$contains" : "hello"}`。可选。
 
+**返回值**:
 
-**Returns**:
-
-  None
+  无

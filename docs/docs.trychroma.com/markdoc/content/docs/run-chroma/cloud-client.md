@@ -1,15 +1,15 @@
-# Cloud Client
+# 云客户端
 
-You can use the `CloudClient` to create a client connecting to Chroma Cloud.
+你可以使用 `CloudClient` 创建一个连接到 Chroma 云服务的客户端。
 
 {% TabbedCodeBlock %}
 
 {% Tab label="python" %}
 ```python
 client = CloudClient(
-    tenant='Tenant ID',
-    database='Database name',
-    api_key='Chroma Cloud API key'
+    tenant='租户 ID',
+    database='数据库名称',
+    api_key='Chroma 云服务 API 密钥'
 )
 ```
 {% /Tab %}
@@ -18,9 +18,9 @@ client = CloudClient(
 
 ```typescript
 const client = new CloudClient({
-    tenant: 'Tenant ID',
-    database: 'Database name',
-    apiKey: 'Chroma Cloud API key',
+    tenant: '租户 ID',
+    database: '数据库名称',
+    apiKey: 'Chroma 云服务 API 密钥',
 });
 ```
 
@@ -28,9 +28,9 @@ const client = new CloudClient({
 
 {% /TabbedCodeBlock %}
 
-The `CloudClient` can be instantiated just with the API key argument. In which case, we will resolve the tenant and DB from Chroma Cloud. Note our auto-resolution will work only if the provided API key is scoped to a single DB.
+`CloudClient` 也可以仅通过 API 密钥参数进行实例化。在这种情况下，我们将从 Chroma 云服务中解析租户和数据库信息。请注意，我们的自动解析仅在提供的 API 密钥限定于单个数据库时有效。
 
-If you set the `CHROMA_API_KEY`, `CHROMA_TENANT`, and the `CHROMA_DATABASE` environment variables, you can simply instantiate a `CloudClient` with no arguments:
+如果你设置了 `CHROMA_API_KEY`、`CHROMA_TENANT` 和 `CHROMA_DATABASE` 环境变量，则可以直接实例化一个不带参数的 `CloudClient`：
 
 {% TabbedCodeBlock %}
 

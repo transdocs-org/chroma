@@ -1,19 +1,19 @@
-# Browsing Collections
+# 浏览集合
 
-You can use the Chroma CLI to inspect your collections with an in-terminal UI. The CLI supports browsing collections from DBs on Chroma Cloud or a local Chroma server.
+你可以使用 Chroma CLI 通过终端内的 UI 来查看你的集合。CLI 支持浏览来自 Chroma Cloud 或本地 Chroma 服务器的数据库中的集合。
 
 ```terminal
 chroma browse [collection_name] [--local]
 ```
 
-### Arguments
+### 参数
 
-* `collection_name` - The name of the collection you want to browse. This is a required argument.
-* `db_name` - The name of the Chroma Cloud DB with the collection you want to browse. If not provided, the CLI will prompt you to select a DB from those available on your active [profile](./profile). For local Chroma, the CLI uses the `default_database`.
-* `local` - Instructs the CLI to find your collection on a local Chroma server at `http://localhost:8000`. If your local Chroma server is available on a different hostname, use the `host` argument instead.
-* `host` - The host of your local Chroma server. This argument conflicts with `path`.
-* `path` - The path of your local Chroma data. If provided, the CLI will use the data path to start a local Chroma server at an available port for browsing. This argument conflicts wth `host`.
-* `theme` - The theme of your terminal (`light` or `dark`). Optimizes the UI colors for your terminal's theme. You only need to provide this argument once, and the CLI will persist it in `~/.chroma/config.json`.
+* `collection_name` - 你要浏览的集合的名称。这是一个必填参数。
+* `db_name` - 包含你想要浏览的集合的 Chroma Cloud 数据库的名称。如果没有提供，CLI 将提示你从当前 [profile](./profile) 中可用的数据库中选择一个。对于本地 Chroma，CLI 使用 `default_database`。
+* `local` - 指示 CLI 在 `http://localhost:8000` 上查找你的本地 Chroma 服务器中的集合。如果你的本地 Chroma 服务器在不同的主机名上可用，请使用 `host` 参数代替。
+* `host` - 你的本地 Chroma 服务器的主机名。此参数与 `path` 参数冲突。
+* `path` - 你的本地 Chroma 数据的路径。如果提供了该参数，CLI 将使用该数据路径在可用端口上启动一个本地 Chroma 服务器以进行浏览。此参数与 `host` 参数冲突。
+* `theme` - 你的终端的主题（`light` 或 `dark`）。优化 UI 颜色以适配你的终端主题。你只需提供一次此参数，CLI 将其持久化保存在 `~/.chroma/config.json` 中。
 
 {% TabbedUseCaseCodeBlock language="Terminal" %}
 
@@ -49,21 +49,21 @@ chroma browse my-local-collection --path ~/Developer/my-app/chroma
 
 {% /TabbedUseCaseCodeBlock %}
 
-### The Collection Browser UI
+### 集合浏览器 UI
 
-#### Main View
+#### 主视图
 
-The main view of the Collection Browser shows you a tabular view of your data with record IDs, documents, and metadata. You can navigate the table using arrows, and expand each cell with `Return`. Only 100 records are loaded initially, and the next batch will load as you scroll down the table.
+集合浏览器的主视图以表格形式展示你的数据，包括记录 ID、文档和元数据。你可以使用箭头键在表格中导航，并通过按下 `Return` 键展开每个单元格。初始只加载了 100 条记录，当你向下滚动表格时会继续加载下一批数据。
 
 {% CenteredContent %}
 ![cli-browse](/cli/cli-browse.png)
 {% /CenteredContent %}
 
-#### Search
+#### 搜索
 
-You can enter the query editor by hitting `s` on the main view. This form allows you to submit `.get()` queries on your collection. You can edit the form by hitting `e` to enter edit mode, use `space` to toggle the metadata operator, and `Esc` to quit editing mode. To submit a query use `Return`.
+你可以通过在主视图中按下 `s` 键进入查询编辑器。该表单允许你对集合提交 `.get()` 查询。你可以通过按下 `e` 键进入编辑模式，使用 `space` 键切换元数据操作符，按下 `Esc` 键退出编辑模式。要提交查询，请按下 `Return` 键。
 
-The query editor persists your edits after you submit. You can clear it by hitting `c`. When viewing the results you can hit `s` to get back to the query editor, or `Esc` to get back to the main view.
+提交后，查询编辑器将保留你的编辑内容。你可以通过按下 `c` 键清除编辑内容。在查看结果时，你可以按下 `s` 键返回查询编辑器，或按下 `Esc` 键返回主视图。
 
 {% CenteredContent %}
 ![cli-browse](/cli/cli-browse-query.png)

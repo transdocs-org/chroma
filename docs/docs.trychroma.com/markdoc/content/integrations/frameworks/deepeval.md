@@ -5,40 +5,40 @@ name: DeepEval
 
 # DeepEval
 
-[DeepEval](https://www.deepeval.com/integrations/vector-databases/chroma) is the open-source LLM evaluation framework. It provides 20+ research-backed metrics to help you evaluate and pick the best hyperparameters for your LLM system.
+[DeepEval](https://www.deepeval.com/integrations/vector-databases/chroma) 是一个开源的LLM（大语言模型）评估框架。它提供了20多个基于研究成果的评估指标，帮助您评估并选择LLM系统的最佳超参数。
 
-When building a RAG system, you can use DeepEval to pick the best parameters for your **Choma retriever** for optimal retrieval performance and accuracy: `n_results`, `distance_function`, `embedding_model`, `chunk_size`, etc.
+在构建RAG系统时，您可以使用DeepEval为您的 **Chroma检索器** 选择最佳参数，以实现最佳的检索性能和准确性：`n_results`, `distance_function`, `embedding_model`, `chunk_size` 等。
 
 {% Banner type="tip" %}
-For more information on how to use DeepEval, see the [DeepEval docs](https://www.deepeval.com/docs/getting-started).
+有关如何使用DeepEval的更多信息，请参阅 [DeepEval文档](https://www.deepeval.com/docs/getting-started)。
 {% /Banner %}
 
-## Getting Started
+## 开始使用
 
-### Step 1: Installation
+### 步骤 1：安装
 
 ```CLI
 pip install deepeval
 ```
 
-### Step 2: Preparing a Test Case
+### 步骤 2：准备测试用例
 
-Prepare a query, generate a response using your RAG pipeline, and store the retrieval context from your Chroma retriever to create an `LLMTestCase` for evaluation.
+准备一个查询，使用您的RAG流水线生成响应，并从Chroma检索器中存储检索上下文，以创建一个用于评估的 `LLMTestCase`。
 
 ```python
 ...
 
 def chroma_retriever(query):
-    query_embedding = model.encode(query).tolist() # Replace with your embedding model
+    query_embedding = model.encode(query).tolist() # 替换为您的嵌入模型
     res = collection.query(
         query_embeddings=[query_embedding],
         n_results=3
     )
     return res["metadatas"][0][0]["text"]
 
-query = "How does Chroma work?"
+query = "Chroma是如何工作的？"
 retrieval_context = search(query)
-actual_output = generate(query, retrieval_context)  # Replace with your LLM function
+actual_output = generate(query, retrieval_context)  # 替换为您的LLM函数
 
 test_case = LLMTestCase(
     input=query,
@@ -47,12 +47,12 @@ test_case = LLMTestCase(
 )
 ```
 
-### Step 3: Evaluation
+### 步骤 3：评估
 
-Define retriever metrics like `Contextual Precision`, `Contextual Recall`, and `Contextual Relevancy` to evaluate test cases. Recall ensures enough vectors are retrieved, while relevancy reduces noise by filtering out irrelevant ones.
+定义检索器指标，如 `Contextual Precision（上下文精度）`、`Contextual Recall（上下文召回率）` 和 `Contextual Relevancy（上下文相关性）` 来评估测试用例。召回率确保检索到足够的向量，而相关性通过过滤不相关的向量来减少噪声。
 
 {% Banner type="tip" %}
-Balancing recall and relevancy is key. `distance_function` and `embedding_model` affects recall, while `n_results` and `chunk_size` impact relevancy.  
+平衡召回率和相关性是关键。`distance_function` 和 `embedding_model` 影响召回率，而 `n_results` 和 `chunk_size` 影响相关性。
 {% /Banner %}
 
 ```python
@@ -74,22 +74,22 @@ evaluate(
 )
 ```
 
-### 4. Visualize and Optimize
+### 步骤 4：可视化和优化
 
-To visualize evaluation results, log in to the [Confident AI (DeepEval platform)](https://www.confident-ai.com/) by running:
+要可视化评估结果，请运行以下命令登录 [Confident AI（DeepEval平台）](https://www.confident-ai.com/)：
 
 ```
 deepeval login
 ```
 
-When logged in, running `evaluate` will automatically send evaluation results to Confident AI, where you can visualize and analyze performance metrics, identify failing retriever hyperparameters, and optimize your Chroma retriever for better accuracy.
+登录后，运行 `evaluate` 会自动将评估结果发送到 Confident AI，在这里您可以可视化和分析性能指标，识别导致检索器失败的超参数，并优化您的 Chroma 检索器以获得更好的准确性。
 
 ![](https://github.com/confident-ai/deepeval/raw/main/assets/demo.gif)
 
 {% Banner type="tip" %}
-To learn more about how to use the platform, please see [this Quickstart Guide](https://documentation.confident-ai.com/).
+要了解更多关于如何使用该平台的信息，请参阅 [快速入门指南](https://documentation.confident-ai.com/)。
 {% /Banner %}
 
-## Support
+## 支持
 
-For any question or issue with integration you can reach out to the DeepEval team on [Discord](https://discord.com/invite/a3K9c8GRGt).
+如有关于集成的任何问题或遇到问题，可以在 [Discord](https://discord.com/invite/a3K9c8GRGt) 上联系 DeepEval 团队。

@@ -1,114 +1,112 @@
-# Single-Node Chroma: Performance and Limitations
+# 单节点 Chroma：性能与限制
 
+Chroma 的单节点版本设计为易于部署和维护，同时仍提供满足广泛生产应用场景的稳健性能。
 
-The single-node version of Chroma is designed to be easy to deploy and maintain, while still providing robust performance that satisfies a broad range of production applications.
+为了帮助您判断单节点 Chroma 是否适用于您的用例，我们进行了一系列压力测试和性能实验，以探测系统的性能边界、限制和边缘情况。我们在多种硬件配置下分析了这些边界，以确定针对不同工作负载的适当部署方式。
 
-To help you understand when single-node Chroma is a good fit for your use case, we have performed a series of stress tests and performance experiments to probe the system’s capabilities and discover its limitations and edge cases. We analyzed these boundaries across a range of hardware configurations, to determine what sort of deployment is appropriate for different workloads.
+本文档描述了这些发现，以及一些通用原则，帮助您最大限度地发挥 Chroma 部署的性能。
 
-This document describes these findings, as well as some general principles for getting the most  out of your Chroma deployment.
+## 结果概览
 
-## Results Summary
+大致而言，以下是使用典型工作负载时，在不同 EC2 实例类型上 Chroma 的预期性能：
 
-Roughly speaking, here is the sort of performance you can expect from Chroma on different EC2 instance types with a very typical workload:
+- 嵌入维度：1024
+- 小型文档（100-200 字）
+- 每条记录包含三个元数据字段
 
-- 1024 dimensional embeddings
-- Small documents (100-200 words)
-- Three metadata fields per record.
-
-| Instance Type   | System RAM | Approx. Max Collection Size | Mean Latency (query) | 99.9% Latency (query) | Mean Latency (insert, batch size=32) | 99.9% Latency (insert, batch size=32) | Monthly Cost |
-|-----------------|------------|-----------------------------|-----------------------|------------------------|----------------------|-----------------------|--------------|
-| **r7i.2xlarge** | 64         | 15,000,000                  | 5ms                  | 7ms                   | 112ms                  | 405ms                  | $386.944     |
-| **t3.2xlarge**  | 32         | 7,500,000                   | 5ms                  | 33ms                  | 149ms                 | 520ms                  | $242.976     |
-| **t3.xlarge**   | 16         | 3,600,000                   | 4ms                  | 7ms                  | 159ms                 | 530ms                  | $121.888     |
-| **t3.large**    | 8          | 1,700,000                   | 4ms                  | 10ms                  | 199ms                 | 633ms                  | $61.344      |
-| **t3.medium**   | 4          | 700,000                     | 5ms                  | 18ms                  | 191ms                 | 722ms                  | $31.072      |
-| **t3.small**    | 2          | 250,000                     | 8ms                  | 29ms                  | 231ms                 | 1280ms                  | $15.936      |
+| 实例类型        | 系统内存 (GB) | 近似最大集合大小 | 平均延迟（查询） | 99.9% 延迟（查询） | 平均延迟（插入，批次大小=32） | 99.9% 延迟（插入，批次大小=32） | 月费用     |
+|-----------------|---------------|------------------|------------------|--------------------|-------------------------------|----------------------------------|------------|
+| **r7i.2xlarge** | 64            | 15,000,000       | 5ms             | 7ms               | 112ms                          | 405ms                             | $386.944   |
+| **t3.2xlarge**  | 32            | 7,500,000        | 5ms             | 33ms              | 149ms                          | 520ms                             | $242.976   |
+| **t3.xlarge**   | 16            | 3,600,000        | 4ms             | 7ms               | 159ms                          | 530ms                             | $121.888   |
+| **t3.large**    | 8             | 1,700,000        | 4ms             | 10ms              | 199ms                          | 633ms                             | $61.344    |
+| **t3.medium**   | 4             | 700,000          | 5ms             | 18ms              | 191ms                          | 722ms                             | $31.072    |
+| **t3.small**    | 2             | 250,000          | 8ms             | 29ms              | 231ms                          | 1280ms                            | $15.936    |
 
 {% br %}{% /br %}
 
-Deploying Chroma on a system with less than 2GB of RAM is **not** recommended.
+**不推荐**在小于 2GB 内存的系统上部署 Chroma。
 
-Note that the latency figures in this table are for small collections. Latency increases as collections grow: see [Latency and collection size](./performance#latency-and-collection-size) below for a full analysis.
+注意：表中的延迟数据是针对小集合的。随着集合增大，延迟也会增加：有关完整分析，请参见下方 [延迟与集合大小](./performance#latency-and-collection-size)。
 
-## Memory and collection size
+## 内存与集合大小
 
-Chroma uses a fork of [`hnswlib`](https://github.com/nmslib/hnswlib) to efficiently index and search over embedding vectors. The HNSW algorithm requires that the embedding index reside in system RAM to query or update.
+Chroma 使用 [`hnswlib`](https://github.com/nmslib/hnswlib) 的一个分支来高效地对嵌入向量进行索引和搜索。HNSW 算法要求在系统 RAM 中驻留嵌入索引以进行查询或更新。
 
-As such, the amount of available system memory defines an upper bound on the size of a Chroma collection (or multiple collections, if they are being used concurrently.) If a collection grows larger than available memory, insert and query latency spike rapidly as the operating system begins swapping memory to disk. The memory layout of the index is not amenable to swapping, and the system quickly becomes unusable.
+因此，可用系统内存决定了 Chroma 集合（或多个同时使用的集合）的最大大小。如果集合超过可用内存，操作系统开始将内存交换到磁盘时，插入和查询的延迟将迅速上升。索引的内存布局不利于交换，系统很快变得不可用。
 
-Therefore, users should always plan on having enough RAM provisioned to accommodate the anticipated total number of embeddings.
+因此，用户应始终规划足够的内存来容纳预期的嵌入总数。
 
-To analyze how much RAM is required, we launched an an instance of Chroma on variously sized EC2 instances, then inserted embeddings until each system became non-responsive. As expected, this failure point corresponded linearly to RAM and embedding count.
+为了分析所需内存，我们在不同大小的 EC2 实例上启动了 Chroma 实例，然后插入嵌入直到系统无响应。正如预期，该故障点与内存和嵌入数量呈线性关系。
 
-For 1024 dimensional embeddings, with three metadata records and a small document per embedding, this works out to `N = R * 0.245` where `N` is the max collection size in millions, and `R` is the amount of system RAM required in gigabytes. Remember, you wil also need reserve at least a gigabyte for the system’s other needs, in addition to the memory required by Chroma.
+对于 1024 维嵌入，每个嵌入包含三个元数据记录和一个小型文档的情况，其关系为 `N = R * 0.245`，其中 `N` 是最大集合大小（百万单位），`R` 是所需系统内存（GB 单位）。请注意，您还需要预留至少 1GB 内存用于系统其他需求以及 Chroma 所需的内存。
 
-This pattern holds true up through about 7 million embeddings, which is as far as we tested. At this point Chroma is still fast and stable, and we did not find a strict upper bound on the size of a Chroma database.
+该模式在测试到约 700 万个嵌入时仍然成立。此时 Chroma 仍保持快速和稳定，我们未发现 Chroma 数据库大小的严格上限。
 
-## Disk space and collection size
+## 磁盘空间与集合大小
 
-Chroma durably persists each collection to disk. The amount of space required is a combination of the space required to save the HNSW embedding index, and the space required by the sqlite database used to store documents and embedding metadata.
+Chroma 会将每个集合持久化到磁盘。所需空间由 HNSW 嵌入索引的存储空间以及用于存储文档和嵌入元数据的 SQLite 数据库所需空间组成。
 
-The calculations for persisting the HNSW index are similar to that for calculating RAM size. As a rule of thumb, just make sure a system’s storage is at least as big as its RAM, plus several gigabytes to account for the overhead of the operating system and other applications.
+HNSW 索引的持久化计算方式与计算内存大小类似。经验法则是：确保系统的存储空间至少与内存一样大，并额外预留几个 GB 以应对操作系统和其他应用程序的开销。
 
-The amount of space required by the sqlite database is highly variable, and depends entirely on whether documents and metadata are being saved in Chroma, and if so, how large they are. As a single data point, the sqlite database for a collection with ~40k documents of 1000 words each, and ~600k metadata entries was about 1.7GB.
+SQLite 数据库所需的存储空间高度可变，完全取决于是否在 Chroma 中保存文档和元数据，以及它们的大小。例如，一个包含约 4 万个、每篇约 1000 字的文档和约 60 万个元数据条目的集合，其 SQLite 数据库大小约为 1.7GB。
 
-There is no strict upper bound on the size of the metadata database: sqlite itself supports databases into the terabyte range, and can page to disk effectively.
+SQLite 数据库本身没有严格的大小上限：SQLite 支持达到 TB 级别的数据库，并且可以有效地进行磁盘分页。
 
-In most realistic use cases, it’s likely that the size and performance of the HNSW index in RAM becomes the limiting factor on a Chroma collection’s size long before the metadata database does.
+在大多数实际用例中，HNSW 索引在内存中的大小和性能很可能是限制 Chroma 集合大小的首要因素，远早于元数据数据库的限制。
 
-## Latency and collection size
+## 延迟与集合大小
 
-As collections get larger and the size of the index grows, inserts and queries both take longer to complete. The rate of increase starts out fairly flat then grow roughly linearly, with the inflection point and slope depending on the quantity and speed of CPUs available. The extreme spikes at the end of the charts for certain instances, such as `t3.2xlarge`, occur when the instance hits its memory limits.
+随着集合的增大和索引规模的增长，插入和查询所需的时间都会变长。增长速率起初较为平缓，然后大致呈线性增长，拐点和斜率取决于可用 CPU 的数量和速度。某些实例（例如 `t3.2xlarge`）在图表末尾出现极端峰值，是因为实例达到了内存限制。
 
-### Query Latency
+### 查询延迟
 
-{% MarkdocImage lightSrc="/query_latency_1_0_10_light.png" darkSrc="/query_latency_1_0_10.png" alt="Query latency performance" %}
+{% MarkdocImage lightSrc="/query_latency_1_0_10_light.png" darkSrc="/query_latency_1_0_10.png" alt="查询延迟性能" %}
 {% /MarkdocImage %}
 
-### Insert Latency
+### 插入延迟
 
-{% MarkdocImage lightSrc="/insert_latency_1_0_10_light.png" darkSrc="/insert_latency_1_0_10.png" alt="Insert latency performance" %}
+{% MarkdocImage lightSrc="/insert_latency_1_0_10_light.png" darkSrc="/insert_latency_1_0_10.png" alt="插入延迟性能" %}
 {% /MarkdocImage %}
 
 {% note type="tip" title="" %}
-If you’re using multiple collections, performance looks quite similar, based on the total number of embeddings across collections. Splitting collections into multiple smaller collections doesn’t help, but it doesn’t hurt, either, as long as they all fit in memory at once.
+如果您使用多个集合，其性能与所有集合中嵌入向量总数有关，看起来非常相似。将集合拆分成多个较小的集合不会带来好处，但也不会造成损害，只要它们能同时容纳在内存中即可。
 {% /note %}
 
-## Concurrency
+## 并发性
 
-The system can handle concurrent operations in parallel. For inserts, since writes are written to a log and flushed every N operations, the mean latency does not fluctuate as the number of writers increases, but does increase as batch size increases since larger batches are more likely to hit the flush threshold. The queries parallelize up to the number of vCPUs available in the instance, after which it begins queueing, thus causing a linear increase in latency.
+系统可以并行处理并发操作。对于插入操作，由于写入会被写入日志，并且每 N 次操作刷新一次，因此平均延迟不会随着写入者数量的增加而波动，但会随着批次大小的增加而增加，因为较大的批次更可能达到刷新阈值。查询操作可以并行化到实例中可用 vCPU 数量的程度，之后将开始排队，从而导致延迟呈线性增加。
 
-
-{% MarkdocImage lightSrc="/concurrent_writes_1_0_10_light.png" darkSrc="/concurrent_writes_1_0_10.png" alt="Concurrent writes" %}
+{% MarkdocImage lightSrc="/concurrent_writes_1_0_10_light.png" darkSrc="/concurrent_writes_1_0_10.png" alt="并发写入" %}
 {% /MarkdocImage %}
 
-{% MarkdocImage lightSrc="/concurrent_queries_1_0_10_light.png" darkSrc="/concurrent_queries_1_0_10.png" alt="Concurrent queries" %}
+{% MarkdocImage lightSrc="/concurrent_queries_1_0_10_light.png" darkSrc="/concurrent_queries_1_0_10.png" alt="并发查询" %}
 {% /MarkdocImage %}
 
-See the [Insert Throughput](./performance#insert-throughput) section below for a discussion of optimizing user count for maximum throughput when the concurrency is under your control, such as when inserting bulk data.
+关于在您可以控制并发性的场景下（例如插入批量数据时）如何优化用户数量以实现最大吞吐量的讨论，请参见下面的 [插入吞吐量](./performance#insert-throughput) 部分。
 
-# CPU speed, core count & type
+# CPU 速度、核心数量与类型
 
-{% MarkdocImage lightSrc="/cpu_mean_query_latency_1_0_10_light.png" darkSrc="/cpu_mean_query_latency_1_0_10.png" alt="CPU mean query latency" %}
+{% MarkdocImage lightSrc="/cpu_mean_query_latency_1_0_10_light.png" darkSrc="/cpu_mean_query_latency_1_0_10.png" alt="CPU 平均查询延迟" %}
 {% /MarkdocImage %}
 
-# Insert Throughput
+# 插入吞吐量
 
-A question that is often relevant is: given bulk data to insert, how fast is it possible to do so, and what’s the best way to insert a lot of data quickly?
+一个经常相关的问题是：给定需要插入的批量数据，最快能有多快完成，以及快速插入大量数据的最佳方式是什么？
 
-The first important factor to consider is the number of concurrent insert requests.
+第一个需要考虑的重要因素是并发插入请求的数量。
 
-As mentioned in the [Concurrency](./performance#concurrency) section above, insert throughput does benefit from increased concurrency. A second factor to consider is the batch size of each request. Performance scales with batch size up to CPU saturation, due to high overhead cost for smaller batch sizes. After reaching CPU saturation, around a batch size of 150 the throughput plateaus.
+如上文 [并发性](./performance#concurrency) 部分所述，插入吞吐量确实受益于增加的并发性。第二个需要考虑的因素是每个请求的批次大小。由于较小批次的开销较高，性能会随着批次大小的增加而提升，直到达到 CPU 饱和点。在达到 CPU 饱和点后，当批次大小约为 150 时，吞吐量趋于稳定。
 
-Experimentation confirms this: overall throughput (total number of embeddings inserted, across batch size and request count) remains fairly flat between batch sizes of 100-500:
+实验结果证实了这一点：在批次大小为 100-500 之间时，整体吞吐量（跨批次大小和请求数量的插入嵌入总数）保持相对平稳：
 
-{% MarkdocImage lightSrc="/concurrent_inserts_1_0_10_light.png" darkSrc="/concurrent_inserts_1_0_10.png" alt="Concurrent inserts" %}
+{% MarkdocImage lightSrc="/concurrent_inserts_1_0_10_light.png" darkSrc="/concurrent_inserts_1_0_10.png" alt="并发插入" %}
 {% /MarkdocImage %}
 
-Given that smaller batches have lower, more consistent latency and are less likely to lead to timeout errors, we recommend batches on the smaller side of this curve: anything between 50 and 250 is a reasonable choice.
+鉴于较小的批次具有较低且更一致的延迟，并且不太可能导致超时错误，我们建议采用这个曲线范围内较小的批次：50 到 250 之间的任何值都是合理的选择。
 
-## Conclusion
+## 结论
 
-Users should feel comfortable relying on Chroma for use cases approaching tens of millions of embeddings, when deployed on the right hardware. It’s average and upper-bound latency for both reads and writes make it a good platform for all but the largest AI-based applications, supporting potentially thousands of simultaneous human users (depending on your application’s backend access patterns.)
+当部署在合适的硬件上时，用户可以放心地将 Chroma 用于接近千万级嵌入向量的用例。它的平均和上限延迟对于读写操作都表现良好，使其成为除最大规模 AI 应用之外的优秀平台，能够支持潜在的数千名同时在线的人类用户（具体取决于您的应用程序后端访问模式）。
 
-As a single-node solution, though, it won’t scale forever. If you find your needs exceeding the parameters laid out in this analysis, we are extremely interested in hearing from you. Please fill out [this form](https://airtable.com/appqd02UuQXCK5AuY/pagr1D0NFQoNpUpNZ/form), and we will add you to a dedicated Slack workspace for supporting production users. We would love to help you think through the design of your system, whether Chroma has a place in it, or if you would be a good fit for our upcoming distributed cloud service.
+然而，作为一个单节点解决方案，它无法无限扩展。如果您发现您的需求超出了本分析中列出的参数范围，我们非常有兴趣听取您的意见。请填写 [此表单](https://airtable.com/appqd02UuQXCK5AuY/pagr1D0NFQoNpUpNZ/form)，我们将邀请您加入一个专用的 Slack 工作区，用于支持生产环境用户。我们很乐意帮助您思考系统设计，无论是 Chroma 是否适合您的项目，还是您是否适合加入我们即将推出的分布式云服务。
