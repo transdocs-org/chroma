@@ -1,52 +1,52 @@
-# DB Management on Chroma Cloud
+# 在 Chroma Cloud 上管理数据库
 
-The Chroma CLI lets you interact with your Chroma Cloud databases for your active [profile](./profile).
+Chroma CLI 允许你通过当前的[配置文件](./profile)与 Chroma Cloud 数据库进行交互。
 
-### Connect
+### 连接
 
-The `connect` command will output a connection code snippet for your Chroma Cloud database in Python or JS/TS. If you don't provide the `name` or `language` the CLI will prompt you to choose your preferences. The `name` argument is always assumed to be the first, so you don't need to include the `--name` flag.
+`connect` 命令会输出一段用于在 Python 或 JS/TS 中连接你的 Chroma Cloud 数据库的代码片段。如果你没有提供 `name` 或 `language` 参数，CLI 会提示你选择偏好设置。`name` 参数默认是第一个参数，因此你无需使用 `--name` 标志。
 
-The output code snippet will already have the API key of your profile set for the client construction.
+输出的代码片段中已经包含了用于客户端初始化的 API 密钥。
 
 ```terminal
 chroma db connect [db_name] [--language python/JS/TS]
 ```
 
-The `connect` command can also add Chroma environment variables (`CHROMA_API_KEY`, `CHROMA_TENANT`, and `CHROMA_DATABASE`) to a `.env` file in your current working directory. It will create a `.env` file for you if it doesn't exist:
+`connect` 命令还可以将 Chroma 环境变量（`CHROMA_API_KEY`、`CHROMA_TENANT` 和 `CHROMA_DATABASE`）添加到当前工作目录下的 `.env` 文件中。如果 `.env` 文件不存在，CLI 会自动为你创建一个：
 
 ```terminal
 chroma db connect [db_name] --env-file
 ```
 
-If you prefer to simply output these variables to your terminal use:
+如果你只是想将这些变量输出到终端，请使用：
 
 ```terminal
 chroma db connect [db_name] --env-vars
 ```
 
-Setting these environment variables will allow you to concisely instantiate the `CloudClient` with no arguments.
+设置这些环境变量后，你可以无需参数简洁地初始化 `CloudClient`。
 
-### Create
+### 创建
 
-The `create` command lets you create a database on Chroma Cloud. It has the `name` argument, which is the name of the DB you want to create. If you don't provide it, the CLI will prompt you to choose a name.
+`create` 命令用于在 Chroma Cloud 上创建数据库。它接受一个 `name` 参数，即你要创建的数据库名称。如果没有提供该参数，CLI 会提示你输入名称。
 
-If a DB with your provided name already exists, the CLI will error.
+如果已存在同名数据库，CLI 将报错。
 
 ```terminal
 chroma db create my-new-db
 ```
 
-### Delete
+### 删除
 
-The `delete` command deletes a Chroma Cloud DB. Use this command with caution as deleting a DB cannot be undone. The CLI will ask you to confirm that you want to delete the DB with the `name` you provided.
+`delete` 命令用于删除 Chroma Cloud 上的数据库。请谨慎使用此命令，因为删除数据库的操作无法撤销。CLI 会要求你确认是否要删除指定名称的数据库。
 
 ```terminal
 chroma db delete my-db
 ```
 
-### List
+### 列出
 
-The `list` command lists all the DBs you have under your current profile.
+`list` 命令列出当前配置文件下所有的数据库。
 
 ```terminal
 chroma db list

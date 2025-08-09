@@ -5,7 +5,7 @@ name: Hugging Face
 
 # Hugging Face
 
-Chroma also provides a convenient wrapper around HuggingFace's embedding API. This embedding function runs remotely on HuggingFace's servers, and requires an API key. You can get an API key by signing up for an account at [HuggingFace](https://huggingface.co/).
+Chroma 也提供了对 HuggingFace 嵌入 API 的便捷封装。该嵌入函数在 HuggingFace 的服务器上远程运行，并且需要一个 API 密钥。你可以通过访问 [HuggingFace](https://huggingface.co/) 注册账户获取 API 密钥。
 
 {% tabs group="code-lang" hideTabs=true %}
 {% tab label="Python" %}
@@ -18,5 +18,4 @@ huggingface_ef = embedding_functions.HuggingFaceEmbeddingFunction(
 )
 ```
 
-You can pass in an optional `model_name` argument, which lets you choose which HuggingFace model to use. By default, Chroma uses `sentence-transformers/all-MiniLM-L6-v2`. You can see a list of all available models [here](https://huggingface.co/models).
-
+你可以选择性地传入 `model_name` 参数，以指定使用的 HuggingFace 模型。默认情况下，Chroma 使用 `sentence-transformers/all-MiniLM-L6-v2`。你可以[在此](https://huggingface.co/models)查看所有可用模型的列表。

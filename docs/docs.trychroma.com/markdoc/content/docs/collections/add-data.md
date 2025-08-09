@@ -1,6 +1,6 @@
-# Adding Data to Chroma Collections
+# 向 Chroma 集合中添加数据
 
-Add data to a Chroma collection with the `.add` method. It takes a list of unique string `ids`, and a list of `documents`. Chroma will embed these documents for you using the collection's [embedding function](../embeddings/embedding-functions). It will also store the documents themselves. You can optionally provide a metadata dictionary for each document you add. 
+使用 `.add` 方法向 Chroma 集合中添加数据。它接受一个唯一字符串 `ids` 的列表和一个 `documents` 的列表。Chroma 会使用集合的[嵌入函数](../embeddings/embedding-functions)为您嵌入这些文档，并且还会存储文档本身。您可以选择为每个添加的文档提供一个元数据字典。
 
 {% TabbedCodeBlock %}
 
@@ -26,9 +26,9 @@ await collection.add({
 
 {% /TabbedCodeBlock %}
 
-If you add a record with an ID that already exists in the collection, it will be ignored and no exception will be raised. This means that if a batch add operation fails, you can safely run it again.
+如果您添加的记录 ID 已经存在于集合中，该记录将被忽略，且不会引发任何异常。这意味着如果一批添加操作失败，您可以安全地重新运行它。
 
-Alternatively, you can supply a list of document-associated `embeddings` directly, and Chroma will store the associated documents without embedding them itself. Note that in this case there will be no guarantee that the embedding is mapped to the document associated with it.
+另外，您也可以直接提供一个与文档相关的 `embeddings` 列表，Chroma 将存储相关文档而不自行进行嵌入。请注意在这种情况下，无法保证嵌入向量与其关联的文档之间存在映射关系。
 
 {% TabbedCodeBlock %}
 
@@ -57,9 +57,9 @@ await collection.add({
 
 {% /TabbedCodeBlock %}
 
-If the supplied `embeddings` are not the same dimension as the embeddings already indexed in the collection, an exception will be raised.
+如果提供的 `embeddings` 的维度与集合中已索引的嵌入向量维度不一致，则会引发异常。
 
-You can also store documents elsewhere, and just supply a list of `embeddings` and `metadata` to Chroma. You can use the `ids` to associate the embeddings with your documents stored elsewhere.
+您还可以将文档存储在其他位置，仅向 Chroma 提供 `embeddings` 和 `metadata` 的列表。您可以使用 `ids` 来将这些嵌入向量与存储在其他地方的文档进行关联。
 
 {% TabbedCodeBlock %}
 

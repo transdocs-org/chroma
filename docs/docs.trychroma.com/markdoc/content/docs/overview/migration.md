@@ -1,91 +1,87 @@
-# Migration
+# 迁移指南
 
-Schema and data format changes are a necessary evil of evolving software. We take changes seriously and make them infrequently and only when necessary.
+Schema 和数据格式的变化是软件演进过程中的必要之恶。我们非常重视这些变化，并且只有在必要时才会进行，且频率极低。
 
-Chroma's commitment is whenever schema or data format change, we will provide a seamless and easy-to-use migration tool to move to the new schema/format.
+Chroma 承诺：每当 schema 或数据格式发生变化时，我们将提供一个无缝且易于使用的迁移工具，帮助您迁移到新的 schema/格式。
 
-Specifically we will announce schema changes on:
+具体来说，我们会在以下渠道宣布 schema 的变更：
 
-- Discord ([#migrations channel](https://discord.com/channels/1073293645303795742/1129286514845691975))
-- Github ([here](https://github.com/chroma-core/chroma/issues))
-- Email listserv [Sign up](https://airtable.com/shrHaErIs1j9F97BE)
+- Discord ([#migrations 频道](https://discord.com/channels/1073293645303795742/1129286514845691975))
+- Github ([链接](https://github.com/chroma-core/chroma/issues))
+- 邮件列表 [订阅](https://airtable.com/shrHaErIs1j9F97BE)
 
-We will aim to provide:
+我们力求提供以下内容：
 
-- a description of the change and the rationale for the change.
-- a CLI migration tool you can run
-- a video walkthrough of using the tool
+- 对变更的描述及其背后的原因
+- 一个可以运行的 CLI 迁移工具
+- 使用该工具的视频演示
 
-## Migration Log
+## 迁移日志
 
 ### v1.0.0
 
-In this release, we've rewritten much of Chroma in Rust. Performance has significantly improved across the board.
+在本次发布中，我们用 Rust 重写了 Chroma 的大部分代码。整体性能显著提升。
 
-**Breaking changes**
+**重大变更**
 
-Chroma no longer provides built-in authentication implementations.
+Chroma 不再提供内置的身份验证实现。
 
-`list_collections` now reverts back to returning `Collection` objects.
+`list_collections` 现在恢复为返回 `Collection` 对象。
 
-**Chroma in-process changes**
+**Chroma 内部使用变更**
 
-This section is applicable to you if you use Chroma via
+如果您通过以下方式使用 Chroma：
 
 ```python
 import chromadb
 
 client = chromadb.Client()
-# or
+# 或者
 client = chromadb.EphemeralClient()
-# or
+# 或者
 client = chromadb.PersistentClient()
 ```
 
-The new Rust implementation ignores these settings:
+则需要注意：新的 Rust 实现将忽略以下设置：
 
 - `chroma_server_nofile`
 - `chroma_server_thread_pool_size`
 - `chroma_memory_limit_bytes`
 - `chroma_segment_cache_policy`
 
-**Chroma CLI changes**
+**Chroma CLI 变更**
 
-This section is applicable to you if you run a Chroma server using the CLI (`chroma run`).
-
-Settings that you may have previously provided to the server using environment variables, like `CHROMA_SERVER_CORS_ALLOW_ORIGINS` or `CHROMA_OTEL_COLLECTION_ENDPOINT`, are now provided using a configuration file. For example:
+如果您通过 CLI (`chroma run`) 运行 Chroma 服务器，则需要注意：之前通过环境变量（如 `CHROMA_SERVER_CORS_ALLOW_ORIGINS` 或 `CHROMA_OTEL_COLLECTION_ENDPOINT`）提供的设置，现在需要通过配置文件提供。例如：
 
 ```terminal
 chroma run --config ./config.yaml
 ```
 
-Check out a full sample configuration file [here](https://github.com/chroma-core/chroma/blob/main/rust/frontend/sample_configs/single_node_full.yaml).
+完整的配置文件示例请参见 [这里](https://github.com/chroma-core/chroma/blob/main/rust/frontend/sample_configs/single_node_full.yaml)。
 
+**Chroma Docker 变更**
 
-**Chroma in Docker changes**
+如果您通过 Docker 容器运行 Chroma，则需要注意：之前通过环境变量（如 `CHROMA_SERVER_CORS_ALLOW_ORIGINS` 或 `CHROMA_OTEL_COLLECTION_ENDPOINT`）提供的设置，现在需要通过配置文件提供。更多信息请参见 [Docker 文档](../production/containers/docker#configuration)。
 
-This section is applicable to you if you run Chroma using a Docker container.
-
-Settings that you previously provided to the container using environment variables, like `CHROMA_SERVER_CORS_ALLOW_ORIGINS` or `CHROMA_OTEL_COLLECTION_ENDPOINT`, are now provided to the container using a configuration file. See the [Docker documentation](../production/containers/docker#configuration) for more information.
-
-The default data location in the container has changed from `/chroma/chroma` to `/data`. For example, if you previously started the container with:
+容器内的默认数据位置从 `/chroma/chroma` 更改为 `/data`。例如，如果您之前启动容器的命令是：
 
 ```terminal
 docker run -p 8000:8000 -v ./chroma:/chroma/chroma chroma-core/chroma
 ```
 
-you should now start it with:
+现在应更改为：
 
 ```terminal
 docker run -p 8000:8000 -v ./chroma:/data chroma-core/chroma
 ```
 
+---
 
 ### v0.6.0
 
-Previously, `list_collections` returned a list of `Collection` objects. This could lead to some errors if any of your collections were created with a custom embedding function (i.e. not the default). So moving forward, `list_collections` will only return collections names.
+之前，`list_collections` 返回的是 `Collection` 对象列表。这可能导致使用自定义嵌入函数（即非默认函数）创建集合时出现错误。因此，从现在开始，`list_collections` 只返回集合名称。
 
-For example, if you created all your collections with the `OpenAIEmbeddingFunction` , this is how you will use `list_collections` and `get_collection` correctly:
+例如，如果您所有的集合都是通过 `OpenAIEmbeddingFunction` 创建的，则应按如下方式使用 `list_collections` 和 `get_collection`：
 
 ```python
 collection_names = client.list_collections()
@@ -96,13 +92,15 @@ collections = [
 ]
 ```
 
-In the future, we plan on supporting embedding function persistence, so `list_collections` can return properly configured `Collection` objects, and you won’t need to supply the correct embedding function to `get_collection`.
+未来我们计划支持嵌入函数的持久化，这样 `list_collections` 可以返回正确配置的 `Collection` 对象，您将无需再为 `get_collection` 提供嵌入函数。
 
-Additionally, we have dropped support for Python 3.8
+此外，我们已不再支持 Python 3.8。
+
+---
 
 ### v0.5.17
 
-We no longer support sending empty lists or dictionaries for metadata filtering, ID filtering, etc. For example,
+我们不再支持在元数据过滤、ID 过滤等场景中使用空列表或空字典。例如：
 
 ```python
 collection.get(
@@ -111,63 +109,72 @@ collection.get(
 )
 ```
 
-is not supported. Instead, use:
+这种写法不再支持。请改用：
 
 ```python
 collection.get(ids=["id1", "id2", "id3", ...])
 ```
 
+---
+
 ### v0.5.12
 
-The operators `$ne` (not equal) and `$nin` (not in) in `where` clauses have been updated:
-* Previously: They only matched records that had the specified key.
-* Now: They also match records that don't have the specified key at all.
+`where` 子句中的 `$ne`（不等于）和 `$nin`（不在其中）操作符已更新：
+* 之前：它们仅匹配具有指定键的记录。
+* 现在：它们也匹配根本没有指定键的记录。
 
-In other words, `$ne` and `$nin` now match the complement set of records (the exact opposite) that `$eq` (equals) and `$in` (in) would match, respectively.
+换句话说，`$ne` 和 `$nin` 现在分别匹配 `$eq`（等于）和 `$in`（包含）所匹配记录的补集。
 
-The `$not_contains` operator in the `where_document` clause has also been updated:
-* Previously: It only matched records that had a document field.
-* Now: It also matches records that don't have a document field at all.
+`where_document` 子句中的 `$not_contains` 操作符也进行了更新：
+* 之前：它仅匹配具有文档字段的记录。
+* 现在：它也匹配根本没有文档字段的记录。
 
-In other words, `$not_contains` now matches the exact opposite set of records that `$contains` would match.
+换句话说，`$not_contains` 现在匹配的是 `$contains` 所匹配记录的完全相反集合。
 
-`RateLimitingProvider` is now deprecated and replaced by `RateLimitEnforcer`. This new interface allows you to wrap server calls with rate limiting logic. The default `SimpleRateLimitEnforcer` implementation allows all requests, but you can create custom implementations for more advanced rate limiting strategies.
+`RateLimitingProvider` 已被弃用，取而代之的是 `RateLimitEnforcer`。这个新接口允许您将服务器调用包裹在限流逻辑中。默认的 `SimpleRateLimitEnforcer` 实现允许所有请求，但您可以创建自定义实现以支持更高级的限流策略。
+
+---
+
 ### v0.5.11
 
-The results returned by `collection.get()` is now ordered by internal ids. Whereas previously, the results were ordered by user provided ids, although this behavior was not explicitly documented. We would like to make the change because using user provided ids may not be ideal for performance in hosted Chroma, and we hope to propagate the change to local Chroma for consistency of behavior. In general, newer documents in Chroma has larger internal ids.
+`collection.get()` 返回的结果现在按内部 ID 排序。而此前是按用户提供的 ID 排序，尽管该行为并未明确记录。我们希望进行这一更改，因为使用用户提供的 ID 在托管版 Chroma 中可能对性能不利，并且我们希望将这一行为同步到本地版本以保持一致性。通常，Chroma 中较新的文档具有更大的内部 ID。
 
-A subsequent change in behavior is `limit` and `offset`, which depends on the order of returned results. For example, if you have a collection named `coll` of documents with ids `["3", "2", "1", "0"]` inserted in this order, then previously `coll.get(limit=2, offset=2)["ids"]` gives you `["2", "3"]`, while currently this will give you `["1", "0"]`.
+随之而来的行为变化是 `limit` 和 `offset` 的使用方式。例如，如果您有一个名为 `coll` 的集合，其中包含按 `["3", "2", "1", "0"]` 顺序插入的文档，则之前 `coll.get(limit=2, offset=2)["ids"]` 返回的是 `["2", "3"]`，而现在将返回 `["1", "0"]`。
 
-We have also modified the behavior of `client.get_or_create`. Previously, if a collection already existed and the `metadata` argument was provided, the existing collection's metadata would be overwritten with the new values. This has now changed. If the collection already exists, get_or_create will simply return the existing collection with the specified name, and any additional arguments—including `metadata`—will be ignored.
+我们还修改了 `client.get_or_create` 的行为。之前，如果集合已存在且提供了 `metadata` 参数，则现有集合的元数据将被新值覆盖。现在这一行为已改变。如果集合已存在，`get_or_create` 将简单地返回具有指定名称的现有集合，所有额外参数（包括 `metadata`）都将被忽略。
 
-Finally, the embeddings returned from `collection.get()`, `collection.query()`, and `collection.peek()` are now represented as 2-dimensional NumPy arrays instead of Python lists. When adding embeddings, you can still use either a Python list or a NumPy array. If your request returns multiple embeddings, the result will be a Python list containing 2-dimensional NumPy arrays. This change is part of our effort to enhance performance in Local Chroma by using NumPy arrays for internal representation of embeddings.
+最后，`collection.get()`、`collection.query()` 和 `collection.peek()` 返回的嵌入现在表示为二维 NumPy 数组，而不是 Python 列表。添加嵌入时仍可使用 Python 列表或 NumPy 数组。如果请求返回多个嵌入，则结果将是一个包含二维 NumPy 数组的 Python 列表。此更改是我们为通过使用 NumPy 数组优化本地 Chroma 性能所做努力的一部分。
+
+---
 
 ### v0.5.6
 
-Chroma internally uses a write-ahead log. In all versions prior to v0.5.6, this log was never pruned. This resulted in the data directory being much larger than it needed to be, as well as the directory size not decreasing by the expected amount after deleting a collection.
+Chroma 内部使用写前日志（write-ahead log）。在 v0.5.6 之前的所有版本中，该日志从未被修剪，这导致数据目录比实际需要的要大得多，并且在删除集合后目录大小也不会按预期减少。
 
-In v0.5.6 the write-ahead log is pruned automatically. However, this is not enabled by default for existing databases. After upgrading, you should run `chroma utils vacuum` once to reduce your database size and enable continuous pruning. See the [CLI reference](/reference/cli#vacuuming) for more details.
+在 v0.5.6 中，写前日志会自动修剪，但默认情况下不会对现有数据库启用。升级后，您应运行一次 `chroma utils vacuum` 以减小数据库大小并启用持续修剪。更多详情请参见 [CLI 参考文档](/reference/cli#vacuuming)。
 
-This does not need to be run regularly and does not need to be run on new databases created with v0.5.6 or later.
+此命令不需要定期运行，也不需要在 v0.5.6 或更高版本创建的新数据库上运行。
+
+---
 
 ### v0.5.1
 
-On the Python client, the `max_batch_size` property was removed. It wasn't previously documented, but if you were reading it, you should now use `get_max_batch_size()`.
+在 Python 客户端中，`max_batch_size` 属性已被移除。虽然此前并未文档化，但如果您之前使用过该属性，则应改用 `get_max_batch_size()`。
 
-The first time this is run, it makes a HTTP request. We made this a method to make it more clear that it's potentially a blocking operation.
+首次调用该方法时会发起 HTTP 请求。我们将其改为方法形式是为了更清晰地表明这是一个潜在的阻塞操作。
 
-### Auth overhaul - April 20, 2024
+---
 
-**If you are not using Chroma's [built-in auth system](https://docs.trychroma.com/deployment/auth), you do not need to take any action.**
+### 认证系统重构 - 2024年4月20日
 
-This release overhauls and simplifies our authentication and authorization systems.
-If you are you using Chroma's built-in auth system, you will need to update your configuration and
-any code you wrote to implement your own authentication or authorization providers.
-This change is mostly to pay down some of Chroma's technical debt and make future changes easier,
-but it also changes and simplifies user configuration.
-If you are not using Chroma's built-in auth system, you do not need to take any action.
+**如果您未使用 Chroma 的 [内置认证系统](https://docs.trychroma.com/deployment/auth)，则无需采取任何操作。**
 
-Previously, Chroma's authentication and authorization relied on many objects with many configuration options, including:
+本次发布重构并简化了我们的认证和授权系统。
+如果您正在使用 Chroma 的内置认证系统，则需要更新您的配置以及任何用于实现自定义认证或授权提供者的代码。
+此次更改主要是为了减少 Chroma 的技术债务并简化未来更改，但它也简化了用户配置。
+如果您未使用 Chroma 的内置认证系统，则无需采取任何操作。
+
+此前，Chroma 的认证和授权依赖于多个对象和多个配置选项，包括：
 
 - `chroma_server_auth_provider`
 - `chroma_server_auth_configuration_provider`
@@ -175,27 +182,27 @@ Previously, Chroma's authentication and authorization relied on many objects wit
 - `chroma_client_auth_credentials_provider`
 - `chroma_client_auth_protocol_adapter`
 
-and others.
+等等。
 
-We have consolidated these into three classes:
+我们已将其整合为三个类：
 
 - `ClientAuthProvider`
 - `ServerAuthenticationProvider`
 - `ServerAuthorizationProvider`
 
-`ClientAuthProvider`s are now responsible for their own configuration and credential management. Credentials can be given to them with the `chroma_client_auth_credentials` setting. The value for `chroma_client_auth_credentials` depends on the `ServerAuthenticationProvider`; for `TokenAuthenticationServerProvider` it should just be the token, and for `BasicAuthenticationServerProvider` it should be `username:password`.
+`ClientAuthProvider` 现在负责自身的配置和凭证管理。可以通过 `chroma_client_auth_credentials` 设置提供凭证。`chroma_client_auth_credentials` 的值取决于 `ServerAuthenticationProvider`；对于 `TokenAuthenticationServerProvider`，其值应仅为 token；对于 `BasicAuthenticationServerProvider`，其值应为 `username:password`。
 
-`ServerAuthenticationProvider`s are responsible for turning a request's authorization information into a `UserIdentity` containing any information necessary to make an authorization decision. They are now responsible for their own configuration and credential management. Configured via the `chroma_server_authn_credentials` and `chroma_server_authn_credentials_file` settings.
+`ServerAuthenticationProvider` 负责将请求的授权信息转换为包含授权决策所需信息的 `UserIdentity`。它们现在也负责自身的配置和凭证管理。配置通过 `chroma_server_authn_credentials` 和 `chroma_server_authn_credentials_file` 设置完成。
 
-`ServerAuthorizationProvider`s are responsible for turning information about the request and the `UserIdentity` which issued the request into an authorization decision. Configured via the `chroma_server_authz_config` and `chroma_server_authz_config_file` settings.
+`ServerAuthorizationProvider` 负责将请求信息和发出请求的 `UserIdentity` 转换为授权决策。配置通过 `chroma_server_authz_config` 和 `chroma_server_authz_config_file` 设置完成。
 
-_Either `_authn_credentials` or `authn_credentials_file` can be set, never both. Same for `authz_config` and `authz_config_file`. The value of the config (or data in the config file) will depend on your authn and authz providers. See [here](https://github.com/chroma-core/chroma/tree/main/examples/basic_functionality/authz) for more information._
+_注意：`_authn_credentials` 或 `authn_credentials_file` 只能设置其一，不能同时设置。`authz_config` 和 `authz_config_file` 同理。配置的值（或配置文件中的数据）取决于您的认证和授权提供者。更多信息请参见 [这里](https://github.com/chroma-core/chroma/tree/main/examples/basic_functionality/authz)。_
 
-The two auth systems Chroma ships with are `Basic` and `Token`. We have a small migration guide for each.
+Chroma 自带的两种认证系统是 `Basic` 和 `Token`。我们分别为其提供了迁移指南。
 
 #### Basic
 
-If you're using `Token` auth, your server configuration might look like:
+如果您使用的是 `Token` 认证，您的服务器配置可能如下所示：
 
 ```yaml
 CHROMA_SERVER_AUTH_CREDENTIALS="admin:admin"
@@ -204,16 +211,16 @@ CHROMA_SERVER_AUTH_CREDENTIALS_PROVIDER="chromadb.auth.providers.HtpasswdConfigu
 CHROMA_SERVER_AUTH_PROVIDER="chromadb.auth.basic.BasicAuthServerProvider"
 ```
 
-_Note: Only one of `AUTH_CREDENTIALS` and `AUTH_CREDENTIALS_FILE` can be set, but this guide shows how to migrate both._
+_注意：`AUTH_CREDENTIALS` 和 `AUTH_CREDENTIALS_FILE` 只能设置其一，但本指南展示了两者如何迁移。_
 
-And your corresponding client configation:
+对应的客户端配置可能是：
 
 ```yaml
 CHROMA_CLIENT_AUTH_PROVIDER="chromadb.auth.token.TokenAuthClientProvider"
 CHROMA_CLIENT_AUTH_CREDENTIALS="admin:admin"
 ```
 
-To migrate to the new server configuration, simply change it to:
+要迁移到新配置，只需将其更改为：
 
 ```yaml
 CHROMA_SERVER_AUTHN_PROVIDER="chromadb.auth.token_authn.TokenAuthenticationServerProvider"
@@ -221,7 +228,7 @@ CHROMA_SERVER_AUTHN_CREDENTIALS="test-token"
 CHROMA_SERVER_AUTHN_CREDENTIALS_FILE="./example_file"
 ```
 
-New client configuration:
+新的客户端配置：
 
 ```yaml
 CHROMA_CLIENT_AUTH_CREDENTIALS="test-token"
@@ -230,7 +237,7 @@ CHROMA_CLIENT_AUTH_PROVIDER="chromadb.auth.basic_authn.BasicAuthClientProvider"
 
 #### Token
 
-If you're using `Token` auth, your server configuration might look like:
+如果您使用的是 `Token` 认证，您的服务器配置可能如下所示：
 
 ```yaml
 CHROMA_SERVER_AUTH_CREDENTIALS="test-token"
@@ -240,9 +247,9 @@ CHROMA_SERVER_AUTH_PROVIDER="chromadb.auth.token.TokenAuthServerProvider"
 CHROMA_SERVER_AUTH_TOKEN_TRANSPORT_HEADER="AUTHORIZATION"
 ```
 
-_Note: Only one of `AUTH_CREDENTIALS` and `AUTH_CREDENTIALS_FILE` can be set, but this guide shows how to migrate both._
+_注意：`AUTH_CREDENTIALS` 和 `AUTH_CREDENTIALS_FILE` 只能设置其一，但本指南展示了两者如何迁移。_
 
-And your corresponding client configation:
+对应的客户端配置可能是：
 
 ```yaml
 CHROMA_CLIENT_AUTH_PROVIDER="chromadb.auth.token.TokenAuthClientProvider"
@@ -250,7 +257,7 @@ CHROMA_CLIENT_AUTH_CREDENTIALS="test-token"
 CHROMA_CLIENT_AUTH_TOKEN_TRANSPORT_HEADER="AUTHORIZATION"
 ```
 
-To migrate to the new server configuration, simply change it to:
+要迁移到新配置，只需将其更改为：
 
 ```yaml
 CHROMA_SERVER_AUTHN_PROVIDER="chromadb.auth.token_authn.TokenAuthenticationServerProvider"
@@ -259,7 +266,7 @@ CHROMA_SERVER_AUTHN_CREDENTIALS_FILE="./example_file"
 CHROMA_AUTH_TOKEN_TRANSPORT_HEADER="AUTHORIZATION"
 ```
 
-New client configuration:
+新的客户端配置：
 
 ```yaml
 CHROMA_CLIENT_AUTH_CREDENTIALS="test-token"
@@ -267,36 +274,38 @@ CHROMA_CLIENT_AUTH_PROVIDER="chromadb.auth.token_authn.TokenAuthClientProvider"
 CHROMA_AUTH_TOKEN_TRANSPORT_HEADER="AUTHORIZATION"
 ```
 
-#### Reference of changed configuration values
+#### 配置项变更参考
 
-- Overall config
-    - `chroma_client_auth_token_transport_header`: renamed to `chroma_auth_token_transport_header`.
-    - `chroma_server_auth_token_transport_header`: renamed to `chroma_auth_token_transport_header`.
-- Client config
-    - `chroma_client_auth_credentials_provider`: deleted. Functionality is now in `chroma_client_auth_provider`.
-    - `chroma_client_auth_protocol_adapter`: deleted. Functionality is now in `chroma_client_auth_provider`.
-    - `chroma_client_auth_credentials_file`: deleted. Functionality is now in `chroma_client_auth_credentials`.
-    - These changes also apply to the Typescript client.
-- Server authn
-    - `chroma_server_auth_provider`: Renamed to `chroma_server_authn_provider`.
-    - `chroma_server_auth_configuration_provider`: deleted. Functionality is now in `chroma_server_authn_provider`.
-    - `chroma_server_auth_credentials_provider`: deleted. Functionality is now in `chroma_server_authn_provider`.
-    - `chroma_server_auth_credentials_file`: renamed to `chroma_server_authn_credentials_file`.
-    - `chroma_server_auth_credentials`: renamed to `chroma_server_authn_credentials`.
-    - `chroma_server_auth_configuration_file`: renamed to `chroma_server_authn_configuration_file`.
-- Server authz
-    - `chroma_server_authz_ignore_paths`: deleted. Functionality is now in `chroma_server_auth_ignore_paths`.
+- 全局配置
+    - `chroma_client_auth_token_transport_header`：重命名为 `chroma_auth_token_transport_header`。
+    - `chroma_server_auth_token_transport_header`：重命名为 `chroma_auth_token_transport_header`。
+- 客户端配置
+    - `chroma_client_auth_credentials_provider`：已删除。功能已合并到 `chroma_client_auth_provider`。
+    - `chroma_client_auth_protocol_adapter`：已删除。功能已合并到 `chroma_client_auth_provider`。
+    - `chroma_client_auth_credentials_file`：已删除。功能已合并到 `chroma_client_auth_credentials`。
+    - 这些更改也适用于 Typescript 客户端。
+- 服务器认证
+    - `chroma_server_auth_provider`：重命名为 `chroma_server_authn_provider`。
+    - `chroma_server_auth_configuration_provider`：已删除。功能已合并到 `chroma_server_authn_provider`。
+    - `chroma_server_auth_credentials_provider`：已删除。功能已合并到 `chroma_server_authn_provider`。
+    - `chroma_server_auth_credentials_file`：重命名为 `chroma_server_authn_credentials_file`。
+    - `chroma_server_auth_credentials`：重命名为 `chroma_server_authn_credentials`。
+    - `chroma_server_auth_configuration_file`：重命名为 `chroma_server_authn_configuration_file`。
+- 服务器授权
+    - `chroma_server_authz_ignore_paths`：已删除。功能已合并到 `chroma_server_auth_ignore_paths`。
 
-To see the full changes, you can read the [PR](https://github.com/chroma-core/chroma/pull/1970/files) or reach out to the Chroma team on [Discord](https://discord.gg/MMeYNTmh3x).
+要查看完整更改，请参见 [PR](https://github.com/chroma-core/chroma/pull/1970/files) 或在 [Discord](https://discord.gg/MMeYNTmh3x) 上联系 Chroma 团队。
 
-### Migration to 0.4.16 - November 7, 2023
+---
 
-This release adds support for multi-modal embeddings, with an accompanying change to the definitions of `EmbeddingFunction`.
-This change mainly affects users who have implemented their own `EmbeddingFunction` classes. If you are using Chroma's built-in embedding functions, you do not need to take any action.
+### 迁移到 0.4.16 - 2023年11月7日
+
+本次发布增加了对多模态嵌入的支持，并相应地更改了 `EmbeddingFunction` 的定义。
+此更改主要影响实现了自定义 `EmbeddingFunction` 类的用户。如果您使用的是 Chroma 的内置嵌入函数，则无需采取任何操作。
 
 **EmbeddingFunction**
 
-Previously, `EmbeddingFunction`s were defined as:
+此前，`EmbeddingFunction` 定义如下：
 
 ```python
 class EmbeddingFunction(Protocol):
@@ -304,7 +313,7 @@ class EmbeddingFunction(Protocol):
         ...
 ```
 
-After this update, `EmbeddingFunction`s are defined as:
+更新后，`EmbeddingFunction` 定义如下：
 
 ```python
 Embeddable = Union[Documents, Images]
@@ -315,51 +324,53 @@ class EmbeddingFunction(Protocol[D]):
         ...
 ```
 
-The key differences are:
+关键区别在于：
 
-- `EmbeddingFunction` is now generic, and takes a type parameter `D` which is a subtype of `Embeddable`. This allows us to define `EmbeddingFunction`s which can embed multiple modalities.
-- `__call__` now takes a single argument, `input`, to support data of any type `D`. The `texts` argument has been removed.
+- `EmbeddingFunction` 现在是泛型的，接受类型参数 `D`，其为 `Embeddable` 的子类型。这允许我们定义能够嵌入多种模态的 `EmbeddingFunction`。
+- `__call__` 现在接受单个参数 `input`，以支持任意类型 `D` 的数据。`texts` 参数已被移除。
 
-### Migration from >0.4.0 to 0.4.0 - July 17, 2023
+---
 
-What's new in this version?
+### 从 >0.4.0 迁移到 0.4.0 - 2023年7月17日
 
-- New easy way to create clients
-- Changed storage method
-- `.persist()` removed, `.reset()` no longer on by default
+本版本有哪些新特性？
 
-**New Clients**
+- 新的客户端创建方式
+- 存储方式变更
+- 移除了 `.persist()`，`.reset()` 默认关闭
+
+**新客户端**
 
 ```python
-### in-memory ephemeral client
+### 内存临时客户端
 
-# before
+# 旧写法
 import chromadb
 client = chromadb.Client()
 
-# after
+# 新写法
 import chromadb
 client = chromadb.EphemeralClient()
 
 
-### persistent client
+### 持久化客户端
 
-# before
+# 旧写法
 import chromadb
 from chromadb.config import Settings
 client = chromadb.Client(Settings(
     chroma_db_impl="duckdb+parquet",
-    persist_directory="/path/to/persist/directory" # Optional, defaults to .chromadb/ in the current directory
+    persist_directory="/path/to/persist/directory" # 可选，默认为当前目录下的 .chromadb/
 ))
 
-# after
+# 新写法
 import chromadb
 client = chromadb.PersistentClient(path="/path/to/persist/directory")
 
 
-### http client (to talk to server backend)
+### HTTP 客户端（用于与服务端通信）
 
-# before
+# 旧写法
 import chromadb
 from chromadb.config import Settings
 client = chromadb.Client(Settings(chroma_api_impl="rest",
@@ -367,13 +378,13 @@ client = chromadb.Client(Settings(chroma_api_impl="rest",
                                         chroma_server_http_port="8000"
                                     ))
 
-# after
+# 新写法
 import chromadb
 client = chromadb.HttpClient(host="localhost", port="8000")
 
 ```
 
-You can still also access the underlying `.Client()` method. If you want to turn off telemetry, all clients support custom settings:
+您仍然可以访问底层的 `.Client()` 方法。如果您想关闭遥测功能，所有客户端都支持自定义设置：
 
 ```python
 import chromadb
@@ -383,15 +394,15 @@ client = chromadb.PersistentClient(
     settings=Settings(anonymized_telemetry=False))
 ```
 
-**New data layout**
+**新的数据布局**
 
-This version of Chroma drops `duckdb` and `clickhouse` in favor of `sqlite` for metadata storage. This means migrating data over. We have created a migration CLI utility to do this.
+本版本的 Chroma 放弃了 `duckdb` 和 `clickhouse`，改用 `sqlite` 进行元数据存储。这意味着需要迁移数据。我们已创建了一个迁移 CLI 工具来完成此任务。
 
-If you upgrade to `0.4.0` and try to access data stored in the old way, you will see this error message
+如果您升级到 `0.4.0` 并尝试访问旧方式存储的数据，将会看到如下错误信息：
 
-> You are using a deprecated configuration of Chroma. Please pip install chroma-migrate and run `chroma-migrate` to upgrade your configuration. See https://docs.trychroma.com/deployment/migration for more information or join our discord at https://discord.gg/MMeYNTmh3x for help!
+> 您正在使用一个已弃用的 Chroma 配置。请运行 `pip install chroma-migrate` 并执行 `chroma-migrate` 来升级您的配置。更多信息请参见 https://docs.trychroma.com/deployment/migration 或加入我们的 Discord 频道 https://discord.gg/MMeYNTmh3x 获取帮助！
 
-Here is how to install and use the CLI:
+以下是安装和使用 CLI 的方法：
 
 ```terminal
 pip install chroma-migrate
@@ -400,13 +411,13 @@ chroma-migrate
 
 ![](/chroma-migrate.png)
 
-If you need any help with this migration, please reach out! We are on [Discord](https://discord.com/channels/1073293645303795742/1129286514845691975) ready to help.
+如果在迁移过程中遇到任何问题，请随时联系！我们随时在 [Discord](https://discord.com/channels/1073293645303795742/1129286514845691975) 上为您提供帮助。
 
-**Persist & Reset**
+**持久化与重置**
 
-`.persist()` was in the old version of Chroma because writes were only flushed when forced to. Chroma `0.4.0` saves all writes to disk instantly and so `persist` is no longer needed.
+`.persist()` 在旧版 Chroma 中存在，因为写入只有在强制刷新时才会落盘。而在 Chroma `0.4.0` 中，所有写入都会立即保存到磁盘，因此不再需要 `.persist()`。
 
-`.reset()`, which resets the entire database, used to by enabled-by-default which felt wrong. `0.4.0` has it disabled-by-default. You can enable it again by passing `allow_reset=True` to a Settings object. For example:
+`.reset()`（用于重置整个数据库）此前默认启用，这被认为不合理。在 `0.4.0` 中，默认禁用。您可以通过向 Settings 对象传入 `allow_reset=True` 来重新启用它。例如：
 
 ```python
 import chromadb

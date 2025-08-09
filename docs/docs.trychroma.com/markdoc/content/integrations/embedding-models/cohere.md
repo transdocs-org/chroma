@@ -5,12 +5,12 @@ name: 'Cohere'
 
 # Cohere
 
-Chroma also provides a convenient wrapper around Cohere's embedding API. This embedding function runs remotely on Cohere’s servers, and requires an API key. You can get an API key by signing up for an account at [Cohere](https://dashboard.cohere.ai/welcome/register).
+Chroma 同样为 Cohere 的嵌入 API 提供了一个便捷的封装。这个嵌入函数在 Cohere 的服务器上远程运行，并且需要 API 密钥。你可以通过访问 [Cohere](https://dashboard.cohere.ai/welcome/register) 注册账户来获取 API 密钥。
 
 {% Tabs %}
 {% Tab label="python" %}
 
-This embedding function relies on the `cohere` python package, which you can install with `pip install cohere`.
+这个嵌入函数依赖于 `cohere` Python 包，你可以使用 `pip install cohere` 命令进行安装。
 
 ```python
 import chromadb.utils.embedding_functions as embedding_functions
@@ -29,10 +29,10 @@ import { CohereEmbeddingFunction } from '@chroma-core/cohere';
 
 const embedder = new CohereEmbeddingFunction({ apiKey: "apiKey" })
 
-// use directly
+// 直接使用
 const embeddings = embedder.generate(["document1","document2"])
 
-// pass documents to query for .add and .query
+// 传递文档以进行 .add 和 .query 操作
 const collection = await client.createCollection({name: "name", embeddingFunction: embedder})
 const collectionGet = await client.getCollection({name:"name", embeddingFunction: embedder})
 ```
@@ -41,9 +41,9 @@ const collectionGet = await client.getCollection({name:"name", embeddingFunction
 
 {% /Tabs %}
 
-You can pass in an optional `model_name` argument, which lets you choose which Cohere embeddings model to use. By default, Chroma uses `large` model. You can see the available models under `Get embeddings` section [here](https://docs.cohere.ai/reference/embed).
+你可以选择性地传入 `model_name` 参数，从而选择使用哪一个 Cohere 嵌入模型。默认情况下，Chroma 使用的是 `large` 模型。你可以在 [此处](https://docs.cohere.ai/reference/embed) 的 `Get embeddings` 部分查看可用的模型。
 
-### Multilingual model example
+### 多语言模型示例
 
 {% TabbedCodeBlock %}
 
@@ -87,10 +87,9 @@ const embeddings = embedder.generate(multilingual_texts)
 
 {% /TabbedCodeBlock %}
 
-For more information on multilingual model you can read [here](https://docs.cohere.ai/docs/multilingual-language-models).
+关于多语言模型的更多信息，你可以阅读 [此处文档](https://docs.cohere.ai/docs/multilingual-language-models)。
 
-
-### Multimodal model example
+### 多模态模型示例
 
 {% tabs group="code-lang" hideTabs=true %}
 {% Tab label="python" %}
@@ -106,7 +105,7 @@ dataset = load_dataset(path="detection-datasets/coco", split="train", streaming=
 IMAGE_FOLDER = "images"
 N_IMAGES = 5
 
-# Write the images to a folder
+# 将图片写入文件夹
 dataset_iter = iter(dataset)
 os.makedirs(IMAGE_FOLDER, exist_ok=True)
 for i in range(N_IMAGES):
@@ -128,7 +127,7 @@ multimodal_collection = client.create_collection(
 image_uris = sorted([os.path.join(IMAGE_FOLDER, image_name) for image_name in os.listdir(IMAGE_FOLDER)])
 ids = [str(i) for i in range(len(image_uris))]
 for i in range(len(image_uris)):
-    # max images per add is 1, see cohere docs https://docs.cohere.com/v2/reference/embed#request.body.images
+    # 每次添加最多一张图片，请参阅 Cohere 文档 https://docs.cohere.com/v2/reference/embed#request.body.images
     multimodal_collection.add(ids=[str(i)], uris=[image_uris[i]])
 
 retrieved = multimodal_collection.query(query_texts=["animals"], include=['data'], n_results=3)

@@ -1,12 +1,12 @@
-# Persistent Client
+# 持久化客户端
 
 {% Tabs %}
 
 {% Tab label="python" %}
 
-You can configure Chroma to save and load the database from your local machine, using the `PersistentClient`. 
+你可以通过使用 `PersistentClient` 将 Chroma 配置为从本地机器保存和加载数据库。
 
-Data will be persisted automatically and loaded on start (if it exists).
+数据将自动持久化，并在启动时加载（如果存在）。
 
 ```python
 import chromadb
@@ -14,36 +14,36 @@ import chromadb
 client = chromadb.PersistentClient(path="/path/to/save/to")
 ```
 
-The `path` is where Chroma will store its database files on disk, and load them on start. If you don't provide a path, the default is `.chroma`
+`path` 是 Chroma 在磁盘上存储数据库文件的位置，并在启动时加载它们。如果你没有提供路径，默认路径是 `.chroma`。
 
 {% /Tab %}
 
 {% Tab label="typescript" %}
 
-To connect with the JS/TS client, you must connect to a Chroma server. 
+若要使用 JS/TS 客户端进行连接，你必须连接到一个 Chroma 服务端。
 
-To run a Chroma server locally that will persist your data, install Chroma via `pip`:
+要在本地运行一个持久化数据的 Chroma 服务端，请通过 `pip` 安装 Chroma：
 
 ```terminal
 pip install chromadb
 ```
 
-And run the server using our CLI:
+然后使用我们的 CLI 运行服务端：
 
 ```terminal
 chroma run --path ./getting-started 
 ```
 
-The `path` is where Chroma will store its database files on disk, and load them on start. The default is `.chroma`.
+`path` 是 Chroma 在磁盘上存储数据库文件的位置，并在启动时加载它们。默认路径是 `.chroma`。
 
-Alternatively, you can also use our official Docker image:
+或者，你也可以使用我们官方的 Docker 镜像：
 
 ```terminal
 docker pull chromadb/chroma
 docker run -p 8000:8000 chromadb/chroma
 ```
 
-With a Chroma server running locally, you can connect to it by instantiating a new `ChromaClient`:
+运行本地 Chroma 服务端后，你可以实例化一个新的 `ChromaClient` 来连接它：
 
 ```typescript
 import { ChromaClient } from "chromadb";
@@ -51,7 +51,7 @@ import { ChromaClient } from "chromadb";
 const client = new ChromaClient();
 ```
 
-By default, the `ChromaClient` is wired to connect to a Chroma server at `http://localhost:8000`, with `default_tenant` and `default_database`. If you have different settings you can provide them to the `ChromaClient` constructor:
+默认情况下，`ChromaClient` 会连接到位于 `http://localhost:8000` 的 Chroma 服务端，并使用 `default_tenant` 和 `default_database`。如果你有不同的配置，可以将它们作为参数传入 `ChromaClient` 构造函数：
 
 ```typescript
 const client = new ChromaClient({
@@ -63,16 +63,16 @@ const client = new ChromaClient({
 });
 ```
 
-See [Running Chroma in client-server mode](../client-server-mode) for more.
+更多信息请参见 [以客户端-服务端模式运行 Chroma](../client-server-mode)。
 
 {% /Tab %}
 
 {% /Tabs %}
 
-The client object has a few useful convenience methods.
+客户端对象有几个有用的便捷方法。
 
-* `heartbeat()` - returns a nanosecond heartbeat. Useful for making sure the client remains connected.
-* `reset()` - empties and completely resets the database. ⚠️ This is destructive and not reversible.
+* `heartbeat()` - 返回一个纳秒级的心跳时间戳。用于确保客户端保持连接。
+* `reset()` - 清空并完全重置数据库。⚠️ 此操作具有破坏性且不可逆。
 
 {% TabbedCodeBlock %}
 
@@ -91,4 +91,3 @@ await client.reset();
 {% /Tab %}
 
 {% /TabbedCodeBlock %}
-

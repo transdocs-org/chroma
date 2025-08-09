@@ -1,6 +1,6 @@
-# Metadata Filtering
+# 元数据过滤
 
-The `where` argument in `get` and `query` is used to filter records by their metadata. For example, in this `query` operation, Chroma will only query records that have the `page` metadata field with the value `10`:
+`get` 和 `query` 中的 `where` 参数用于根据元数据过滤记录。例如，在下面的 `query` 操作中，Chroma 只会查询那些 `page` 元数据字段值为 `10` 的记录：
 
 {% TabbedCodeBlock %}
 
@@ -24,7 +24,7 @@ await collection.query({
 
 {% /TabbedCodeBlock %}
 
-In order to filter on metadata, you must supply a `where` filter dictionary to the query. The dictionary must have the following structure:
+要对元数据进行过滤，必须向查询中提供一个 `where` 过滤字典。该字典必须具有以下结构：
 
 {% TabbedCodeBlock %}
 
@@ -50,7 +50,7 @@ In order to filter on metadata, you must supply a `where` filter dictionary to t
 
 {% /TabbedCodeBlock %}
 
-Using the `$eq` operator is equivalent to using the metadata field directly in your `where` filter.
+使用 `$eq` 操作符等同于在 `where` 过滤器中直接使用元数据字段。
 
 {% TabbedCodeBlock %}
 
@@ -60,7 +60,7 @@ Using the `$eq` operator is equivalent to using the metadata field directly in y
     "metadata_field": "search_string"
 }
 
-# is equivalent to
+# 等同于
 
 {
     "metadata_field": {
@@ -76,7 +76,7 @@ Using the `$eq` operator is equivalent to using the metadata field directly in y
     metadata_field: "search_string"
 }
 
-// is equivalent to
+// 等同于
 
 {
     metadata_field: {
@@ -88,7 +88,7 @@ Using the `$eq` operator is equivalent to using the metadata field directly in y
 
 {% /TabbedCodeBlock %}
 
-For example, here we query all records whose `page` metadata field is greater than 10:
+例如，这里我们查询所有 `page` 元数据字段大于 10 的记录：
 
 {% TabbedCodeBlock %}
 
@@ -112,11 +112,11 @@ await collection.query({
 
 {% /TabbedCodeBlock %}
 
-## Using Logical Operators
+## 使用逻辑运算符
 
-You can also use the logical operators `$and` and `$or` to combine multiple filters.
+你还可以使用逻辑运算符 `$and` 和 `$or` 来组合多个过滤器。
 
-An `$and` operator will return results that match all the filters in the list.
+`$and` 运算符将返回匹配列表中所有过滤器的结果。
 
 {% TabbedCodeBlock %}
 
@@ -156,7 +156,7 @@ An `$and` operator will return results that match all the filters in the list.
 
 {% /TabbedCodeBlock %}
 
-For example, here we query all records whose `page` metadata field is between 5 and 10:
+例如，这里我们查询所有 `page` 元数据字段介于 5 和 10 之间的记录：
 
 {% TabbedCodeBlock %}
 
@@ -190,7 +190,7 @@ await collection.query({
 
 {% /TabbedCodeBlock %}
 
-An `$or` operator will return results that match any of the filters in the list.
+`$or` 运算符将返回匹配列表中任意一个过滤器的结果。
 
 {% TabbedCodeBlock %}
 
@@ -230,7 +230,7 @@ An `$or` operator will return results that match any of the filters in the list.
 
 {% /TabbedCodeBlock %}
 
-For example, here we get all records whose `color` metadata field is `red` or `blue`:
+例如，这里我们获取所有 `color` 元数据字段是 `red` 或 `blue` 的记录：
 
 {% TabbedCodeBlock %}
 
@@ -262,14 +262,14 @@ await collection.get({
 
 {% /TabbedCodeBlock %}
 
-## Using Inclusion Operators
+## 使用包含运算符
 
-The following inclusion operators are supported:
+支持以下包含运算符：
 
-- `$in` - a value is in predefined list (string, int, float, bool)
-- `$nin` - a value is not in predefined list (string, int, float, bool)
+- `$in` - 值在预定义列表中（字符串、整数、浮点数、布尔值）
+- `$nin` - 值不在预定义列表中（字符串、整数、浮点数、布尔值）
 
-An `$in` operator will return results where the metadata attribute is part of a provided list:
+`$in` 运算符将返回元数据属性属于提供的列表的结果：
 
 {% TabbedCodeBlock %}
 
@@ -295,7 +295,7 @@ An `$in` operator will return results where the metadata attribute is part of a 
 
 {% /TabbedCodeBlock %}
 
-An `$nin` operator will return results where the metadata attribute is not part of a provided list (or the attribute's key is not present):
+`$nin` 运算符将返回元数据属性不属于提供的列表的结果（或者属性的键不存在）：
 
 {% TabbedCodeBlock %}
 
@@ -321,7 +321,7 @@ An `$nin` operator will return results where the metadata attribute is not part 
 
 {% /TabbedCodeBlock %}
 
-For example, here we get all records whose `author` metadata field is in a list of possible values:
+例如，这里我们获取所有 `author` 元数据字段在可能值列表中的记录：
 
 {% TabbedCodeBlock %}
 
@@ -347,9 +347,9 @@ await collection.get({
 
 {% /TabbedCodeBlock %}
 
-## Combining with Document Search
+## 与文档搜索结合使用
 
-`.get` and `.query` can handle metadata filtering combined with [document search](./full-text-search):
+`.get` 和 `.query` 可以处理与[文档搜索](./full-text-search)结合使用的元数据过滤：
 
 {% TabbedCodeBlock %}
 
@@ -373,6 +373,3 @@ await collection.query({
     whereDocument: { "$contains": "search_string" }
 })
 ```
-{% /Tab %}
-
-{% /TabbedCodeBlock %}

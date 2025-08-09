@@ -1,9 +1,9 @@
-# Deleting Data from Chroma Collections
+# 从 Chroma 集合中删除数据
 
-Chroma supports deleting items from a collection by `id` using `.delete`. The embeddings, documents, and metadata associated with each item will be deleted.
+Chroma 支持通过 `.delete` 方法按 `id` 删除集合中的条目。与每个条目相关的嵌入向量、文档和元数据也将一并被删除。
 
 {% Banner type="warn" %}
-Naturally, this is a destructive operation, and cannot be undone.
+请注意，这是一项具有破坏性的操作，且无法撤销。
 {% /Banner %}
 
 {% TabbedCodeBlock %}
@@ -26,7 +26,7 @@ await collection.delete({
 
 {% /TabbedCodeBlock %}
 
-`.delete` also supports the `where` filter. If no `ids` are supplied, it will delete all items in the collection that match the `where` filter.
+`.delete` 方法也支持使用 `where` 过滤条件。如果没有提供 `ids`，则会删除集合中符合 `where` 过滤条件的所有条目。
 
 {% TabbedCodeBlock %}
 

@@ -1,20 +1,20 @@
-# Installing the Chroma CLI
+# 安装 Chroma CLI
 
-The Chroma CLI lets you run a Chroma server locally on your machine, install sample apps, browse your collections, interact with your Chroma Cloud DBs, and much more!
+Chroma CLI 可以让你在本地机器上运行 Chroma 服务器、安装示例应用、浏览你的集合、与你的 Chroma Cloud 数据库进行交互，以及其他更多操作！
 
-When you install our Python or JavaScript package globally, you will automatically get the Chroma CLI.
+当你全局安装我们的 Python 或 JavaScript 包时，Chroma CLI 会被自动安装。
 
-If you don't use one of our packages, you can still install the CLI as a standalone program with `cURL` (or `iex` on Windows).
+如果你不使用我们的任何一个包，你仍然可以通过 `cURL`（或 Windows 上的 `iex`）将 CLI 作为独立程序安装。
 
 ## Python
 
-You can install Chroma using `pip`:
+你可以使用 `pip` 安装 Chroma：
 
 ```terminal
 pip install chromadb
 ```
 
-If you're machine does not allow for global `pip` installs, you can get the Chroma CLI with `pipx`:
+如果你的机器不允许全局安装 `pip` 包，可以使用 `pipx` 来安装 Chroma CLI：
 
 ```terminal
 pipx install chromadb
@@ -64,7 +64,7 @@ bun add -g chromadb
 
 {% /TabbedUseCaseCodeBlock %}
 
-## Install Globally
+## 全局安装
 
 {% TabbedUseCaseCodeBlock language="Terminal" %}
 

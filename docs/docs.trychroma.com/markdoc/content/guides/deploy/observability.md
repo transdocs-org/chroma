@@ -1,34 +1,34 @@
-# Observability
+# 可观测性
 
 
-## Backend Observability
+## 后端可观测性
 
-Chroma is instrumented with [OpenTelemetry](https://opentelemetry.io/) hooks for observability.
+Chroma 通过 [OpenTelemetry](https://opentelemetry.io/) 钩子实现了可观测性功能。
 
-{% note type="default" title="Telemetry vs Observability" %}
-"[Telemetry](../../docs/overview/telemetry)" refers to anonymous product usage statistics we collect. "Observability" refers to metrics, logging, and tracing which can be used by anyone operating a Chroma deployment. Observability features listed on this page are **never** sent back to Chroma; they are for end-users to better understand how their Chroma deployment is behaving.
+{% note type="default" title="遥测与可观测性" %}
+“[遥测](../../docs/overview/telemetry)” 指的是我们收集的匿名产品使用统计数据。“可观测性” 指的是指标、日志和追踪，任何运行 Chroma 部署的人都可以使用这些功能。本页上列出的可观测性功能 **绝不会** 发送回 Chroma；它们是为了帮助终端用户更好地了解其 Chroma 部署的运行情况。
 {% /note %}
 
-### Available Observability
+### 可用的可观测性
 
-Chroma currently only exports OpenTelemetry [traces](https://opentelemetry.io/docs/concepts/signals/traces/). Traces allow a Chroma operator to understand how requests flow through the system and quickly identify bottlenecks.
+目前，Chroma 仅导出 OpenTelemetry [追踪](https://opentelemetry.io/docs/concepts/signals/traces/)。追踪功能允许 Chroma 运维人员了解请求在系统中的流动方式，并快速识别瓶颈。
 
-### Configuration
+### 配置
 
-Tracing is configured with three environment variables:
+追踪功能通过三个环境变量进行配置：
 
-- `CHROMA_OPEN_TELEMETRY__ENDPOINT`: where to send observability data. Example: `api.honeycomb.com`.
-- `CHROMA_OPEN_TELEMETRY__SERVICE_NAME`: Service name for OTel traces. Default: `chromadb`.
-- `OTEL_EXPORTER_OTLP_HEADERS`: Headers to use when sending observability data. Often used to send API and app keys. For example `{"x-honeycomb-team": "abc"}`.
+- `CHROMA_OPEN_TELEMETRY__ENDPOINT`：可观测性数据的发送目标。例如：`api.honeycomb.com`。
+- `CHROMA_OPEN_TELEMETRY__SERVICE_NAME`：OTel 追踪的服务名称。默认值：`chromadb`。
+- `OTEL_EXPORTER_OTLP_HEADERS`：发送可观测性数据时使用的请求头。通常用于发送 API 密钥和应用密钥。例如：`{"x-honeycomb-team": "abc"}`。
 
-We also have dedicated observability guides for various deployments:
+我们还为各种部署方式提供了专门的可观测性指南：
 * [Docker](./docker#observability-with-docker)
 * [AWS](./aws#observability-with-AWS)
 * [GCP](./gcp#observability-with-GCP)
 * [Azure](./azure#observability-with-Azure)
 
-## Client (SDK) Observability
+## 客户端（SDK）可观测性
 
-Several observability platforms offer built-in integrations for Chroma, allowing you to monitor your application's interactions with the Chroma server:
-- [OpenLLMetry Integration](../../integrations/frameworks/openllmetry).
-- [OpenLIT Integration](../../integrations/frameworks/openlit).
+多个可观测性平台为 Chroma 提供了内置集成，使您能够监控应用程序与 Chroma 服务器之间的交互：
+- [OpenLLMetry 集成](../../integrations/frameworks/openllmetry)
+- [OpenLIT 集成](../../integrations/frameworks/openlit)

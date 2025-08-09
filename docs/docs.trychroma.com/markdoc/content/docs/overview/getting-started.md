@@ -1,12 +1,12 @@
-# Getting Started
+# 开始使用
 
-Chroma is an AI-native open-source vector database. It comes with everything you need to get started built-in, and runs on your machine.
+Chroma 是一个原生于 AI 的开源向量数据库。它内置了你开始所需的一切，并可以在你的机器上运行。
 
-For production, Chroma offers [Chroma Cloud](https://trychroma.com/signup) - a fast, scalable, and serverless database-as-a-service. Get started in 30 seconds - $5 in free credits included.
+对于生产环境，Chroma 提供了 [Chroma Cloud](https://trychroma.com/signup) —— 一个快速、可扩展且无服务器的数据库即服务。30 秒内即可开始使用，还包含 5 美元的免费额度。
 
 {% Video link="https://www.youtube.com/embed/yvsmkx-Jaj0" title="Getting Started Video" / %}
 
-### 1. Install
+### 1. 安装
 
 {% Tabs %}
 
@@ -70,7 +70,7 @@ bun add chromadb @chroma-core/default-embed
 
 {% /Tabs %}
 
-### 2. Create a Chroma Client
+### 2. 创建 Chroma 客户端
 
 {% Tabs %}
 
@@ -82,7 +82,7 @@ chroma_client = chromadb.Client()
 {% /Tab %}
 {% Tab label="typescript" %}
 
-Run the Chroma backend:
+运行 Chroma 后端：
 
 {% TabbedUseCaseCodeBlock language="Terminal" %}
 
@@ -101,7 +101,7 @@ docker run -p 8000:8000 chromadb/chroma
 
 {% /TabbedUseCaseCodeBlock %}
 
-Then create a client which connects to it:
+然后创建一个连接到它的客户端：
 
 {% TabbedUseCaseCodeBlock language="typescript" %}
 
@@ -125,9 +125,9 @@ const client = new ChromaClient();
 
 {% /Tabs %}
 
-### 3. Create a collection
+### 3. 创建一个集合
 
-Collections are where you'll store your embeddings, documents, and any additional metadata. Collections index your embeddings and documents, and enable efficient retrieval and filtering. You can create a collection with a name:
+集合是你存储嵌入（embeddings）、文档以及任何附加元数据的地方。集合会索引你的嵌入和文档，从而实现高效的检索和过滤。你可以通过指定名称创建一个集合：
 
 {% TabbedCodeBlock %}
 
@@ -147,9 +147,9 @@ const collection = await client.createCollection({
 
 {% /TabbedCodeBlock %}
 
-### 4. Add some text documents to the collection
+### 4. 向集合中添加一些文本文档
 
-Chroma will store your text and handle embedding and indexing automatically. You can also customize the embedding model. You must provide unique string IDs for your documents.
+Chroma 会自动存储你的文本并进行嵌入和索引。你也可以自定义嵌入模型。你必须为文档提供唯一的字符串 ID。
 
 {% TabbedCodeBlock %}
 
@@ -179,17 +179,17 @@ await collection.add({
 
 {% /TabbedCodeBlock %}
 
-### 5. Query the collection
+### 5. 查询集合
 
-You can query the collection with a list of query texts, and Chroma will return the `n` most similar results. It's that easy!
+你可以使用一组查询文本对集合进行查询，Chroma 将返回 `n` 个最相似的结果。就是这么简单！
 
 {% TabbedCodeBlock %}
 
 {% Tab label="python" %}
 ```python
 results = collection.query(
-    query_texts=["This is a query document about hawaii"], # Chroma will embed this for you
-    n_results=2 # how many results to return
+    query_texts=["This is a query document about hawaii"], # Chroma 会自动为你嵌入
+    n_results=2 # 返回多少个结果
 )
 print(results)
 ```
@@ -199,8 +199,8 @@ print(results)
 {% Tab label="typescript" %}
 ```typescript
 const results = await collection.query({
-    queryTexts: "This is a query document about hawaii", // Chroma will embed this for you
-    nResults: 2, // how many results to return
+    queryTexts: "This is a query document about hawaii", // Chroma 会自动为你嵌入
+    nResults: 2, // 返回多少个结果
 });
 
 console.log(results);
@@ -209,11 +209,11 @@ console.log(results);
 
 {% /TabbedCodeBlock %}
 
-If `n_results` is not provided, Chroma will return 10 results by default. Here we only added 2 documents, so we set `n_results=2`.
+如果未提供 `n_results`，Chroma 默认会返回 10 个结果。这里我们只添加了 2 个文档，因此我们设置 `n_results=2`。
 
-### 6. Inspect Results
+### 6. 查看结果
 
-From the above - you can see that our query about `hawaii` is semantically most similar to the document about `pineapple`.
+从上面的结果可以看出，我们关于 `hawaii` 的查询在语义上最接近关于 `pineapple` 的文档。
 
 {% TabbedCodeBlock %}
 
@@ -257,9 +257,9 @@ From the above - you can see that our query about `hawaii` is semantically most 
 
 {% /TabbedCodeBlock %}
 
-### 7. Try it out yourself
+### 7. 自己动手尝试
 
-What if we tried querying with `"This is a document about florida"`? Here is a full example.
+如果我们使用 `"This is a document about florida"` 进行查询会怎样？以下是一个完整的示例：
 
 {% TabbedCodeBlock %}
 
@@ -268,10 +268,10 @@ What if we tried querying with `"This is a document about florida"`? Here is a f
 import chromadb
 chroma_client = chromadb.Client()
 
-# switch `create_collection` to `get_or_create_collection` to avoid creating a new collection every time
+# 将 `create_collection` 换为 `get_or_create_collection` 以避免每次创建新集合
 collection = chroma_client.get_or_create_collection(name="my_collection")
 
-# switch `add` to `upsert` to avoid adding the same documents every time
+# 将 `add` 换为 `upsert` 以避免重复添加相同文档
 collection.upsert(
     documents=[
         "This is a document about pineapple",
@@ -281,8 +281,8 @@ collection.upsert(
 )
 
 results = collection.query(
-    query_texts=["This is a query document about florida"], # Chroma will embed this for you
-    n_results=2 # how many results to return
+    query_texts=["This is a query document about florida"], # Chroma 会自动为你嵌入
+    n_results=2 # 返回多少个结果
 )
 
 print(results)
@@ -294,12 +294,12 @@ print(results)
 import { ChromaClient } from "chromadb";
 const client = new ChromaClient();
 
-// switch `createCollection` to `getOrCreateCollection` to avoid creating a new collection every time
+// 将 `createCollection` 换为 `getOrCreateCollection` 以避免每次创建新集合
 const collection = await client.getOrCreateCollection({
     name: "my_collection",
 });
 
-// switch `addRecords` to `upsertRecords` to avoid adding the same documents every time
+// 将 `addRecords` 换为 `upsertRecords` 以避免重复添加相同文档
 await collection.upsert({
     documents: [
         "This is a document about pineapple",
@@ -309,8 +309,8 @@ await collection.upsert({
 });
 
 const results = await collection.query({
-    queryTexts: "This is a query document about florida", // Chroma will embed this for you
-    nResults: 2, // how many results to return
+    queryTexts: "This is a query document about florida", // Chroma 会自动为你嵌入
+    nResults: 2, // 返回多少个结果
 });
 
 console.log(results);
@@ -319,10 +319,10 @@ console.log(results);
 
 {% /TabbedCodeBlock %}
 
-## Next steps
+## 下一步
 
-In this guide we used Chroma's [ephemeral client](../run-chroma/ephemeral-client) for simplicity. It starts a Chroma server in-memory, so any data you ingest will be lost when your program terminates. You can use the [persistent client](../run-chroma/persistent-client) or run Chroma in [client-server mode](../run-chroma/client-server) if you need data persistence.
+在本指南中，我们为了简便使用了 Chroma 的 [临时客户端](../run-chroma/ephemeral-client)。它会在内存中启动一个 Chroma 服务器，因此当你的程序结束时，所有数据都会丢失。如果你需要数据持久化，可以使用 [持久化客户端](../run-chroma/persistent-client) 或在 [客户端-服务器模式](../run-chroma/client-server) 下运行 Chroma。
 
-- Learn how to [Deploy Chroma](../../guides/deploy/client-server-mode) to a server
-- Join Chroma's [Discord Community](https://discord.com/invite/MMeYNTmh3x) to ask questions and get help
-- Follow Chroma on [X (@trychroma)](https://twitter.com/trychroma) for updates
+- 学习如何 [部署 Chroma](../../guides/deploy/client-server-mode) 到服务器
+- 加入 Chroma 的 [Discord 社区](https://discord.com/invite/MMeYNTmh3x) 提问和获取帮助
+- 在 [X (@trychroma)](https://twitter.com/trychroma) 上关注 Chroma 获取更新

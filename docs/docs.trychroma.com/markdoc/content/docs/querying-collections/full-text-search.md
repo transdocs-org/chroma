@@ -1,14 +1,14 @@
-# Full Text Search and Regex
+# 全文搜索和正则表达式
 
 {% Tabs %}
 
 {% Tab label="python" %}
 
-The `where_document` argument in `get` and `query` is used to filter records based on their document content.
+`get` 和 `query` 中的 `where_document` 参数用于根据文档内容过滤记录。
 
-We support full-text search with the `$contains` and `$not_contains` operators. We also support [regular expression](https://regex101.com) pattern matching with the `$regex` and `$not_regex` operators.
+我们支持使用 `$contains` 和 `$not_contains` 运算符进行全文搜索。我们也支持使用 `$regex` 和 `$not_regex` 运算符进行[正则表达式](https://regex101.com)模式匹配。
 
-For example, here we get all records whose document contains a search string:
+例如，这里我们获取文档中包含搜索字符串的所有记录：
 
 ```python
 collection.get(
@@ -16,9 +16,9 @@ collection.get(
 )
 ```
 
-*Note*: Full-text search is case-sensitive.
+*注意*：全文搜索是区分大小写的。
 
-Here we get all records whose documents matches the regex pattern for an email address:
+在这里我们获取文档与电子邮件地址的正则表达式模式匹配的所有记录：
 
 ```python
 collection.get(
@@ -28,11 +28,11 @@ collection.get(
 )
 ```
 
-## Using Logical Operators
+## 使用逻辑运算符
 
-You can also use the logical operators `$and` and `$or` to combine multiple filters.
+您还可以使用逻辑运算符 `$and` 和 `$or` 来组合多个过滤器。
 
-An `$and` operator will return results that match all the filters in the list:
+`$and` 运算符将返回匹配列表中所有过滤器的结果：
 
 ```python
 collection.query(
@@ -46,7 +46,7 @@ collection.query(
 )
 ```
 
-An `$or` operator will return results that match any of the filters in the list:
+`$or` 运算符将返回匹配列表中任意一个过滤器的结果：
 
 ```python
 collection.query(
@@ -60,9 +60,9 @@ collection.query(
 )
 ```
 
-## Combining with Metadata Filtering
+## 与元数据过滤结合使用
 
-`.get` and `.query` can handle `where_document` search combined with [metadata filtering](./metadata-filtering):
+`.get` 和 `.query` 可以处理 `where_document` 搜索与 [元数据过滤](./metadata-filtering) 的结合：
 
 ```python
 collection.query(
@@ -77,11 +77,11 @@ collection.query(
 
 {% Tab label="typescript" %}
 
-The `whereDocument` argument in `get` and `query` is used to filter records based on their document content.
+`get` 和 `query` 中的 `whereDocument` 参数用于根据文档内容过滤记录。
 
-We support full-text search with the `$contains` and `$not_contains` operators. We also support [regular expression](https://regex101.com) pattern matching with the `$regex` and `$not_regex` operators.
+我们支持使用 `$contains` 和 `$not_contains` 运算符进行全文搜索。我们也支持使用 `$regex` 和 `$not_regex` 运算符进行[正则表达式](https://regex101.com)模式匹配。
 
-For example, here we get all records whose document contains a search string:
+例如，这里我们获取文档中包含搜索字符串的所有记录：
 
 ```typescript
 await collection.get({
@@ -89,7 +89,7 @@ await collection.get({
 })
 ```
 
-Here we get all records whose documents matches the regex pattern for an email address:
+这里我们获取文档与电子邮件地址的正则表达式模式匹配的所有记录：
 
 ```typescript
 await collection.get({
@@ -99,11 +99,11 @@ await collection.get({
 })
 ```
 
-## Using Logical Operators
+## 使用逻辑运算符
 
-You can also use the logical operators `$and` and `$or` to combine multiple filters.
+您还可以使用逻辑运算符 `$and` 和 `$or` 来组合多个过滤器。
 
-An `$and` operator will return results that match all the filters in the list:
+`$and` 运算符将返回匹配列表中所有过滤器的结果：
 
 ```typescript
 await collection.query({
@@ -117,7 +117,7 @@ await collection.query({
 })
 ```
 
-An `$or` operator will return results that match any of the filters in the list:
+`$or` 运算符将返回匹配列表中任意一个过滤器的结果：
 
 ```typescript
 await collection.query({
@@ -131,9 +131,9 @@ await collection.query({
 })
 ```
 
-## Combining with Metadata Filtering
+## 与元数据过滤结合使用
 
-`.get` and `.query` can handle `whereDocument` search combined with [metadata filtering](./metadata-filtering):
+`.get` 和 `.query` 可以处理 `whereDocument` 搜索与 [元数据过滤](./metadata-filtering) 的结合：
 
 ```typescript
 await collection.query({

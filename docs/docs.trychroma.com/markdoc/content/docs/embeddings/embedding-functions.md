@@ -1,8 +1,8 @@
-# Embedding Functions
+# 嵌入函数
 
-Embeddings are the way to represent any kind of data, making them the perfect fit for working with all kinds of AI-powered tools and algorithms. They can represent text, images, and soon audio and video. Chroma collections index embeddings to enable efficient similarity search on the data they represent. There are many options for creating embeddings, whether locally using an installed library, or by calling an API.
+嵌入是表示任何类型数据的方式，这使它们非常适合与各种基于AI的工具和算法一起使用。它们可以表示文本、图像，以及即将支持的音频和视频。Chroma 集合通过索引嵌入来实现对所表示数据的高效相似性搜索。创建嵌入有多种选项，无论是通过使用本地安装的库还是调用API。
 
-Chroma provides lightweight wrappers around popular embedding providers, making it easy to use them in your apps. You can set an embedding function when you [create](../collections/manage-collections) a Chroma collection, to be automatically used when adding and querying data, or you can call them directly yourself.
+Chroma 为流行的嵌入提供程序提供了轻量级封装，使您可以在应用程序中轻松使用它们。当您[创建](../collections/manage-collections) Chroma 集合时，可以设置一个嵌入函数，在添加和查询数据时自动使用，或者您可以直接调用它们。
 
 |                                                                                          | Python | Typescript |
 |------------------------------------------------------------------------------------------|--------|------------|
@@ -18,15 +18,15 @@ Chroma provides lightweight wrappers around popular embedding providers, making 
 | [Mistral](../../integrations/embedding-models/mistral)                                | ✓      | ✓          |
 | [Morph](../../integrations/embedding-models/morph)                                    | ✓      | ✓          |
 
-We welcome pull requests to add new Embedding Functions to the community.
+我们欢迎社区贡献新的嵌入函数。
 
 ***
 
-## Default: all-MiniLM-L6-v2
+## 默认：all-MiniLM-L6-v2
 
-Chroma's default embedding function uses the [Sentence Transformers](https://www.sbert.net/) `all-MiniLM-L6-v2` model to create embeddings. This embedding model can create sentence and document embeddings that can be used for a wide variety of tasks. This embedding function runs locally on your machine, and may require you download the model files (this will happen automatically).
+Chroma 的默认嵌入函数使用 [Sentence Transformers](https://www.sbert.net/) 的 `all-MiniLM-L6-v2` 模型来创建嵌入。这个嵌入模型可以创建可用于各种任务的句子和文档嵌入。此嵌入函数在您的本地机器上运行，可能需要您下载模型文件（下载会自动进行）。
 
-If you don't specify an embedding function when creating a collection, Chroma will set it to be the `DefaultEmbeddingFunction`:
+如果您在创建集合时未指定嵌入函数，Chroma 将默认设置为 `DefaultEmbeddingFunction`：
 
 {% Tabs %}
 
@@ -37,7 +37,7 @@ collection = client.create_collection(name="my_collection")
 {% /Tab %}
 
 {% Tab label="typescript" %}
-Install the `@chroma-core/default-embed` package:
+安装 `@chroma-core/default-embed` 包：
 
 {% TabbedUseCaseCodeBlock language="Terminal" %}
 
@@ -67,7 +67,7 @@ bun add @chroma-core/default-embed
 
 {% /TabbedUseCaseCodeBlock %}
 
-Create a collection without providing an embedding function. It will automatically be set with the `DefaultEmbeddingFunction`:
+创建集合时不提供嵌入函数。它将自动设置为 `DefaultEmbeddingFunction`：
 
 ```typescript
 const collection = await client.createCollection({ name: "my-collection" });
@@ -77,15 +77,15 @@ const collection = await client.createCollection({ name: "my-collection" });
 
 {% /Tabs %}
 
-## Using Embedding Functions
+## 使用嵌入函数
 
-Embedding functions can be linked to a collection and used whenever you call `add`, `update`, `upsert` or `query`.
+嵌入函数可以链接到集合，并在调用 `add`、`update`、`upsert` 或 `query` 时使用。
 
 {% Tabs %}
 
 {% Tab label="python" %}
 ```python
-# Set your OPENAI_API_KEY environment variable
+# 设置您的 OPENAI_API_KEY 环境变量
 from chromadb.utils.embedding_functions import OpenAIEmbeddingFunction
 
 collection = client.create_collection(
@@ -95,7 +95,7 @@ collection = client.create_collection(
     )
 )
 
-# Chroma will use OpenAIEmbeddingFunction to embed your documents
+# Chroma 将使用 OpenAIEmbeddingFunction 来嵌入您的文档
 collection.add(
     ids=["id1", "id2"],
     documents=["doc1", "doc2"]
@@ -104,7 +104,7 @@ collection.add(
 {% /Tab %}
 
 {% Tab label="typescript" %}
-Install the `@chroma-core/openai` package:
+安装 `@chroma-core/openai` 包：
 
 {% TabbedUseCaseCodeBlock language="Terminal" %}
 
@@ -123,6 +123,7 @@ pnpm add @chroma-core/openai
 {% Tab label="yarn" %}
 ```terminal
 yarn add @chroma-core/openai
+``%
 ```
 {% /Tab %}
 
@@ -134,10 +135,10 @@ bun add @chroma-core/openai
 
 {% /TabbedUseCaseCodeBlock %}
 
-Create a collection with the `OpenAIEmbeddingFunction`:
+创建带有 `OpenAIEmbeddingFunction` 的集合：
 
 ```typescript
-// Set your OPENAI_API_KEY environment variable
+// 设置您的 OPENAI_API_KEY 环境变量
 import { OpenAIEmbeddingFunction } from "@chroma-core/openai";
 
 collection = await client.createCollection({
@@ -147,7 +148,7 @@ collection = await client.createCollection({
     })
 });
 
-// Chroma will use OpenAIEmbeddingFunction to embed your documents
+// Chroma 将使用 OpenAIEmbeddingFunction 来嵌入您的文档
 await collection.add({
     ids: ["id1", "id2"],
     documents: ["doc1", "doc2"]
@@ -157,7 +158,7 @@ await collection.add({
 
 {% /Tabs %}
 
-You can also use embedding functions directly which can be handy for debugging.
+您也可以直接使用嵌入函数，这在调试时非常方便。
 
 {% TabbedCodeBlock %}
 
@@ -187,9 +188,9 @@ await collection.query({ queryEmbeddings: embeddings })
 
 {% /TabbedCodeBlock %}
 
-## Custom Embedding Functions
+## 自定义嵌入函数
 
-You can create your own embedding function to use with Chroma; it just needs to implement `EmbeddingFunction`.
+您可以创建自己的嵌入函数与 Chroma 一起使用；它只需实现 `EmbeddingFunction` 接口即可。
 
 {% TabbedCodeBlock %}
 
@@ -199,7 +200,7 @@ from chromadb import Documents, EmbeddingFunction, Embeddings
 
 class MyEmbeddingFunction(EmbeddingFunction):
     def __call__(self, input: Documents) -> Embeddings:
-        # embed the documents somehow
+        # 以某种方式嵌入文档
         return embeddings
 ```
 {% /Tab %}
@@ -216,7 +217,7 @@ class MyEmbeddingFunction implements EmbeddingFunction {
     }
 
     public async generate(texts: string[]): Promise<number[][]> {
-        // do things to turn texts into embeddings with an api_key perhaps
+        // 使用 api_key 将文本转换为嵌入
         return embeddings;
     }
 }
@@ -225,4 +226,4 @@ class MyEmbeddingFunction implements EmbeddingFunction {
 
 {% /TabbedCodeBlock %}
 
-We welcome contributions! If you create an embedding function that you think would be useful to others, please consider [submitting a pull request](https://github.com/chroma-core/chroma).
+我们欢迎您的贡献！如果您创建了一个对他人有用的嵌入函数，请考虑[提交拉取请求](https://github.com/chroma-core/chroma)。

@@ -1,5 +1,5 @@
-# Update
+# 更新
 
-The `chroma update` command wil inform you if you should update your CLI installation.
+`chroma update` 命令会告知你是否需要更新你的 CLI 安装。
 
-If you run the CLI via our Python or JavaScript packages, the `update` command will inform you if a new `chromadb` version is availble. When you update your `chromadb` package, you will also get the latest version of the CLI bundled with it.
+如果你是通过我们的 Python 或 JavaScript 包运行 CLI 的，那么 `update` 命令会提示你是否有新的 `chromadb` 版本可用。当你更新 `chromadb` 包时，也将同时获得与之捆绑发布的最新版本 CLI。

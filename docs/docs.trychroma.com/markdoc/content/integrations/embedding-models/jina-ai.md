@@ -5,7 +5,7 @@ name: Jina AI
 
 # JinaAI
 
-Chroma provides a convenient wrapper around JinaAI's embedding API. This embedding function runs remotely on JinaAI's servers, and requires an API key. You can get an API key by signing up for an account at [JinaAI](https://jina.ai/embeddings/).
+Chroma 为 JinaAI 的嵌入 API 提供了一个便捷的封装。该嵌入函数在 JinaAI 的服务器上远程运行，需要提供一个 API 密钥。您可以通过访问 [JinaAI](https://jina.ai/embeddings/) 注册账户获取 API 密钥。
 
 {% TabbedCodeBlock %}
 
@@ -46,17 +46,17 @@ const collectionGet = await client.getCollection({name:"name", embeddingFunction
 
 {% /TabbedCodeBlock %}
 
-You can pass in an optional `model_name` argument, which lets you choose which Jina model to use. By default, Chroma uses `jina-embedding-v2-base-en`.
+您可以选择性地传入 `model_name` 参数，以指定使用哪个 Jina 模型。默认情况下，Chroma 使用的是 `jina-embedding-v2-base-en`。
 
 {% note type="tip" title="" %}
 
-Jina has added new attributes on embedding functions, including `task`, `late_chunking`, `truncate`, `dimensions`, `embedding_type`, and `normalized`. See [JinaAI](https://jina.ai/embeddings/) for references on which models support these attributes.
+Jina 在嵌入函数中新增了以下属性：`task`、`late_chunking`、`truncate`、`dimensions`、`embedding_type` 和 `normalized`。有关支持这些属性的模型，请参考 [JinaAI](https://jina.ai/embeddings/)。
 
 {% /note %}
 
-### Late Chunking Example
+### Late Chunking 示例
 
-jina-embeddings-v3 supports [Late Chunking](https://jina.ai/news/late-chunking-in-long-context-embedding-models/), a technique to leverage the model’s long-context capabilities for generating contextual chunk embeddings. Include `late_chunking=True` in your request to enable contextual chunked representation. When set to true, Jina AI API will concatenate all sentences in the input field and feed them as a single string to the model. Internally, the model embeds this long concatenated string and then performs late chunking, returning a list of embeddings that matches the size of the input list.
+jina-embeddings-v3 支持 [Late Chunking](https://jina.ai/news/late-chunking-in-long-context-embedding-models/)，这是一种利用模型长上下文能力生成上下文分块嵌入的技术。在请求中包含 `late_chunking=True` 即可启用上下文分块表示。当设置为 `True` 时，Jina AI API 将会把输入字段中的所有句子进行拼接，然后作为单个字符串传入模型。模型内部会对这个长字符串进行嵌入处理，然后执行 late chunking，返回一个与输入列表大小匹配的嵌入列表。
 
 {% tabs group="code-lang" hideTabs=true %}
 {% Tab label="python" %}
@@ -92,10 +92,10 @@ print(results)
 {% /Tab %}
 {% /tabs %}
 
-### Task parameter
-`jina-embeddings-v3` has been trained with 5 task-specific adapters for different embedding uses. Include task in your request to optimize your downstream application:
-- `retrieval.query`: Used to encode user queries or questions in retrieval tasks.
-- `retrieval.passage`: Used to encode large documents in retrieval tasks at indexing time.
-- `classification`: Used to encode text for text classification tasks.
-- `text-matching`: Used to encode text for similarity matching, such as measuring similarity between two sentences.
-- `separation`: Used for clustering or reranking tasks.
+### Task 参数
+`jina-embeddings-v3` 使用了 5 个针对不同嵌入用途的任务专用适配器进行训练。在请求中指定 `task` 参数可以优化您的下游应用效果：
+- `retrieval.query`：用于检索任务中的用户查询或问题的编码。
+- `retrieval.passage`：用于检索任务中对大型文档在索引阶段进行编码。
+- `classification`：用于文本分类任务中的文本编码。
+- `text-matching`：用于相似性匹配任务，例如衡量两个句子之间的相似性。
+- `separation`：用于聚类或重新排序任务。

@@ -1,27 +1,27 @@
-# Chroma Reference
+# Chroma 参考文档
 
-## Client APIs
+## 客户端 API
 
-Chroma currently maintains 1st party clients for Python and Javascript. For other clients in other languages, use their repos for documentation.
+Chroma 当前为 Python 和 JavaScript 提供官方客户端。对于其他语言的客户端，请参考它们的代码仓库以获取文档。
 
-`Client` - is the object that wraps a connection to a backing Chroma DB
+`Client` - 是封装与 Chroma DB 后端连接的对象。
 
-`Collection` - is the object that wraps a collection
+`Collection` - 是封装一个集合的对象。
 
 
 {% special_table %}
 {% /special_table %}
 
-|              | Client                | Collection                        |
+|              | 客户端                | 集合                              |
 |--------------|-----------------------|-----------------------------------|
-| Python | [Client](./python/client) | [Collection](./python/collection) |
-| Javascript | [Client](./js/client) | [Collection](./js/collection)  |
+| Python | [客户端](./python/client) | [集合](./python/collection)       |
+| JavaScript | [客户端](./js/client) | [集合](./js/collection)           |
 
 ***
 
-## Backend API
+## 后端 API
 
-Chroma's backend Swagger REST API docs are viewable by running Chroma and navigating to `http://localhost:8000/docs`.
+Chroma 的后端 Swagger REST API 文档可以在运行 Chroma 后通过访问 `http://localhost:8000/docs` 查看。
 
 ```bash
 pip install chromadb

@@ -5,15 +5,15 @@ name: VoltAgent
 
 # VoltAgent
 
-[VoltAgent](https://github.com/VoltAgent/voltagent) is an open-source TypeScript framework for building AI agents with modular tools, LLM orchestration, and flexible multi-agent systems. It features a built-in, n8n-style observability console that lets you visually inspect agent behavior, trace actions, and debug with ease.
+[VoltAgent](https://github.com/VoltAgent/voltagent) 是一个开源的 TypeScript 框架，用于构建具有模块化工具、LLM 编排和灵活多代理系统的 AI 代理。它内置了一个类似 n8n 的可观察性控制台，使您能够直观地检查代理行为、追踪操作并轻松调试。
 
 {% Banner type="tip" %}
-You can find the complete example code at: [VoltAgent with Chroma Example](https://github.com/VoltAgent/voltagent/tree/main/examples/with-chroma)
+您可以在以下位置找到完整的示例代码：[VoltAgent with Chroma 示例](https://github.com/VoltAgent/voltagent/tree/main/examples/with-chroma)
 {% /Banner %}
 
-## Installation
+## 安装
 
-Create a new VoltAgent project with Chroma integration:
+创建一个集成 Chroma 的新 VoltAgent 项目：
 
 {% TabbedUseCaseCodeBlock language="Terminal" %}
 
@@ -43,9 +43,9 @@ pnpm create voltagent-app --example=with-chroma
 
 {% /TabbedUseCaseCodeBlock %}
 
-This creates a complete VoltAgent + Chroma setup with sample data and two different agent configurations.
+这将创建一个完整的 VoltAgent + Chroma 设置，包含示例数据和两种不同的代理配置。
 
-Install the dependencies:
+安装依赖项：
 
 {% TabbedUseCaseCodeBlock language="Terminal" %}
 
@@ -75,54 +75,54 @@ pnpm install
 
 {% /TabbedUseCaseCodeBlock %}
 
-Next, you'll need to launch a Chroma server instance.
+接下来，您需要启动一个 Chroma 服务器实例。
 
 ```terminal
 npm run chroma run
 ```
 
-The server will be available at `http://localhost:8000`.
+服务器将在 `http://localhost:8000` 上可用。
 
-**Note**: For production deployments, you might prefer [Chroma Cloud](https://www.trychroma.com/), a fully managed hosted service. See the Environment Setup section below for cloud configuration.
+**注意**：对于生产部署，您可能更倾向于使用 [Chroma Cloud](https://www.trychroma.com/)，这是一个完全托管的托管服务。有关云配置，请参阅下面的环境设置部分。
 
-## Environment Setup
+## 环境设置
 
-Create a `.env` file with your configuration:
+使用您的配置创建 `.env` 文件：
 
-### Option 1: Local Chroma Server
+### 选项 1：本地 Chroma 服务器
 
 ```env
-# OpenAI API key for embeddings and LLM
+# OpenAI API 密钥，用于嵌入和 LLM
 OPENAI_API_KEY=your-openai-api-key-here
 
-# Local Chroma server configuration (optional - defaults shown)
+# 本地 Chroma 服务器配置（可选，默认值如下）
 CHROMA_HOST=localhost
 CHROMA_PORT=8000
 ```
 
-### Option 2: [Chroma Cloud](https://www.trychroma.com/)
+### 选项 2：[Chroma Cloud](https://www.trychroma.com/)
 
 ```env
-# OpenAI API key for embeddings and LLM
+# OpenAI API 密钥，用于嵌入和 LLM
 OPENAI_API_KEY=your-openai-api-key-here
 
-# Chroma Cloud configuration
+# Chroma Cloud 配置
 CHROMA_API_KEY=your-chroma-cloud-api-key
 CHROMA_TENANT=your-tenant-name
 CHROMA_DATABASE=your-database-name
 ```
 
-The code will automatically detect which configuration to use based on the presence of `CHROMA_API_KEY`.
+代码将根据是否存在 `CHROMA_API_KEY` 自动检测使用哪种配置。
 
-## Run Your Application
+## 运行您的应用程序
 
-Start your VoltAgent application:
+启动您的 VoltAgent 应用程序：
 
 ```terminal
 npm run dev
 ```
 
-You'll see:
+您将看到：
 
 ```
 🚀 VoltAgent with Chroma is running!
@@ -143,35 +143,35 @@ You'll see:
 ```
 
 {% Banner type="tip" %}
-Refer to official [VoltAgent docs](https://voltagent.dev/docs/) for more info.
+有关更多信息，请参考官方 [VoltAgent 文档](https://voltagent.dev/docs/)。
 {% /Banner %}
 
-## Interact with Your Agents
+## 与您的代理互动
 
-Your agents are now running! To interact with them:
+您的代理现在正在运行！要与它们互动：
 
-1. **Open the Console:** Click the [`https://console.voltagent.dev`](https://console.voltagent.dev) link in your terminal output (or copy-paste it into your browser).
-2. **Find Your Agents:** On the VoltOps LLM Observability Platform page, you should see both agents listed:
+1. **打开控制台：** 点击终端输出中的 [`https://console.voltagent.dev`](https://console.voltagent.dev) 链接（或将其复制粘贴到浏览器中）。
+2. **查找您的代理：** 在 VoltOps LLM 可观察性平台页面上，您应该看到两个列出的代理：
    - "Assistant with Retriever"
    - "Assistant with Tools"
-3. **Open Agent Details:** Click on either agent's name.
-4. **Start Chatting:** On the agent detail page, click the chat icon in the bottom right corner to open the chat window.
-5. **Test RAG Capabilities:** Try questions like:
-   - "What is VoltAgent?"
-   - "Tell me about vector databases"
-   - "How does TypeScript help with development?"
+3. **打开代理详细信息：** 点击任一代理的名称。
+4. **开始聊天：** 在代理详细信息页面上，点击右下角的聊天图标以打开聊天窗口。
+5. **测试 RAG 功能：** 尝试以下问题：
+   - "什么是 VoltAgent？"
+   - "告诉我关于向量数据库"
+   - "TypeScript 如何帮助开发？"
 
 ![VoltAgent with Chroma Demo](https://cdn.voltagent.dev/docs/chroma-rag-example.gif)
 
-Your AI agents will provide answers containing pertinent details from your Chroma knowledge base, accompanied by citations that reveal which source materials were referenced during response generation.
+您的 AI 代理将提供包含 Chroma 知识库中相关内容的答案，并附带引用信息，显示在生成响应时参考了哪些源材料。
 
-## How It Works
+## 工作原理
 
-A quick look under the hood and how to customize it.
+快速了解其内部机制及如何自定义它。
 
-### Create the Chroma Retriever
+### 创建 Chroma 检索器
 
-Create `src/retriever/index.ts`:
+创建 `src/retriever/index.ts`：
 
 ```typescript
 import {
@@ -187,33 +187,33 @@ import {
 } from "chromadb";
 import { OpenAIEmbeddingFunction } from "@chroma-core/openai";
 
-// Initialize Chroma client - supports both local and cloud
+// 初始化 Chroma 客户端 - 支持本地和云
 const chromaClient = process.env.CHROMA_API_KEY
-  ? new CloudClient() // Uses CHROMA_API_KEY, CHROMA_TENANT, CHROMA_DATABASE env vars
+  ? new CloudClient() // 使用 CHROMA_API_KEY、CHROMA_TENANT、CHROMA_DATABASE 环境变量
   : new ChromaClient({
       host: process.env.CHROMA_HOST || "localhost",
       port: parseInt(process.env.CHROMA_PORT || "8000"),
     });
 
-// Configure OpenAI embeddings
+// 配置 OpenAI 嵌入
 const embeddingFunction = new OpenAIEmbeddingFunction({
   apiKey: process.env.OPENAI_API_KEY,
-  modelName: "text-embedding-3-small", // Efficient and cost-effective
+  modelName: "text-embedding-3-small", // 高效且成本效益
 });
 
 const collectionName = "voltagent-knowledge-base";
 ```
 
-**Essential Elements Breakdown**:
+**关键元素解析**：
 
-- **ChromaClient/CloudClient**: Connects to your local Chroma server or Chroma Cloud
-- **Automatic Detection**: Uses CloudClient if CHROMA_API_KEY is set, otherwise falls back to local ChromaClient
-- **OpenAIEmbeddingFunction**: Uses OpenAI's embedding models to convert text into vectors
-- **Collection**: A named container for your documents and their embeddings
+- **ChromaClient/CloudClient**：连接到您的本地 Chroma 服务器或 Chroma Cloud
+- **自动检测**：如果设置了 CHROMA_API_KEY，则使用 CloudClient，否则回退到本地 ChromaClient
+- **OpenAIEmbeddingFunction**：使用 OpenAI 的嵌入模型将文本转换为向量
+- **集合**：存储文档及其嵌入的命名容器
 
-### Initialize Sample Data
+### 初始化示例数据
 
-Add sample documents to get started:
+添加示例文档以开始：
 
 ```typescript
 async function initializeCollection() {
@@ -223,18 +223,18 @@ async function initializeCollection() {
       embeddingFunction: embeddingFunction,
     });
 
-    // Sample documents about your domain
+    // 关于您的领域的示例文档
     const sampleDocuments = [
-      "VoltAgent is a TypeScript framework for building AI agents with modular components.",
-      "Chroma is an AI-native open-source vector database that handles embeddings automatically.",
-      "Vector databases store high-dimensional vectors and enable semantic search capabilities.",
-      "Retrieval-Augmented Generation (RAG) combines information retrieval with language generation.",
-      "TypeScript provides static typing for JavaScript, making code more reliable and maintainable.",
+      "VoltAgent 是一个使用模块化组件构建 AI 代理的 TypeScript 框架。",
+      "Chroma 是一个 AI 原生的开源向量数据库，可自动处理嵌入。",
+      "向量数据库存储高维向量并支持语义搜索功能。",
+      "检索增强生成 (RAG) 结合了信息检索和语言生成。",
+      "TypeScript 为 JavaScript 提供静态类型，使代码更可靠且易于维护。",
     ];
 
     const sampleIds = sampleDocuments.map((_, index) => `sample_${index + 1}`);
 
-    // Use upsert to avoid duplicates
+    // 使用 upsert 避免重复
     await collection.upsert({
       documents: sampleDocuments,
       ids: sampleIds,
@@ -242,30 +242,30 @@ async function initializeCollection() {
         type: "sample",
         index: index + 1,
         topic:
-          index < 2 ? "frameworks" : index < 4 ? "databases" : "programming",
+          index < 2 ? "框架" : index < 4 ? "数据库" : "编程",
       })),
     });
 
-    console.log("📚 Sample knowledge base initialized");
+    console.log("📚 示例知识库已初始化");
   } catch (error) {
-    console.error("Error initializing collection:", error);
+    console.error("初始化集合时出错:", error);
   }
 }
 
-// Initialize when module loads
+// 模块加载时初始化
 initializeCollection();
 ```
 
-**What This Does**:
+**此操作的作用**：
 
-- Establishes a collection using OpenAI's embedding functionality
-- Adds sample documents with metadata
-- Uses `upsert` to avoid duplicate documents
-- Automatically generates embeddings for each document
+- 使用 OpenAI 的嵌入功能建立集合
+- 添加带有元数据的示例文档
+- 使用 `upsert` 避免重复文档
+- 自动生成每个文档的嵌入
 
-### Implement the Retriever Class
+### 实现检索器类
 
-Create the main retriever class:
+创建主检索器类：
 
 ```typescript
 async function retrieveDocuments(query: string, nResults = 3) {
@@ -280,22 +280,22 @@ async function retrieveDocuments(query: string, nResults = 3) {
       nResults,
     });
 
-    // Use the new .rows() method for cleaner data access
+    // 使用新的 .rows() 方法进行更清晰的数据访问
     const rows = results.rows();
 
     if (!rows || rows.length === 0 || !rows[0]) {
       return [];
     }
 
-    // Format results - rows[0] contains the actual row data
+    // 格式化结果 - rows[0] 包含实际的行数据
     return rows[0].map((row: QueryRowResult<Metadata>, index: number) => ({
       content: row.document || "",
       metadata: row.metadata || {},
-      distance: results.distances?.[0]?.[index] || 0, // Distance still comes from the original results
+      distance: results.distances?.[0]?.[index] || 0, // 距离仍来自原始结果
       id: row.id,
     }));
   } catch (error) {
-    console.error("Error retrieving documents:", error);
+    console.error("检索文档时出错:", error);
     return [];
   }
 }
@@ -305,7 +305,7 @@ export class ChromaRetriever extends BaseRetriever {
     input: string | BaseMessage[],
     options: RetrieveOptions
   ): Promise<string> {
-    // Convert input to searchable string
+    // 将输入转换为可搜索字符串
     let searchText = "";
 
     if (typeof input === "string") {
@@ -313,7 +313,7 @@ export class ChromaRetriever extends BaseRetriever {
     } else if (Array.isArray(input) && input.length > 0) {
       const lastMessage = input[input.length - 1];
 
-      // Handle different content formats
+      // 处理不同的内容格式
       if (Array.isArray(lastMessage.content)) {
         const textParts = lastMessage.content
           .filter((part: any) => part.type === "text")
@@ -324,30 +324,30 @@ export class ChromaRetriever extends BaseRetriever {
       }
     }
 
-    // Perform semantic search
+    // 执行语义搜索
     const results = await retrieveDocuments(searchText, 3);
 
-    // Add references to userContext for tracking
+    // 将引用添加到 userContext 以进行跟踪
     if (options.userContext && results.length > 0) {
       const references = results.map((doc, index) => ({
         id: doc.id,
-        title: doc.metadata.title || `Document ${index + 1}`,
-        source: "Chroma Knowledge Base",
+        title: doc.metadata.title || `文档 ${index + 1}`,
+        source: "Chroma 知识库",
         distance: doc.distance,
       }));
 
       options.userContext.set("references", references);
     }
 
-    // Format results for the LLM
+    // 为 LLM 格式化结果
     if (results.length === 0) {
-      return "No relevant documents found in the knowledge base.";
+      return "在知识库中未找到相关文档。";
     }
 
     return results
       .map(
         (doc, index) =>
-          `Document ${index + 1} (ID: ${doc.id}, Distance: ${doc.distance.toFixed(4)}):\n${doc.content}`
+          `文档 ${index + 1} (ID: ${doc.id}, 距离: ${doc.distance.toFixed(4)}):\n${doc.content}`
       )
       .join("\n\n---\n\n");
   }
@@ -356,16 +356,16 @@ export class ChromaRetriever extends BaseRetriever {
 export const retriever = new ChromaRetriever();
 ```
 
-**Key Features**:
+**关键功能**：
 
-- **Input Handling**: Supports both string and message array inputs
-- **Semantic Search**: Uses Chroma's vector similarity search
-- **User Context**: Tracks references for transparency
-- **Error Handling**: Graceful fallbacks for search failures
+- **输入处理**：支持字符串和消息数组输入
+- **语义搜索**：使用 Chroma 的向量相似性搜索
+- **用户上下文**：跟踪引用以提高透明度
+- **错误处理**：搜索失败时优雅回退
 
-### Create Your Agents
+### 创建您的代理
 
-Now create agents using different retrieval patterns in `src/index.ts`:
+现在在 `src/index.ts` 中使用不同的检索模式创建代理：
 
 ```typescript
 import { openai } from "@ai-sdk/openai";
@@ -373,21 +373,21 @@ import { Agent, VoltAgent } from "@voltagent/core";
 import { VercelAIProvider } from "@voltagent/vercel-ai";
 import { retriever } from "./retriever/index.js";
 
-// Agent 1: Automatic retrieval on every interaction
+// 代理 1：每次交互时自动检索
 const agentWithRetriever = new Agent({
-  name: "Assistant with Retriever",
+  name: "带有检索器的助手",
   description:
-    "A helpful assistant that automatically searches the knowledge base for relevant information",
+    "一个有用的助手，可在每次响应前自动搜索知识库中的相关信息",
   llm: new VercelAIProvider(),
   model: openai("gpt-4o-mini"),
   retriever: retriever,
 });
 
-// Agent 2: LLM decides when to search
+// 代理 2：LLM 决定何时搜索
 const agentWithTools = new Agent({
-  name: "Assistant with Tools",
+  name: "带有工具的助手",
   description:
-    "A helpful assistant that can search the knowledge base when needed",
+    "一个有用的助手，可以在需要时搜索知识库",
   llm: new VercelAIProvider(),
   model: openai("gpt-4o-mini"),
   tools: [retriever.tool],
@@ -401,73 +401,73 @@ new VoltAgent({
 });
 ```
 
-## Usage Patterns
+## 使用模式
 
-### Automatic Retrieval
+### 自动检索
 
-The first agent automatically searches before every response:
-
-```
-User: "What is VoltAgent?"
-Agent: Based on the knowledge base, VoltAgent is a TypeScript framework for building AI agents with modular components...
-
-Sources:
-- Document 1 (ID: sample_1, Distance: 0.1234): Chroma Knowledge Base
-- Document 2 (ID: sample_2, Distance: 0.2456): Chroma Knowledge Base
-```
-
-### Tool-Based Retrieval
-
-The second agent only searches when it determines it's necessary:
+第一个代理在每次响应前自动搜索：
 
 ```
-User: "Tell me about TypeScript"
-Agent: Let me search for relevant information about TypeScript.
-[Searches knowledge base]
-According to the search results, TypeScript provides static typing for JavaScript, making code more reliable and maintainable...
+用户："什么是 VoltAgent？"
+代理：根据知识库，VoltAgent 是一个使用模块化组件构建 AI 代理的 TypeScript 框架...
 
-Sources:
-- Document 5 (ID: sample_5, Distance: 0.0987): Chroma Knowledge Base
+来源：
+- 文档 1 (ID: sample_1, 距离: 0.1234): Chroma 知识库
+- 文档 2 (ID: sample_2, 距离: 0.2456): Chroma 知识库
 ```
 
-### Accessing Sources in Your Code
+### 基于工具的检索
 
-You can access the sources that were used in the retrieval from the response:
+第二个代理仅在确定必要时才搜索：
+
+```
+用户："告诉我关于 TypeScript"
+代理：让我搜索有关 TypeScript 的相关信息。
+[搜索知识库]
+根据搜索结果，TypeScript 为 JavaScript 提供静态类型，使代码更可靠且易于维护...
+
+来源：
+- 文档 5 (ID: sample_5, 距离: 0.0987): Chroma 知识库
+```
+
+### 在代码中访问来源
+
+您可以从响应中访问检索时使用的来源：
 
 ```typescript
-// After generating a response
-const response = await agent.generateText("What is VoltAgent?");
-console.log("Answer:", response.text);
+// 生成响应后
+const response = await agent.generateText("什么是 VoltAgent？");
+console.log("答案:", response.text);
 
-// Check what sources were used
+// 检查使用的来源
 const references = response.userContext?.get("references");
 if (references) {
-  console.log("Used sources:", references);
+  console.log("使用的来源:", references);
   references.forEach((ref) => {
-    console.log(`- ${ref.title} (ID: ${ref.id}, Distance: ${ref.distance})`);
+    console.log(`- ${ref.title} (ID: ${ref.id}, 距离: ${ref.distance})`);
   });
 }
-// Output: [{ id: "sample_1", title: "Document 1", source: "Chroma Knowledge Base", distance: 0.1234 }]
+// 输出: [{ id: "sample_1", title: "文档 1", source: "Chroma 知识库", distance: 0.1234 }]
 ```
 
-Or when using `streamText`:
+或者在使用 `streamText` 时：
 
 ```typescript
-const result = await agent.streamText("Tell me about vector databases");
+const result = await agent.streamText("告诉我关于向量数据库");
 
 for await (const textPart of result.textStream) {
   process.stdout.write(textPart);
 }
 
-// Access sources after streaming completes
+// 流完成后访问来源
 const references = result.userContext?.get("references");
 if (references) {
-  console.log("\nSources used:", references);
+  console.log("\n使用的来源:", references);
 }
 ```
 
-This integration provides a solid foundation for adding semantic search capabilities to your VoltAgent applications. The combination of VoltAgent's flexible architecture and Chroma's powerful vector search creates a robust RAG system that can handle real-world knowledge retrieval needs.
+此集成为您提供了一个坚实的基础，可用于为 VoltAgent 应用程序添加语义搜索功能。VoltAgent 的灵活架构与 Chroma 的强大向量搜索相结合，创建了一个强大的 RAG 系统，可满足实际知识检索需求。
 
 {% Banner type="tip" %}
-For more information on how to use VoltAgent with Chroma, see the [VoltAgent docs](https://voltagent.dev/docs/rag/chroma/).
+有关如何将 VoltAgent 与 Chroma 一起使用的更多信息，请参阅 [VoltAgent 文档](https://voltagent.dev/docs/rag/chroma/)。
 {% /Banner %}

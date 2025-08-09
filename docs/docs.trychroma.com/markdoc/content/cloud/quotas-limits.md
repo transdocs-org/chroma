@@ -1,28 +1,28 @@
-# Quotas & Limits
+# 配额与限制
 
-To ensure the stability and fairness in a multi-tenant environment, Chroma Cloud enforces input and query quotas across all user-facing operations. These limits are designed to strike a balance between performance, reliability, and ease of use for the majority of workloads.
+为了确保多租户环境中的稳定性与公平性，Chroma Cloud 对所有面向用户的操作施加了输入和查询配额。这些限制旨在为大多数工作负载的性能、可靠性与易用性之间取得平衡。
 
-Most quotas can be increased upon request, once a clear need has been demonstrated. If your application requires higher limits, please [contact us](mailto:support@trychroma.com). We are happy to help.
+大多数配额在明确需求后可以根据请求提高。如果您的应用需要更高的限制，请[联系我们](mailto:support@trychroma.com)。我们乐意为您提供帮助。
 
-| **Quota** | **Value** |
+| **配额** | **值** |
 | --- | --- |
-| Maximum embedding dimensions | 3072 |
-| Maximum document bytes | 16,384 |
-| Maximum uri bytes | 128 |
-| Maximum ID size bytes  | 128 |
-| Maximum metadata value size bytes | 256 |
-| Maximum metadata key size bytes | 36 |
-| Maximum number of metadata keys | 16 |
-| Maximum number of where predicates  | 8 |
-| Maximum size of full text search or regex search | 256 |
-| Maximum number of results returned | 100 |
-| Maximum number of concurrent reads per collection | 5 |
-| Maximum number of concurrent writes per collection | 5 |
-| Maximum number of collections | 1,000,000 |
-| Maximum fork edges from root | 4,096 |
+| 最大嵌入维度 | 3072 |
+| 最大文档字节数 | 16,384 |
+| 最大 URI 字节数 | 128 |
+| 最大 ID 大小字节数 | 128 |
+| 最大元数据值大小字节数 | 256 |
+| 最大元数据键大小字节数 | 36 |
+| 最大元数据键数量 | 16 |
+| 最大 where 条件数量 | 8 |
+| 全文搜索或正则表达式搜索的最大大小 | 256 |
+| 最大返回结果数量 | 100 |
+| 每个集合的最大并发读取数 | 5 |
+| 每个集合的最大并发写入数 | 5 |
+| 最大集合数量 | 1,000,000 |
+| 从根节点出发的最大分叉边数 | 4,096 |
 
-These limits apply per request or per collection as appropriate. For example, concurrent read/write limits are tracked independently per collection, and full-text query limits apply to the length of the input string, not the number of documents searched.
+这些限制根据请求或集合分别适用。例如，并发读写限制是按每个集合独立计算的，而全文查询限制则适用于输入字符串的长度，而不是所搜索文档的数量。
 
-For details about the fork edges limit and quota error handling when forking, see [Collection Forking](./collection-forking).
+有关分叉时的分叉边限制和配额错误处理的详细信息，请参阅[集合分叉](./collection-forking)。
 
-If you expect to approach these limits, we recommend reaching out early so we can ensure your account is configured accordingly.
+如果您预计会接近这些限制，我们建议您尽早联系，以便我们可以确保您的账户正确配置。

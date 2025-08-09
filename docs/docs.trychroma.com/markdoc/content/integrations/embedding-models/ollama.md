@@ -5,10 +5,7 @@ name: Ollama
 
 # Ollama
 
-Chroma provides a convenient wrapper around [Ollama](https://github.com/ollama/ollama)'
-s [embeddings API](https://github.com/ollama/ollama/blob/main/docs/api.md#generate-embeddings). You can use
-the `OllamaEmbeddingFunction` embedding function to generate embeddings for your documents with
-a [model](https://github.com/ollama/ollama?tab=readme-ov-file#model-library) of your choice.
+Chroma 为 [Ollama](https://github.com/ollama/ollama) 的 [embeddings API](https://github.com/ollama/ollama/blob/main/docs/api.md#generate-embeddings) 提供了一个便捷的封装。你可以使用 `OllamaEmbeddingFunction` 生成文档的嵌入向量，并选择你偏好的 [模型](https://github.com/ollama/ollama?tab=readme-ov-file#model-library)。
 
 {% TabbedCodeBlock  %}
 
@@ -41,10 +38,10 @@ const embedder = new OllamaEmbeddingFunction({
     model: "llama2"
 })
 
-// use directly
+// 直接使用
 const embeddings = embedder.generate(["document1", "document2"])
 
-// pass documents to query for .add and .query
+// 传递文档用于 .add 和 .query
 let collection = await client.createCollection({
     name: "name",
     embeddingFunction: embedder

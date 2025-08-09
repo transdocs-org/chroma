@@ -1,24 +1,24 @@
-# Chroma Data Model
+# Chroma 数据模型
 
-Chroma’s data model is designed to balance simplicity, flexibility, and scalability. It introduces a few core abstractions—**Tenants**, **Databases**, and **Collections**—that allow you to organize, retrieve, and manage data efficiently across environments and use cases.
+Chroma 的数据模型旨在平衡简洁性、灵活性和可扩展性。它引入了一些核心抽象概念——**租户（Tenants）**、**数据库（Databases）** 和 **集合（Collections）**，使您能够跨不同环境和用例高效地组织、检索和管理数据。
 
-### Collections
+### 集合（Collections）
 
-A **collection** is the fundamental unit of storage and querying in Chroma. Each collection contains a set of items, where each item consists of:
+**集合** 是 Chroma 中存储和查询的基本单位。每个集合包含一组条目，每个条目由以下部分组成：
 
-- An ID uniquely identifying the item
-- An **embedding vector**
-- Optional **metadata** (key-value pairs)
-- A document that belongs to the provided embedding
+- 一个唯一标识条目的 ID
+- 一个 **嵌入向量（embedding vector）**
+- 可选的 **元数据（metadata）**（键值对）
+- 属于该嵌入向量的文档
 
-Collections are independently indexed and are optimized for fast retrieval using **vector similarity**, **full-text search**, and **metadata filtering**. In distributed deployments, collections can be sharded or migrated across nodes as needed; the system transparently manages paging them in and out of memory based on access patterns.
+集合是独立建立索引的，并且经过优化，可以使用 **向量相似性**、**全文搜索** 和 **元数据过滤** 实现快速检索。在分布式部署中，集合可以根据需要在节点之间分片或迁移；系统会根据访问模式透明地管理其在内存中的加载与卸载。
 
-### Databases
+### 数据库（Databases）
 
-Collections are grouped into **databases**, which serve as a logical namespace. This is useful for organizing collections by purpose—for example, separating environments like "staging" and "production", or grouping applications under a common schema.
+集合被归类到 **数据库** 中，后者作为一个逻辑命名空间。这有助于根据用途组织集合——例如，将 "staging" 和 "production" 等环境分开，或将多个应用归入一个通用的模式下。
 
-Each database contains multiple collections, and each collection name must be unique within a database.
+每个数据库包含多个集合，并且每个集合名称在数据库内必须唯一。
 
-### Tenants
+### 租户（Tenants）
 
-At the top level of the model is the **tenant**, which represents a single user, team, or account. Tenants provide complete isolation. No data or metadata, is shared across tenants. All access control, quota enforcement, and billing are scoped to the tenant level.
+模型的顶层是 **租户**，代表单个用户、团队或账户。租户提供完全的数据隔离，租户之间不共享任何数据或元数据。所有访问控制、配额管理和计费都是以租户为单位进行的。

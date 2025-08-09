@@ -1,10 +1,10 @@
-# Integrations
+# 集成
 
-### Embedding Integrations
+### 嵌入集成
 
-Embeddings are the A.I-native way to represent any kind of data, making them the perfect fit for working with all kinds of A.I-powered tools and algorithms. They can represent text, images, and soon audio and video. There are many options for creating embeddings, whether locally using an installed library, or by calling an API.
+嵌入是以人工智能原生方式表示各种数据的方法，这使得它们非常适合与各种由人工智能驱动的工具和算法一起使用。它们可以表示文本、图像，以及即将支持的音频和视频。创建嵌入的方式有很多选择，无论是通过本地安装的库还是通过调用API。
 
-Chroma provides lightweight wrappers around popular embedding providers, making it easy to use them in your apps. You can set an embedding function when you create a Chroma collection, which will be used automatically, or you can call them directly yourself.
+Chroma为流行的嵌入提供者提供了轻量级封装，使它们在您的应用程序中易于使用。您可以在创建Chroma集合时设置嵌入函数，该函数将自动被使用，或者您也可以直接自行调用它们。
 
 {% special_table %}
 {% /special_table %}
@@ -28,11 +28,11 @@ Chroma provides lightweight wrappers around popular embedding providers, making 
 
 ---
 
-### Framework Integrations
+### 框架集成
 
-Chroma maintains integrations with many popular tools. These tools can be used to define the business logic of an AI-native application, curate data, fine-tune embedding spaces and more.
+Chroma与许多流行的工具保持集成。这些工具可用于定义人工智能原生应用的业务逻辑、整理数据、微调嵌入空间等。
 
-We welcome pull requests to add new Integrations to the community.
+我们欢迎社区通过提交拉取请求来添加新的集成。
 
 {% special_table %}
 {% /special_table %}
@@ -43,9 +43,9 @@ We welcome pull requests to add new Integrations to the community.
 | [Langchain](./frameworks/langchain)         | ✓      | ✓            |
 | [LlamaIndex](./frameworks/llamaindex)       | ✓      | ✓            |
 | [Braintrust](./frameworks/braintrust)       | ✓      | ✓            |
-| [OpenLLMetry](./frameworks/openllmetry)     | ✓      | Coming Soon! |
+| [OpenLLMetry](./frameworks/openllmetry)     | ✓      | 即将推出!    |
 | [Streamlit](./frameworks/streamlit)         | ✓      | -            |
 | [Haystack](./frameworks/haystack)           | ✓      | -            |
-| [OpenLIT](./frameworks/openlit)             | ✓      | Coming Soon! |
-| [Anthropic MCP](./frameworks/anthropic-mcp) | ✓      | Coming Soon! |
+| [OpenLIT](./frameworks/openlit)             | ✓      | 即将推出!    |
+| [Anthropic MCP](./frameworks/anthropic-mcp) | ✓      | 即将推出!    |
 | [VoltAgent](./frameworks/voltagent)         | -      | ✓            |

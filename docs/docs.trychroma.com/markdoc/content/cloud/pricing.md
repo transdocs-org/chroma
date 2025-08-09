@@ -1,36 +1,36 @@
-# Pricing
+# 定价
 
-Chroma Cloud uses a simple, transparent, usage-based pricing model. You pay for what you use across **writes**, **reads**, and **storage**—with no hidden fees or tiered feature gating.
+Chroma Cloud 采用简单透明的按使用量计费模式。您只需为 **写入**、**读取** 和 **存储** 操作付费——没有隐藏费用，也不会通过功能分层限制功能。
 
-Need an estimate? Try our [pricing calculator](https://trychroma.com/pricing).
+需要估算费用？请使用我们的 [定价计算器](https://trychroma.com/pricing)。
 
-## Writes
+## 写入
 
-Chroma Cloud charges **$2.50 per logical GiB** written via an add, update, or upsert.
+Chroma Cloud 对通过 `add`、`update` 或 `upsert` 操作写入的每 **1 个逻辑 GiB** 数据收取 **2.50 美元**。
 
-- A *logical GiB* is the raw, uncompressed size of the data you send to Chroma—regardless of how it's stored or indexed internally.
-- You are only billed once per write, not for background compactions or reindexing.
+- *逻辑 GiB* 是指您发送给 Chroma 的数据的原始、未压缩大小，无论其在内部如何存储或索引。
+- 每次写入仅收费一次，后台的压缩或重新索引不会产生额外费用。
 
-## Forking
+## 分叉
 
-- Forking a collection costs **$0.03 per fork request**.
-- Forks are copy-on-write. You only pay for incremental storage written after the fork; unchanged data remains shared.
-- Forking is available on Chroma Cloud. Learn more on the [Collection Forking](./collection-forking) page.
+- 分叉集合每次请求收费 **0.03 美元**。
+- 分叉采用写时复制（copy-on-write）机制。您只为分叉后新增的存储数据付费，未更改的数据保持共享状态。
+- 分叉功能适用于 Chroma Cloud。更多详情请参阅 [集合分叉](./collection-forking) 页面。
 
-## Reads
+## 读取
 
-Read costs are based on both the amount of data scanned and the volume of data returned:
+读取费用基于扫描的数据量和返回的数据量：
 
-- **$0.0075 per TiB scanned**
-- **$0.09 per GiB returned**
+- **每 TiB 扫描数据收费 0.0075 美元**
+- **每 GiB 返回数据收费 0.09 美元**
 
-**How queries are counted:**
+**查询计费方式：**
 
-- A single vector similarity query counts as one query.
-- Each metadata or full-text predicate in a query counts as an additional query.
-- Full-text and regex filters are billed as *(N – 2)* queries, where *N* is the number of characters in the search string.
+- 单个向量相似度查询计为一次查询。
+- 查询中的每个元数据或全文搜索谓词额外计为一次查询。
+- 全文搜索和正则表达式过滤器按 *(N – 2)* 次查询计费，其中 *N* 是搜索字符串中的字符数。
 
-**Example:**
+**示例：**
 
 {% TabbedCodeBlock %}
 
@@ -54,33 +54,33 @@ await collection.query(
 
 {% /TabbedCodeBlock %}
 
-For the query above (a single vector search and a 10-character full-text search), querying against 10 GiB of data incurs:
+对于上面的查询（一次向量搜索和一个 10 个字符的全文搜索），在 10 GiB 数据上执行时将产生以下费用：
 
-- 10,000 queries × 10 units (1 vector + 9 full-text) = 100,000 query units
-- 10 GiB = 0.01 TiB scanned → 100,000 × 0.01 TiB × $0.0075 = **$7.50**
+- 10,000 次查询 × 10 个单位（1 个向量 + 9 个全文搜索） = 100,000 个查询单位
+- 10 GiB = 0.01 TiB 扫描 → 100,000 × 0.01 TiB × 0.0075 美元 = **7.50 美元**
 
-## Storage
+## 存储
 
-Storage is billed at **$0.33 per GiB per month**, prorated by the hour:
+存储按 **每月每 GiB 0.33 美元** 计费，并按小时折算：
 
-- Storage usage is measured in **GiB-hours** to account for fluctuations over time.
-- Storage is billed based on the logical amount of data written.
-- All caching, including SSD caches used internally by Chroma, are not billed to you.
+- 存储用量以 **GiB-小时** 为单位进行测量，以反映随时间的变化。
+- 存储费用基于写入的逻辑数据量。
+- 所有缓存（包括 Chroma 内部使用的 SSD 缓存）均不收费。
 
-## Frequently Asked Questions
+## 常见问题
 
-**Is there a free tier?**
+**是否有免费套餐？**
 
-We offer $5 in credits to new users.
+我们为新用户提供 5 美元的信用额度。
 
-**How is multi-tenancy handled for billing?**
+**多租户环境下的计费如何处理？**
 
-Billing is account-based. All data across your collections and tenants within a Chroma Cloud account is aggregated for pricing.
+计费基于账户。Chroma Cloud 账户中所有集合和租户的数据费用将合并计算。
 
-**Can I deploy Chroma in my own VPC?**
+**我能否在自己的 VPC 中部署 Chroma？**
 
-Yes. We offer a BYOC (bring your own cloud) option for single-tenant deployments. [Contact us](mailto:support@trychroma.com) for more details.
+可以。我们提供 BYOC（自带云）选项用于单租户部署。更多详情请 [联系我们](mailto:support@trychroma.com)。
 
-**Do I get charged for background indexing?**
+**后台索引操作是否收费？**
 
-No. You’re only billed for the logical data you write and the storage you consume. Background jobs like compaction or reindexing do not generate additional write or read charges.
+不收费。您只需为写入的逻辑数据和使用的存储空间付费。压缩或重新索引等后台任务不会产生额外的写入或读取费用。
